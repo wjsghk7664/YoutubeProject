@@ -1,4 +1,4 @@
-package com.example.youtubeproject.data.remote
+package com.example.youtubeproject.data.Repository
 
 import com.example.youtubeproject.data.model.CategoryChannelModel
 import com.example.youtubeproject.data.model.CategoryVideoModel
