@@ -20,8 +20,9 @@ object RemoteProvideModule {
     }
 
     @Provides
-    fun provideOkHttpClient(): OkHttpClient {
+    fun provideOkHttpClient(authorizationInterceptor: AuthorizationInterceptor): OkHttpClient {
         return OkHttpClient.Builder()
+            .addInterceptor(authorizationInterceptor)
             .addNetworkInterceptor(HttpLoggingInterceptor().apply {
                 level = HttpLoggingInterceptor.Level.BODY
             }).build()

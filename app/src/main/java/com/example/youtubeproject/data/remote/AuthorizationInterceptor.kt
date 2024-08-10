@@ -6,11 +6,12 @@ import javax.inject.Inject
 
 class AuthorizationInterceptor @Inject constructor() : Interceptor {
 
+    private val KEY="AIzaSyDpDV7GVlJ4fcEmDcM0uW2gmwkSC1QlByY"
+
     override fun intercept(chain: Interceptor.Chain): Response {
-        val newRequest = chain.request().newBuilder().addHeader(
-            "Authorization",
-            "Bearer %s".format("AIzaSyDpDV7GVlJ4fcEmDcM0uW2gmwkSC1QlByY")
-        ).build()
+        val originRequest = chain.request()
+        val newUrl = originRequest.url.newBuilder().addQueryParameter("key",KEY).build()
+        val newRequest = originRequest.newBuilder().url(newUrl).build()
         return chain.proceed(newRequest)
     }
 }
