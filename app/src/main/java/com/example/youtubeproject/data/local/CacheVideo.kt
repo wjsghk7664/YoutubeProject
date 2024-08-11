@@ -1,7 +1,8 @@
-package com.example.youtubeproject.data.model
+package com.example.youtubeproject.data.local
 
 import androidx.room.Entity
 import androidx.room.PrimaryKey
+import com.example.youtubeproject.data.model.CategoryVideoModel
 
 
 @Entity(tableName = "cachevideo_table")

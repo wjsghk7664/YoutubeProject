@@ -2,6 +2,7 @@ package com.example.youtubeproject.data.local
 
 import android.content.Context
 import androidx.room.Room
+import com.example.youtubeproject.data.model.CacheChannelDao
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -13,7 +14,7 @@ import dagger.hilt.android.qualifiers.ApplicationContext
 object CacheDatabaseModule {
 
     @Provides
-    fun provideDatabase(@ApplicationContext context: Context): CacheDataBase{
+    fun provideDatabase(@ApplicationContext context: Context): CacheDataBase {
         return Room.databaseBuilder(
             context,
             CacheDataBase::class.java,
@@ -22,7 +23,7 @@ object CacheDatabaseModule {
     }
 
     @Provides
-    fun provideChannelDao(dataBase: CacheDataBase): CacheChannelDao{
+    fun provideChannelDao(dataBase: CacheDataBase): CacheChannelDao {
         return dataBase.cacheChannelDao()
     }
 

@@ -1,8 +1,8 @@
 package com.example.youtubeproject.data.model
 
 data class VideoModel(
-    val id:String,
-    val snippet: Snippet,
+    val id:String="",
+    val snippet: Snippet=Snippet(),
 )
 
 data class Snippet(

@@ -1,5 +1,6 @@
 package com.example.youtubeproject.data.Repository
 
+import com.example.youtubeproject.data.model.LikeList
 import com.example.youtubeproject.data.model.VideoModel
 
 interface RemoteUserLikeListRepository {
@@ -7,4 +8,5 @@ interface RemoteUserLikeListRepository {
     fun DeleteLike(id:String,videoModel: VideoModel, callback: (Boolean) -> Unit)
     fun createList(id:String, callback: (Boolean) -> Unit)
     fun deleteList(id:String, callback: (Boolean) -> Unit)
+    fun getList(id:String, callback: (LikeList?) -> Unit)
 }

@@ -20,7 +20,5 @@ class MainActivity : AppCompatActivity() {
             insets
         }
 
-        val viewModel:testViewModel by viewModels()
-        viewModel.inits()
     }
 }
