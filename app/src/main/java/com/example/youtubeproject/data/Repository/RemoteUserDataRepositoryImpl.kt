@@ -7,12 +7,11 @@ import javax.inject.Inject
 class RemoteUserDataRepositoryImpl @Inject constructor(private val db: FirebaseFirestore) :
     RemoteUserDataRepository {
     override fun CheckDupId(id:String, callback:(Boolean,Int) -> Unit){
-        var result:Boolean
         db.collection("User").document(id).get().addOnSuccessListener { document->
             if(document.exists()){
-                callback(true,0)
-            }else{
                 callback(false,0)
+            }else{
+                callback(true,0)
             }
         }.addOnFailureListener { exception->
             callback(false,1)
@@ -37,13 +36,15 @@ class RemoteUserDataRepositoryImpl @Inject constructor(private val db: FirebaseF
 
     override fun Login(id: String, password: String, callback: (User?) -> Unit) {
         db.collection("User").document(id).get().addOnSuccessListener { document->
-            if(document != null){
+            if(document.exists()){
                 val user = document.toObject(User::class.java)
                 if(user!!.password ==password){
                     callback(user)
                 }else{
                     callback(null)
                 }
+            }else{
+                callback(null)
             }
         }.addOnFailureListener { _->
             callback(null)
