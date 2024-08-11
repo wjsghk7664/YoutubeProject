@@ -4,15 +4,16 @@ import androidx.room.Dao
 import androidx.room.Insert
 import androidx.room.OnConflictStrategy
 import androidx.room.Query
+import com.example.youtubeproject.data.model.CacheLogin
 
 @Dao
 interface CacheLoginDao {
     @Query("SELECT * FROM cachelogin_table LIMIT 1")
-    suspend fun getLoginCache(): CacheLogin
+    fun getLoginCache(): CacheLogin
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    suspend fun insertLoginCache(cacheLogin: CacheLogin)
+    fun insertLoginCache(cacheLogin: CacheLogin)
 
     @Query("DELETE FROM cachelogin_table")
-    suspend fun deleteLoginCache()
+    fun deleteLoginCache()
 }

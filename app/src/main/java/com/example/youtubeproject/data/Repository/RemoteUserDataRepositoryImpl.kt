@@ -1,11 +1,11 @@
-package com.example.youtubeproject.data.remote.firebase
+package com.example.youtubeproject.data.Repository
 
 import com.example.youtubeproject.data.model.User
 import com.google.firebase.firestore.FirebaseFirestore
 import javax.inject.Inject
 
-class UserDataRepositoryImpl @Inject constructor(private val db: FirebaseFirestore) :
-    UserDataRepository {
+class RemoteUserDataRepositoryImpl @Inject constructor(private val db: FirebaseFirestore) :
+    RemoteUserDataRepository {
     override fun CheckDupId(id:String, callback:(Boolean,Int) -> Unit){
         var result:Boolean
         db.collection("User").document(id).get().addOnSuccessListener { document->

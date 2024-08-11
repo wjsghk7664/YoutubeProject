@@ -9,12 +9,12 @@ import com.example.youtubeproject.data.remote.youtube.MostPopularResult
 import com.example.youtubeproject.data.remote.youtube.SearchResult
 import javax.inject.Inject
 
-class GetRemoteDataRepositoryImpl @Inject constructor(
+class RemoteDataRepositoryImpl @Inject constructor(
     private val mostPopularResult: MostPopularResult,
     private val categoryChannelResult: CategoryChannelResult,
     private val categoryVideoResult: CategoryVideoResult,
     private val searchResult: SearchResult
-): GetRemoteDataRepository {
+): RemoteDataRepository {
     override suspend fun getPopularResult(page: String?): Result<CategoryVideoModel> {
         return runCatching {
             mostPopularResult.getPopular(pageToken = page)
