@@ -1,18 +1,17 @@
 package com.example.youtubeproject.data.Repository
 
-import com.example.youtubeproject.data.local.CacheChannel
+import com.example.youtubeproject.data.model.CacheChannel
 import com.example.youtubeproject.data.local.CacheChannelDao
-import com.example.youtubeproject.data.local.CacheVideo
+import com.example.youtubeproject.data.model.CacheVideo
 import com.example.youtubeproject.data.local.CacheVideoDao
 import com.example.youtubeproject.data.model.CategoryChannelModel
 import com.example.youtubeproject.data.model.CategoryVideoModel
-import com.example.youtubeproject.data.model.SearchResultModel
 import javax.inject.Inject
 
-class GetLocalDataRepositoryImpl @Inject constructor(
+class CacheDataRepositoryImpl @Inject constructor(
     private val cacheChannelDao: CacheChannelDao,
     private val cacheVideoDao: CacheVideoDao
-):GetLocalDataRepository {
+):CacheDataRepository {
 
     override suspend fun getCategoryVideoResult(
         category: String,

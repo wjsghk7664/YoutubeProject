@@ -1,10 +1,7 @@
-package com.example.youtubeproject.data.local
+package com.example.youtubeproject.data.model
 
 import androidx.room.Entity
 import androidx.room.PrimaryKey
-import com.example.youtubeproject.data.model.CategoryChannelModel
-import com.example.youtubeproject.data.model.Id
-import com.example.youtubeproject.data.remote.CategoryVideoResult
 
 @Entity(tableName = "cachechannel_table")
 data class CacheChannel(

@@ -1,4 +1,4 @@
-package com.example.youtubeproject.data.remote
+package com.example.youtubeproject.data.remote.youtube
 
 import dagger.Module
 import dagger.Provides
@@ -38,22 +38,22 @@ object RemoteProvideModule {
     }
 
     @Provides
-    fun provideMostPopularResult(retrofit: Retrofit):MostPopularResult{
+    fun provideMostPopularResult(retrofit: Retrofit): MostPopularResult {
         return retrofit.create(MostPopularResult::class.java)
     }
 
     @Provides
-    fun provideSearchResult(retrofit: Retrofit):SearchResult{
+    fun provideSearchResult(retrofit: Retrofit): SearchResult {
         return retrofit.create(SearchResult::class.java)
     }
 
     @Provides
-    fun provideCategoryChannelResult(retrofit: Retrofit):CategoryChannelResult{
+    fun provideCategoryChannelResult(retrofit: Retrofit): CategoryChannelResult {
         return retrofit.create(CategoryChannelResult::class.java)
     }
 
     @Provides
-    fun provideCategoryVideoResult(retrofit: Retrofit):CategoryVideoResult{
+    fun provideCategoryVideoResult(retrofit: Retrofit): CategoryVideoResult {
         return retrofit.create(CategoryVideoResult::class.java)
     }
 }

@@ -4,7 +4,7 @@ data class CategoryChannelResponse(
     val id:String?,
     val snippet: ChannelSnippet?,
     val contentDetails:ChannelContentDetails?,
-    val statistics:Statistics?,
+    val statistics:StatisticsChannel?,
     val brandingSettings:BrandingSettings?
 )
 
@@ -25,7 +25,7 @@ data class RelatedPlaylists(
     val uploads:String
 )
 
-data class Statistics(
+data class StatisticsChannel(
     val viewCount:Long,
     val subscriberCount:Long,
     val hiddenSubscriberCount:Boolean,

@@ -1,4 +1,4 @@
-package com.example.youtubeproject.data.remote
+package com.example.youtubeproject.data.remote.youtube
 
 import okhttp3.Interceptor
 import okhttp3.Response
