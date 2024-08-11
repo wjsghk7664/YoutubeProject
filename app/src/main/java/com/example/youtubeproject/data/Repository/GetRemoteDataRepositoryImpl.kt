@@ -3,10 +3,10 @@ package com.example.youtubeproject.data.Repository
 import com.example.youtubeproject.data.model.CategoryChannelModel
 import com.example.youtubeproject.data.model.CategoryVideoModel
 import com.example.youtubeproject.data.model.SearchResultModel
-import com.example.youtubeproject.data.remote.CategoryChannelResult
-import com.example.youtubeproject.data.remote.CategoryVideoResult
-import com.example.youtubeproject.data.remote.MostPopularResult
-import com.example.youtubeproject.data.remote.SearchResult
+import com.example.youtubeproject.data.remote.youtube.CategoryChannelResult
+import com.example.youtubeproject.data.remote.youtube.CategoryVideoResult
+import com.example.youtubeproject.data.remote.youtube.MostPopularResult
+import com.example.youtubeproject.data.remote.youtube.SearchResult
 import javax.inject.Inject
 
 class GetRemoteDataRepositoryImpl @Inject constructor(

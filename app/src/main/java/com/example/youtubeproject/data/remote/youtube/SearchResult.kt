@@ -1,4 +1,4 @@
-package com.example.youtubeproject.data.remote
+package com.example.youtubeproject.data.remote.youtube
 
 import com.example.youtubeproject.data.model.SearchResultModel
 import retrofit2.http.GET

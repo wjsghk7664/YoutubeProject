@@ -1,10 +1,8 @@
 package com.example.youtubeproject.data.model
 
-import java.util.Date
-
 data class SearchResponse(
     val id: Id?,
-    val snippet:searchSnippet
+    val snippet:searchSnippet?
 )
 
 data class Id(
@@ -17,11 +15,12 @@ data class searchSnippet(
     val channelId: String?,
     val title: String?,
     val description:String?,
-    val thumbnails: Thumbnails?
+    val thumbnails: Thumbnails?,
+    val channelTitle:String?,
 )
 
 data class Thumbnails(
-    val default:Thumbnail
+    val default:Thumbnail?
 )
 
 data class Thumbnail(

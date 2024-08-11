@@ -10,10 +10,10 @@ import dagger.hilt.android.qualifiers.ApplicationContext
 
 @Module
 @InstallIn(ViewModelComponent::class)
-object CacheChannelDatabaseModule {
+object CacheDatabaseModule {
 
     @Provides
-    fun provideChannelDatabase(@ApplicationContext context: Context): CacheDataBase{
+    fun provideDatabase(@ApplicationContext context: Context): CacheDataBase{
         return Room.databaseBuilder(
             context,
             CacheDataBase::class.java,
@@ -29,5 +29,10 @@ object CacheChannelDatabaseModule {
     @Provides
     fun provideVideoDao(dataBase: CacheDataBase): CacheVideoDao{
         return dataBase.cacheVideoDao()
+    }
+
+    @Provides
+    fun provideLoginDao(dataBase: CacheDataBase): CacheLoginDao{
+        return dataBase.cacheLoginDao()
     }
 }

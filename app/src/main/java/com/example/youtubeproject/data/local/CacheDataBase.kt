@@ -10,4 +10,5 @@ import com.example.youtubeproject.data.model.TypeConverter
 abstract class CacheDataBase: RoomDatabase() {
     abstract fun cacheChannelDao():CacheChannelDao
     abstract fun cacheVideoDao():CacheVideoDao
+    abstract fun cacheLoginDao():CacheLoginDao
 }

@@ -3,7 +3,8 @@ package com.example.youtubeproject.data.model
 data class CategoryVideoResponse (
     val id:String?,
     val snippet: VideoSnippet?,
-    val contentDetails:VideoContentDetails,
+    val contentDetails:VideoContentDetails?,
+    val statistics: StatisticsVideo?
 )
 
 data class VideoSnippet(
@@ -22,4 +23,11 @@ data class VideoContentDetails(
     val dimension: String?,
     val definition: String?,
     val caption: String?,
+)
+
+data class StatisticsVideo(
+    val viewCount:Long?,
+    val likeCount:Long?,
+    val dislikeCount:Long?,
+    val commentCount:Long?
 )
