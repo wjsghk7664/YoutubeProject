@@ -6,8 +6,8 @@ import com.example.youtubeproject.data.model.CategoryVideoModel
 interface CacheCategoryDataRepository {
     suspend fun getCategoryVideoResult(category: String,page: String?):Result<CategoryVideoModel>
     suspend fun getCategoryChannelResult(category: String, page: String?):Result<CategoryChannelModel>
-    suspend fun insertCategoryVideo(categoryVideoModel: CategoryVideoModel, category: String)
-    suspend fun insertCategoryChannel(categoryChannelModel: CategoryChannelModel, category: String)
-    suspend fun deleteCategoryVideo()
-    suspend fun deleteCategoryChannel()
+    suspend fun insertCategoryVideo(categoryVideoModel: CategoryVideoModel, category: String):Result<Boolean>
+    suspend fun insertCategoryChannel(categoryChannelModel: CategoryChannelModel, category: String):Result<Boolean>
+    suspend fun deleteCategoryVideo(category: String):Result<Boolean>
+    suspend fun deleteCategoryChannel(category: String):Result<Boolean>
 }
