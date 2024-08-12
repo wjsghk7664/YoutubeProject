@@ -35,4 +35,9 @@ object CacheDatabaseModule {
     fun provideLoginDao(dataBase: CacheDataBase): CacheLoginDao{
         return dataBase.cacheLoginDao()
     }
+
+    @Provides
+    fun provideCacheLikeListDao(dataBase: CacheDataBase): CacheLikeListDao{
+        return dataBase.cacheLikeListDao()
+    }
 }

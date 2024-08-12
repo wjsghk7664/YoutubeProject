@@ -6,6 +6,6 @@ import androidx.room.PrimaryKey
 @Entity(tableName = "cachelikelist_table")
 data class CacheLikeList (
     @PrimaryKey
-    val id:String,
-    val likeList: List<VideoModel>
+    val id: String, //VideoModel의 Id
+    val likeItem: VideoModel
 )

@@ -5,12 +5,10 @@ import dagger.Module
 import dagger.hilt.InstallIn
 import dagger.hilt.android.components.ViewModelComponent
 
-
 @Module
 @InstallIn(ViewModelComponent::class)
-abstract class RemoteDataRepositoryModule {
+abstract class CacheLikeListRepositoryModule {
 
     @Binds
-    abstract fun bindRemoteDataRepository(getRemoteDataRepositoryImpl: RemoteDataRepositoryImpl): RemoteDataRepository
-
+    abstract fun bindCacheLikeListRepository(cacheLikeListRepositoryImpl: CacheLikeListRepositoryImpl):CacheLikeListRepository
 }

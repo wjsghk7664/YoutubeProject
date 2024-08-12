@@ -8,10 +8,10 @@ import com.example.youtubeproject.data.model.CategoryChannelModel
 import com.example.youtubeproject.data.model.CategoryVideoModel
 import javax.inject.Inject
 
-class CacheDataRepositoryImpl @Inject constructor(
+class CacheCategoryDataRepositoryImpl @Inject constructor(
     private val cacheChannelDao: CacheChannelDao,
     private val cacheVideoDao: CacheVideoDao
-):CacheDataRepository {
+):CacheCategoryDataRepository {
 
     override suspend fun getCategoryVideoResult(
         category: String,
