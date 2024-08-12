@@ -2,7 +2,6 @@ package com.example.youtubeproject.data.local
 
 import android.content.Context
 import androidx.room.Room
-import com.example.youtubeproject.data.model.CacheChannelDao
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn

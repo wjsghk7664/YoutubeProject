@@ -1,8 +1,8 @@
 package com.example.youtubeproject.data.Repository
 
 import com.example.youtubeproject.data.model.CacheChannel
-import com.example.youtubeproject.data.model.CacheChannelDao
-import com.example.youtubeproject.data.local.CacheVideo
+import com.example.youtubeproject.data.local.CacheChannelDao
+import com.example.youtubeproject.data.model.CacheVideo
 import com.example.youtubeproject.data.local.CacheVideoDao
 import com.example.youtubeproject.data.model.CategoryChannelModel
 import com.example.youtubeproject.data.model.CategoryVideoModel
