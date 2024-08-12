@@ -1,24 +1,19 @@
 package com.example.youtubeproject.data.Repository
 
-import com.example.youtubeproject.data.model.CacheChannel
-import com.example.youtubeproject.data.local.CacheChannelDao
-import com.example.youtubeproject.data.model.CacheVideo
-import com.example.youtubeproject.data.local.CacheVideoDao
+import com.example.youtubeproject.data.local.CacheCategoryDataSource
 import com.example.youtubeproject.data.model.CategoryChannelModel
 import com.example.youtubeproject.data.model.CategoryVideoModel
 import javax.inject.Inject
 
 class CacheCategoryDataRepositoryImpl @Inject constructor(
-    private val cacheChannelDao: CacheChannelDao,
-    private val cacheVideoDao: CacheVideoDao
+    private val cacheCategoryDataSource: CacheCategoryDataSource
 ):CacheCategoryDataRepository {
-
     override suspend fun getCategoryVideoResult(
         category: String,
         page: String?
     ): Result<CategoryVideoModel> {
         return runCatching {
-            cacheVideoDao.getCacheVideo(category).categoryVideoModel
+            cacheCategoryDataSource.getVideo(category)
         }
     }
 
@@ -27,29 +22,37 @@ class CacheCategoryDataRepositoryImpl @Inject constructor(
         page: String?
     ): Result<CategoryChannelModel> {
         return runCatching {
-            cacheChannelDao.getCacheChannel(category).categoryChannelModel
+            cacheCategoryDataSource.getChannel(category)
         }
     }
 
     override suspend fun insertCategoryVideo(
         categoryVideoModel: CategoryVideoModel,
         category: String
-    ) {
-        cacheVideoDao.insertVideoChannel(CacheVideo(category,categoryVideoModel))
+    ):Result<Boolean> {
+        return runCatching {
+            cacheCategoryDataSource.addVideo(category,categoryVideoModel)
+        }
     }
 
     override suspend fun insertCategoryChannel(
         categoryChannelModel: CategoryChannelModel,
         category: String
-    ) {
-        cacheChannelDao.insertCacheChannel(CacheChannel(category,categoryChannelModel))
+    ):Result<Boolean> {
+        return runCatching {
+            cacheCategoryDataSource.addChannel(category,categoryChannelModel)
+        }
     }
 
-    override suspend fun deleteCategoryVideo() {
-        cacheVideoDao.deleteAllCacheVideo()
+    override suspend fun deleteCategoryVideo(category: String):Result<Boolean> {
+        return runCatching {
+            cacheCategoryDataSource.deleteVideo(category)
+        }
     }
 
-    override suspend fun deleteCategoryChannel() {
-        cacheChannelDao.deleteAllCacheChannel()
+    override suspend fun deleteCategoryChannel(category: String):Result<Boolean> {
+        return runCatching {
+            cacheCategoryDataSource.deleteChannel(category)
+        }
     }
 }

@@ -1,21 +1,24 @@
 package com.example.youtubeproject.data.Repository
 
-import com.example.youtubeproject.data.model.CacheLogin
-import com.example.youtubeproject.data.local.CacheLoginDao
+import com.example.youtubeproject.data.local.CacheLoginDataSource
 import javax.inject.Inject
 
-class CacheLoginDataRepositoryImpl @Inject constructor(private val cacheLoginDao: CacheLoginDao):CacheLoginDataRepository {
-    override fun getUserData(): Result<CacheLogin> {
+class CacheLoginDataRepositoryImpl @Inject constructor(private val cacheLoginDataSource: CacheLoginDataSource):CacheLoginDataRepository {
+    override fun saveLoginData(id: String, password: String): Result<Boolean> {
         return runCatching {
-            cacheLoginDao.getLoginCache()
+            cacheLoginDataSource.saveLoginData(id,password)
         }
     }
 
-    override fun insertUserData(cacheLogin: CacheLogin) {
-        cacheLoginDao.insertLoginCache(cacheLogin)
+    override fun getLoginData(): Result<Pair<String?, String?>> {
+        return runCatching {
+            cacheLoginDataSource.getLoginData()
+        }
     }
 
-    override fun deleteUserData() {
-        cacheLoginDao.deleteLoginCache()
+    override fun deleteLoginData(): Result<Boolean> {
+        return runCatching {
+            cacheLoginDataSource.deleteLoginData()
+        }
     }
 }
