@@ -34,7 +34,8 @@ class RemoteUserDataRepositoryImpl @Inject constructor(private val db: FirebaseF
         }
     }
 
-    override fun Login(id: String, password: String, callback: (User?) -> Unit) {
+    //로그인은 usecase에서 콜백으로 들어온 값을 복사해서 마지막 로그인 시점을 갱신후 로컬과 파이어베이스에 저장
+    override fun Check(id: String, password: String, callback: (User?) -> Unit) {
         db.collection("User").document(id).get().addOnSuccessListener { document->
             if(document.exists()){
                 val user = document.toObject(User::class.java)

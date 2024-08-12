@@ -6,5 +6,5 @@ interface RemoteUserDataRepository {
     fun CheckDupId(id:String, callback:(Boolean,Int) ->Unit)
     fun AddOrModifyUserData(user: User, callback: (Boolean) -> Unit)
     fun DeleteUserData(id:String, callback: (Boolean) -> Unit)
-    fun Login(id:String, password:String, callback: (User?) -> Unit)
+    fun Check(id:String, password:String, callback: (User?) -> Unit)
 }

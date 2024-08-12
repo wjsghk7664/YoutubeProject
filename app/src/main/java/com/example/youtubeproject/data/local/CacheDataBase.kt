@@ -4,8 +4,8 @@ import androidx.room.Database
 import androidx.room.RoomDatabase
 import androidx.room.TypeConverters
 import com.example.youtubeproject.data.model.CacheChannel
-import com.example.youtubeproject.data.model.CacheChannelDao
 import com.example.youtubeproject.data.model.CacheLogin
+import com.example.youtubeproject.data.model.CacheVideo
 import com.example.youtubeproject.data.model.TypeConverter
 
 @Database(entities = [CacheChannel::class, CacheVideo::class, CacheLogin::class], version = 1)
