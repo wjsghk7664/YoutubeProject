@@ -42,4 +42,7 @@
         libero vel nunc consequat, quis tincidunt nisl eleifend. Cras bibendum enim a justo luctus
         vestibulum. Fusce dictum libero quis erat maximus, vitae volutpat diam dignissim.
     </string>
+
+    <string name="search_bar_hint">검색어를 입력하세요.</string>
+    <string name="search_result_empty_text">검색 결과가 없습니다.\n다른 키워드로 검색해주세요.</string>
 </resources>
