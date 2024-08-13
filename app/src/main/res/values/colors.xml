@@ -5,4 +5,5 @@
     <color name="start_button">#FF003459</color>
     <color name="button_selected">#FF007EA7</color>
     <color name="button_unselected">#FF00ABE8</color>
+    <color name="gray_text">#FF919491</color>
 </resources>
