@@ -1,4 +1,4 @@
-package com.example.youtubeproject.presentation.ui
+package com.example.youtubeproject.presentation.ui.fragment
 
 import android.content.Intent
 import android.os.Bundle
@@ -12,6 +12,7 @@ import androidx.lifecycle.lifecycleScope
 import com.example.youtubeproject.R
 import com.example.youtubeproject.databinding.FragmentLoginBinding
 import com.example.youtubeproject.presentation.LoginUiState
+import com.example.youtubeproject.presentation.ui.MainActivity
 import com.example.youtubeproject.presentation.viewmodel.LoginViewModel
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.collectLatest
@@ -67,7 +68,7 @@ class LoginFragment : Fragment() {
         }
 
         loginBtnSignup.setOnClickListener {
-            parentFragmentManager.beginTransaction().replace(R.id.main,SignUpFragment.newInstance()).addToBackStack(null).commit()
+            parentFragmentManager.beginTransaction().replace(R.id.main, SignUpFragment.newInstance()).addToBackStack(null).commit()
         }
         loginBtnLogin.setOnClickListener {
             val id = loginEtId.text.toString()

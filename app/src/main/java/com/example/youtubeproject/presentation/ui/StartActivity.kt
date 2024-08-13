@@ -6,6 +6,7 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import com.example.youtubeproject.R
+import com.example.youtubeproject.presentation.ui.fragment.LoginFragment
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
@@ -20,6 +21,6 @@ class StartActivity : AppCompatActivity() {
             insets
         }
 
-        supportFragmentManager.beginTransaction().replace(R.id.main,LoginFragment.newInstance()).commit()
+        supportFragmentManager.beginTransaction().replace(R.id.main, LoginFragment.newInstance()).commit()
     }
 }

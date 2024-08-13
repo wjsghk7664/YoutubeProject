@@ -4,6 +4,8 @@ package com.example.youtubeproject.data.remote.firebase
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
+import com.google.firebase.storage.FirebaseStorage
+import com.google.firebase.storage.ktx.storage
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -16,7 +18,13 @@ object FirebaseModule {
 
     @Provides
     @Singleton
-    fun provideFirebase(): FirebaseFirestore {
+    fun provideFirestore(): FirebaseFirestore {
         return Firebase.firestore
+    }
+
+    @Provides
+    @Singleton
+    fun provideFiresStorage(): FirebaseStorage{
+        return Firebase.storage
     }
 }
