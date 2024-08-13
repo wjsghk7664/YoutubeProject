@@ -37,11 +37,11 @@ class RemoteApiDataRepositoryImpl @Inject constructor(
     }
 
     override suspend fun getCategoryChannelResult(
-        category: String,
+        channelId: String,
         page: String?
     ): Result<CategoryChannelModel> {
         return runCatching {
-            categoryChannelResult.getCategoryChannel(id = category, pageToken = page)
+            categoryChannelResult.getCategoryChannel(id = channelId, pageToken = page)
         }
     }
 

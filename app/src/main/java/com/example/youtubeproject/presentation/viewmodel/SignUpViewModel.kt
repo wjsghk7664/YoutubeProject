@@ -1,0 +1,42 @@
+package com.example.youtubeproject.presentation.viewmodel
+
+import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
+import com.example.youtubeproject.data.model.User
+import com.example.youtubeproject.domain.CacheLoginDataUseCase
+import com.example.youtubeproject.domain.CheckSignUpUseCase
+import com.example.youtubeproject.domain.RegisterOrModifyUserDataUseCase
+import com.example.youtubeproject.presentation.SignUpUiState
+import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
+import javax.inject.Inject
+
+@HiltViewModel
+class SignUpViewModel @Inject constructor(
+    private val checkSignUpUseCase: CheckSignUpUseCase,
+    private val registerOrModifyUserDataUseCase: RegisterOrModifyUserDataUseCase
+):ViewModel() {
+    private val _uiState = MutableStateFlow<SignUpUiState>(SignUpUiState.Init)
+    val uiState = _uiState.asStateFlow()
+
+    fun signUp(id:String, password:String, name:String, intro:String){
+        checkSignUpUseCase(id,password,name){ notify,isEnable ->
+            if(isEnable){
+                val user = User(name, id, password, intro)
+                registerOrModifyUserDataUseCase(user){
+                    if(it){
+                        _uiState.value = SignUpUiState.Success
+                    }else{
+                        _uiState.value = SignUpUiState.FailureRegister(notify)
+                    }
+                }
+            }else{
+                _uiState.value = SignUpUiState.Failure(notify)
+            }
+        }
+    }
+}

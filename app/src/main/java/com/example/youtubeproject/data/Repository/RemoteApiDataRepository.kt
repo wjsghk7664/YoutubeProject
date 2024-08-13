@@ -8,5 +8,5 @@ interface RemoteApiDataRepository {
     suspend fun getPopularResult(page: String?):Result<CategoryVideoModel>
     suspend fun getSearchResult(query: String, page:String?, category: String?):Result<SearchResultModel>
     suspend fun getCategoryVideoResult(category: String,page: String?):Result<CategoryVideoModel>
-    suspend fun getCategoryChannelResult(category: String, page: String?):Result<CategoryChannelModel>
+    suspend fun getCategoryChannelResult(channelId: String, page: String?):Result<CategoryChannelModel>
 }
