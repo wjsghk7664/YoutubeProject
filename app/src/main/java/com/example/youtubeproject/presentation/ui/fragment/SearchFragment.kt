@@ -1,4 +1,4 @@
-package com.example.youtubeproject.presentation.ui
+package com.example.youtubeproject.presentation.ui.fragment
 
 import android.content.Context.INPUT_METHOD_SERVICE
 import android.os.Bundle
