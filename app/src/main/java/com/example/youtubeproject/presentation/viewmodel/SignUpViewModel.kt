@@ -2,19 +2,14 @@ package com.example.youtubeproject.presentation.viewmodel
 
 import android.graphics.Bitmap
 import androidx.lifecycle.ViewModel
-import androidx.lifecycle.viewModelScope
 import com.example.youtubeproject.data.model.User
-import com.example.youtubeproject.domain.CacheLoginDataUseCase
 import com.example.youtubeproject.domain.CheckSignUpUseCase
 import com.example.youtubeproject.domain.RegisterOrModifyUserDataUseCase
 import com.example.youtubeproject.domain.UploadProfileUseCase
-import com.example.youtubeproject.presentation.SignUpUiState
+import com.example.youtubeproject.presentation.uistate.SignUpUiState
 import dagger.hilt.android.lifecycle.HiltViewModel
-import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
-import kotlinx.coroutines.launch
-import kotlinx.coroutines.withContext
 import javax.inject.Inject
 
 @HiltViewModel
