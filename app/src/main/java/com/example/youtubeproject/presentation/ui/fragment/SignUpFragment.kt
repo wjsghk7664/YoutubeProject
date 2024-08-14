@@ -14,10 +14,9 @@ import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
 import com.example.youtubeproject.R
 import com.example.youtubeproject.databinding.FragmentSignUpBinding
-import com.example.youtubeproject.presentation.SignUpUiState
+import com.example.youtubeproject.presentation.uistate.SignUpUiState
 import com.example.youtubeproject.presentation.viewmodel.SignUpViewModel
 import dagger.hilt.android.AndroidEntryPoint
-import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 
