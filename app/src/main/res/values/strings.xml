@@ -65,4 +65,10 @@
     <string name="playlist_detail_title_text">재생 목록: %s</string>
     <string name="video_views_text">조회수 %d회</string>
     <string name="video_past_text">%s 전</string>
+
+    <string name="popular_videos">가장 많이 본 영상</string>
+    <string name="category">카테고리</string>
+    <string name="channel_category">채널 카테고리</string>
+
+
 </resources>
