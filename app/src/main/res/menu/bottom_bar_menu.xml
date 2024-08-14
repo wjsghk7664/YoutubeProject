@@ -12,7 +12,7 @@
         android:title="@string/menu_search_title"
         />
     <item
-        android:id="@+id/bottom_playlist_home"
+        android:id="@+id/bottom_menu_playlist"
         android:icon="@drawable/bottom_menu_playlist_icon"
         android:title="@string/menu_playlist_title"
         />
