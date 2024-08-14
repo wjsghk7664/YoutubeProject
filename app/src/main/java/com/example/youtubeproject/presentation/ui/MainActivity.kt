@@ -12,6 +12,7 @@ import com.example.youtubeproject.presentation.ui.fragment.HomeFragment
 import com.example.youtubeproject.presentation.ui.fragment.MyPageFragment
 import com.example.youtubeproject.presentation.ui.fragment.PlaylistFragment
 import com.example.youtubeproject.presentation.ui.fragment.SearchFragment
+import com.example.youtubeproject.presentation.ui.viewpager.MainViewPager
 import java.util.Stack
 
 class MainActivity : AppCompatActivity() {
@@ -26,6 +27,7 @@ class MainActivity : AppCompatActivity() {
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
+        initViewPager()
         setNavigation()
         setOnBottomBarClick()
     }
@@ -36,7 +38,7 @@ class MainActivity : AppCompatActivity() {
         fragmentStack[tag]!!.push(fragment)
 
         supportFragmentManager.beginTransaction()
-            .replace(R.id.fragment_container_view, fragment).commit()
+            .replace(R.id.viewPager, fragment).commit()
     }
     //현재 탭에서 하나를 pop한다. 여기서 현재 탭은 currentTab을 이용해 알 수 있다.
     fun popFragments() {
@@ -51,6 +53,11 @@ class MainActivity : AppCompatActivity() {
             .commit()
     }
 
+    private fun initViewPager() {
+        val viewPager = binding.viewPager
+        val viewPagerAdapter = MainViewPager(this)
+        viewPager.adapter = viewPagerAdapter
+    }
     private fun setNavigation() {
         val navHostFragment = supportFragmentManager.findFragmentById(R.id.fragment_container_view) as NavHostFragment
         val navController = navHostFragment.findNavController()
