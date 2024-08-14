@@ -45,4 +45,17 @@
 
     <string name="search_bar_hint">검색어를 입력하세요.</string>
     <string name="search_result_empty_text">검색 결과가 없습니다.\n다른 키워드로 검색해주세요.</string>
+  
+
+    <string name="menu_home_title">홈</string>
+    <string name="menu_search_title">검색</string>
+    <string name="menu_playlist_title">재생 목록</string>
+    <string name="menu_my_page_title">마이 페이지</string>
+    <string name="playlist_title_text">재생 목록</string>
+    <string name="playlist_empty_text">재생 목록이 없습니다.\n</string>
+    <string name="video_empty_text">재생 목록이 비어있습니다.\n</string>
+    <string name="playlist_detail_title_text">재생 목록: %s</string>
+    <string name="video_views_text">조회수 %d회</string>
+    <string name="video_past_text">%s 전</string>
+  
 </resources>
