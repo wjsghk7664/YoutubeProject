@@ -25,8 +25,7 @@ class SearchViewModel @Inject constructor(private val searchUseCase: SearchUseCa
 
     fun searchVideo(query: String, page: String?, category: String?) {
         viewModelScope.launch {
-            if (_searchResult.value.isEmpty()) _uiState.value = SearchUiState.LoadingFirst
-            else _uiState.value = SearchUiState.Loading
+            _uiState.value = SearchUiState.Loading
 
             searchUseCase(query, page, category) {
                 if (it != null) {

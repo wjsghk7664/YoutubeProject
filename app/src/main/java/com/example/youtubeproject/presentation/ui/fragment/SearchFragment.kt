@@ -122,13 +122,11 @@ class SearchFragment : Fragment() {
                         searchResultRv.visibility = View.GONE
                     }
                     is SearchUiState.Loading -> {
-                        // recycler view 하단의 loading indicator 추가하기.
-                    }
-                    is SearchUiState.LoadingFirst -> {
                         searchingLoadingIndicator.visibility = View.VISIBLE
                         searchResultIsEmptyText.visibility = View.GONE
                         searchResultRv.visibility = View.GONE
                     }
+                    is SearchUiState.LoadingMore -> TODO()
                     is SearchUiState.Failure -> {
                         Log.e("TAG", "observeSearchRes: failure")
                     }
