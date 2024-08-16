@@ -14,11 +14,11 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import com.example.youtubeproject.databinding.FragmentSearchBinding
 import com.example.youtubeproject.presentation.adapter.SearchCategoryAdapter
 import com.example.youtubeproject.presentation.adapter.SearchResultAdapter
 import com.example.youtubeproject.presentation.adapter.deco.SearchCategoryItemDecoration
-import com.example.youtubeproject.presentation.adapter.deco.SearchResultItemDecoration
 import com.example.youtubeproject.presentation.uistate.SearchUiState
 import com.example.youtubeproject.presentation.viewmodel.SearchViewModel
 import dagger.hilt.android.AndroidEntryPoint
@@ -29,6 +29,9 @@ import kotlinx.coroutines.launch
 class SearchFragment : Fragment() {
     private val binding by lazy { FragmentSearchBinding.inflate(layoutInflater) }
     private val searchViewModel by viewModels<SearchViewModel>()
+    private val searchResultAdapter by lazy { SearchResultAdapter() }
+    private var nextPage: String? = null
+    private var isMoreLoading = false
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -40,6 +43,7 @@ class SearchFragment : Fragment() {
             "26" to "노하우/스타일", "27" to "교육", "28" to "과학기술"
         )
         val categoryRecyclerView = binding.searchCategoryRv
+        val searchResultRecyclerView = binding.searchResultRv
         val searchCategoryAdapter = SearchCategoryAdapter {
             val categoryNumber = categoryList.filterValues { value -> it == value }.keys.first()
             val query = binding.searchingEt.text.toString()
@@ -55,6 +59,10 @@ class SearchFragment : Fragment() {
         categoryRecyclerView.adapter = searchCategoryAdapter
         categoryRecyclerView.layoutManager = LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
         categoryRecyclerView.addItemDecoration(SearchCategoryItemDecoration(16))
+
+        searchResultRecyclerView.adapter = searchResultAdapter
+        searchResultRecyclerView.layoutManager = LinearLayoutManager(context)
+        searchResultRecyclerViewScrollListener()
 
         binding.searchingEt.initEditText()
         binding.searchIconIv.setOnClickListener {
@@ -75,7 +83,14 @@ class SearchFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        binding.observeSearchState()
+        observeSearchState()
+        observeSearchResult()
+
+        viewLifecycleOwner.lifecycleScope.launch {
+            searchViewModel.isLoadMore.collectLatest {
+                isMoreLoading = it
+            }
+        }
     }
 
     private fun EditText.initEditText() {
@@ -94,7 +109,7 @@ class SearchFragment : Fragment() {
         }
     }
 
-    private fun FragmentSearchBinding.observeSearchState() {
+    private fun observeSearchState() = with(binding) {
         viewLifecycleOwner.lifecycleScope.launch {
             searchViewModel.uiState.collectLatest {
                 when (it) {
@@ -103,13 +118,7 @@ class SearchFragment : Fragment() {
                         searchResultIsEmptyText.visibility = View.GONE
                         searchResultRv.visibility = View.VISIBLE
 
-                        // todo :: add recyclerview
-                        val adapter = SearchResultAdapter()
-                        adapter.submitList(it.searchResultModel.items)
-
-                        searchResultRv.adapter = adapter
-                        searchResultRv.layoutManager = LinearLayoutManager(context)
-                        searchResultRv.addItemDecoration(SearchResultItemDecoration(16))
+                        nextPage = it.searchResultModel.nextPageToken.toString()
                     }
                     is SearchUiState.Empty -> {
                         searchingLoadingIndicator.visibility = View.GONE
@@ -126,12 +135,36 @@ class SearchFragment : Fragment() {
                         searchResultIsEmptyText.visibility = View.GONE
                         searchResultRv.visibility = View.GONE
                     }
-                    is SearchUiState.LoadingMore -> TODO()
+                    is SearchUiState.LoadingMore -> {}
                     is SearchUiState.Failure -> {
                         Log.e("TAG", "observeSearchRes: failure")
                     }
                 }
             }
         }
+    }
+
+    private fun observeSearchResult() {
+        viewLifecycleOwner.lifecycleScope.launch {
+            searchViewModel.searchResult.collectLatest {
+                val currentList = it.toMutableList()
+                searchResultAdapter.submitList(currentList)
+            }
+        }
+    }
+
+    private fun searchResultRecyclerViewScrollListener() {
+        binding.searchResultRv.addOnScrollListener(object: RecyclerView.OnScrollListener() {
+            override fun onScrollStateChanged(recyclerView: RecyclerView, newState: Int) {
+                super.onScrollStateChanged(recyclerView, newState)
+
+                if (!recyclerView.canScrollVertically(1) && newState == RecyclerView.SCROLL_STATE_IDLE) {
+                    if (!isMoreLoading && nextPage != null) {
+                        val query = binding.searchingEt.text.toString()
+                        searchViewModel.searchResultMore(query, nextPage!!, searchViewModel.selectCategory.value)
+                    }
+                }
+            }
+        })
     }
 }
