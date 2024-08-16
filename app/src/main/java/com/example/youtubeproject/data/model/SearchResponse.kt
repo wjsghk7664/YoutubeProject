@@ -22,7 +22,7 @@ data class SearchSnippet(
 )
 
 data class Thumbnails(
-    @SerializedName("default") val default:Thumbnail?
+    @SerializedName("high") val high:Thumbnail?
 )
 
 data class Thumbnail(
