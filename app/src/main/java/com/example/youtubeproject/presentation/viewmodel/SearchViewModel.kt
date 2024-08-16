@@ -28,19 +28,43 @@ class SearchViewModel @Inject constructor(private val searchUseCase: SearchUseCa
             _uiState.value = SearchUiState.Loading
 
             searchUseCase(query, page, category) {
-                if (it != null) {
-                    if (it.items?.isEmpty() == true) _uiState.value = SearchUiState.Empty
+                if (it?.items != null) {
+                    if (it.items.isEmpty()) _uiState.value = SearchUiState.Empty
                     else {
                         if (page == null) _searchResult.value = mutableListOf()
 
                         _uiState.value = SearchUiState.Success(it)
-
-                        val currentResult = _searchResult.value.toMutableList()
-                        currentResult.addAll(it.items!!)
-                        _searchResult.value = currentResult
+                        _searchResult.value = it.items.toMutableList()
                     }
                 } else {
                     _uiState.value = SearchUiState.Failure
+                }
+            }
+        }
+    }
+
+    private val _isLoadMore = MutableStateFlow(false)
+    val isLoadMore: StateFlow<Boolean> = _isLoadMore.asStateFlow()
+
+    fun searchResultMore(query: String, page: String, category: String?) {
+        viewModelScope.launch {
+            _isLoadMore.value = true
+
+            searchUseCase(query, page, category) {
+                _uiState.value = SearchUiState.LoadingMore
+
+                if (it?.items != null) {
+                    if (it.items.isEmpty()) _uiState.value = SearchUiState.Empty
+                    else {
+                        _uiState.value = SearchUiState.Success(it)
+
+                        val currentList = _searchResult.value.toMutableList()
+                        currentList.addAll(it.items)
+
+                        _searchResult.value = currentList
+                    }
+
+                    _isLoadMore.value = false
                 }
             }
         }
