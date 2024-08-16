@@ -1,23 +1,23 @@
-package com.example.youtubeproject.presentation.ui
-
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
+import androidx.recyclerview.widget.DiffUtil
+import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
+import com.bumptech.glide.Glide
+import com.bumptech.glide.load.resource.bitmap.CircleCrop
 import com.example.youtubeproject.R
 
 data class VideoItem(
-    val mainImageResId: Int,
-    val profileImageResId: Int,
+    val mainImageUrl: String?,  // URL을 저장할 필드
+    val profileImageUrl: String?,  // 프로필 이미지 URL
     val description: String
 )
 
-class PopularVideosAdapter(private val videoList: List<VideoItem>) :
 
-
-    RecyclerView.Adapter<PopularVideosAdapter.VideoViewHolder>() {
+class PopularVideosAdapter : ListAdapter<VideoItem, PopularVideosAdapter.VideoViewHolder>(VideoItemDiffCallback()) {
 
     inner class VideoViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         val mainImage: ImageView = itemView.findViewById(R.id.main_image)
@@ -26,17 +26,38 @@ class PopularVideosAdapter(private val videoList: List<VideoItem>) :
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): VideoViewHolder {
-        val view =
-            LayoutInflater.from(parent.context).inflate(R.layout.item_popular_video, parent, false)
+        val view = LayoutInflater.from(parent.context).inflate(R.layout.item_popular_video, parent, false)
         return VideoViewHolder(view)
     }
 
     override fun onBindViewHolder(holder: VideoViewHolder, position: Int) {
-        val videoItem = videoList[position]
-        holder.mainImage.setImageResource(videoItem.mainImageResId)
-        holder.profileImage.setImageResource(videoItem.profileImageResId)
+        val videoItem = getItem(position)
+
+        Glide.with(holder.itemView)
+            .load(videoItem.mainImageUrl)
+          //  .placeholder(R.drawable.sample_image) // 로딩 이미지
+          //  .error(R.drawable.sample_image) // 에러 발생 시
+            .into(holder.mainImage)
+
+        Glide.with(holder.itemView)
+            .load(videoItem.profileImageUrl)
+            .transform(CircleCrop())
+        //   .placeholder(R.drawable.sample_image) // 로딩 이미지
+            //  .error(R.drawable.sample_image) // 에러 발생 시
+            .into(holder.profileImage)
+
         holder.videoDescription.text = videoItem.description
     }
 
-    override fun getItemCount(): Int = videoList.size
+    class VideoItemDiffCallback : DiffUtil.ItemCallback<VideoItem>() {
+        override fun areItemsTheSame(oldItem: VideoItem, newItem: VideoItem): Boolean {
+            return oldItem == newItem
+        }
+
+        override fun areContentsTheSame(oldItem: VideoItem, newItem: VideoItem): Boolean {
+            return oldItem.mainImageUrl == newItem.mainImageUrl &&
+                    oldItem.profileImageUrl == newItem.profileImageUrl &&
+                    oldItem.description == newItem.description
+        }
+    }
 }

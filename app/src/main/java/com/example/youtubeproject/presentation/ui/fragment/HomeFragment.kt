@@ -1,29 +1,25 @@
 package com.example.youtubeproject.presentation.ui.fragment
 
+import PopularVideosAdapter
+import VideoItem
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.viewModels
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.youtubeproject.R
-import com.example.youtubeproject.presentation.ui.CategoryAdapter
-import com.example.youtubeproject.presentation.ui.CategoryItem
-import com.example.youtubeproject.presentation.ui.ChannelCategoryAdapter
-import com.example.youtubeproject.presentation.ui.ChannelCategoryItem
-import com.example.youtubeproject.presentation.ui.PopularVideosAdapter
-import com.example.youtubeproject.presentation.ui.VideoItem
-
+import com.example.youtubeproject.presentation.viewmodel.HomeViewModel
+import dagger.hilt.android.AndroidEntryPoint
+@AndroidEntryPoint
 class HomeFragment : Fragment() {
 
     private lateinit var popularVideosRecyclerView: RecyclerView
-    private lateinit var categoryRecyclerView: RecyclerView
-    private lateinit var channelCategoryRecyclerView: RecyclerView
-
     private lateinit var popularVideosAdapter: PopularVideosAdapter
-    private lateinit var categoryAdapter: CategoryAdapter
-    private lateinit var channelCategoryAdapter: ChannelCategoryAdapter
+
+    private val homeViewModel: HomeViewModel by viewModels()
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -34,39 +30,25 @@ class HomeFragment : Fragment() {
         popularVideosRecyclerView = view.findViewById(R.id.popular_videos_recycler_view)
         popularVideosRecyclerView.layoutManager = LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
 
-        val popularVideoList = listOf(
-            VideoItem(R.drawable.sample_image, R.drawable.sample_image, "가나다라마바사가나다라마바사"),
-            VideoItem(R.drawable.sample_image, R.drawable.sample_image, "가나다라마바사가나다라마바사"),
-            VideoItem(R.drawable.sample_image, R.drawable.sample_image, "가나다라마바사가나다라마바사")
-        )
-        popularVideosAdapter = PopularVideosAdapter(popularVideoList)
+        popularVideosAdapter = PopularVideosAdapter()
         popularVideosRecyclerView.adapter = popularVideosAdapter
 
-        categoryRecyclerView = view.findViewById(R.id.category_recycler_view)
-        categoryRecyclerView.layoutManager = LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
+        homeViewModel.popularVideos.observe(viewLifecycleOwner) { categoryVideoModel ->
+            val videoItems = categoryVideoModel.items.map { videoResponse ->
+                val mainImageUrl = videoResponse.snippet?.thumbnails?.high?.url
+                val profileImageUrl = videoResponse.snippet?.thumbnails?.high?.url
 
-        val categoryList = listOf(
-            CategoryItem(R.drawable.sample_image, "가나다라마바사가나다라마바사"),
-            CategoryItem(R.drawable.sample_image, "가나다라마바사가나다라마바사"),
-            CategoryItem(R.drawable.sample_image, "가나다라마바사가나다라마바사")
-        )
-        categoryAdapter = CategoryAdapter(categoryList)
-        categoryRecyclerView.adapter = categoryAdapter
+                VideoItem(
+                    mainImageUrl = mainImageUrl,
+                    profileImageUrl = profileImageUrl,
+                    description = videoResponse.snippet?.title ?: ""
+                )
+            }
 
-        channelCategoryRecyclerView = view.findViewById(R.id.channel_category_recycler_view)
-        channelCategoryRecyclerView.layoutManager = LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
+            popularVideosAdapter.submitList(videoItems)
+        }
 
-        val channelCategoryList = listOf(
-            ChannelCategoryItem(R.drawable.sample_image, "TVN Sports"),
-            ChannelCategoryItem(R.drawable.sample_image, "KBS Sports"),
-            ChannelCategoryItem(R.drawable.sample_image, "N Sports"),
-            ChannelCategoryItem(R.drawable.sample_image, "N Sports"),
-            ChannelCategoryItem(R.drawable.sample_image, "N Sports"),
-            ChannelCategoryItem(R.drawable.sample_image, "N Sports")
-
-        )
-        channelCategoryAdapter = ChannelCategoryAdapter(channelCategoryList)
-        channelCategoryRecyclerView.adapter = channelCategoryAdapter
+        homeViewModel.loadPopularVideos()
 
         return view
     }

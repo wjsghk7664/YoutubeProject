@@ -5,7 +5,10 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
+import androidx.recyclerview.widget.DiffUtil
+import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
+import com.bumptech.glide.Glide
 import com.example.youtubeproject.R
 
 data class CategoryItem(
@@ -13,8 +16,8 @@ data class CategoryItem(
     val categoryName: String
 )
 
-class CategoryAdapter(private val categoryList: List<CategoryItem>) :
-    RecyclerView.Adapter<CategoryAdapter.CategoryViewHolder>() {
+class CategoryAdapter :
+    ListAdapter<CategoryItem, CategoryAdapter.CategoryViewHolder>(CategoryDiffCallback()) {
 
     inner class CategoryViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         val imageView: ImageView = itemView.findViewById(R.id.category_image)
@@ -27,10 +30,20 @@ class CategoryAdapter(private val categoryList: List<CategoryItem>) :
     }
 
     override fun onBindViewHolder(holder: CategoryViewHolder, position: Int) {
-        val categoryItem = categoryList[position]
-        holder.imageView.setImageResource(categoryItem.imageResId)
+        val categoryItem = getItem(position)
+        Glide.with(holder.itemView)
+            .load(categoryItem.imageResId)
+            .into(holder.imageView)
         holder.textView.text = categoryItem.categoryName
     }
 
-    override fun getItemCount(): Int = categoryList.size
+    class CategoryDiffCallback : DiffUtil.ItemCallback<CategoryItem>() {
+        override fun areItemsTheSame(oldItem: CategoryItem, newItem: CategoryItem): Boolean {
+            return oldItem.categoryName == newItem.categoryName
+        }
+
+        override fun areContentsTheSame(oldItem: CategoryItem, newItem: CategoryItem): Boolean {
+            return oldItem == newItem
+        }
+    }
 }

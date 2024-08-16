@@ -8,7 +8,9 @@ import com.example.youtubeproject.databinding.ActivityMainBinding
 import com.example.youtubeproject.presentation.ui.fragment.HomeFragment
 import com.example.youtubeproject.presentation.ui.fragment.PlaylistFragment
 import com.example.youtubeproject.presentation.ui.fragment.SearchFragment
+import dagger.hilt.android.AndroidEntryPoint
 
+@AndroidEntryPoint
 class MainActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivityMainBinding
