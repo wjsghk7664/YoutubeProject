@@ -29,7 +29,7 @@ class SearchResultAdapter: ListAdapter<SearchResponse, SearchResultAdapter.ViewH
     inner class ViewHolder(private val binding: ItemSearchResultBinding): RecyclerView.ViewHolder(binding.root) {
         fun bind(item: SearchResponse) {
             Glide.with(binding.searchResultItemVideoThumbnail.context)
-                .load(item.snippet?.thumbnails?.default.toString())
+                .load(item.snippet?.thumbnails?.high?.url.toString())
                 .error(R.drawable.sample_image)
                 .into(binding.searchResultItemVideoThumbnail)
 
