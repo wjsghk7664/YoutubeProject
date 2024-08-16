@@ -15,7 +15,7 @@ data class Snippet(
 )
 
 fun SearchToVideoModel(searchResponse: SearchResponse):VideoModel{
-    val id=searchResponse.id?.video?:""
+    val id=searchResponse.id?.videoId?:""
     val searchSnippet=searchResponse.snippet
     var snippet = Snippet()
     searchSnippet?.run {
