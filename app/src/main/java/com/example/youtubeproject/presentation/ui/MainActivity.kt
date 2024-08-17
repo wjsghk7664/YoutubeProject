@@ -6,6 +6,7 @@ import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.ui.setupWithNavController
+import androidx.viewpager2.widget.ViewPager2
 import com.example.youtubeproject.R
 import com.example.youtubeproject.databinding.ActivityMainBinding
 import com.example.youtubeproject.presentation.ui.fragment.HomeFragment
@@ -49,7 +50,7 @@ class MainActivity : AppCompatActivity() {
         fragmentStack[mCurrentTab]!!.pop()
 
         supportFragmentManager.beginTransaction()
-            .replace(R.id.fragment_container_view, fragment)
+            .replace(R.id.viewPager, fragment)
             .commit()
     }
 
@@ -57,11 +58,18 @@ class MainActivity : AppCompatActivity() {
         val viewPager = binding.viewPager
         val viewPagerAdapter = MainViewPager(this)
         viewPager.adapter = viewPagerAdapter
+
+        viewPager.registerOnPageChangeCallback(object: ViewPager2.OnPageChangeCallback() {
+            override fun onPageSelected(position: Int) {
+                super.onPageSelected(position)
+                binding.bottomMenuBar.menu.getItem(position).isChecked = true
+            }
+        })
     }
     private fun setNavigation() {
-        val navHostFragment = supportFragmentManager.findFragmentById(R.id.fragment_container_view) as NavHostFragment
-        val navController = navHostFragment.findNavController()
-        binding.bottomMenuBar.setupWithNavController(navController)
+//        val navHostFragment = supportFragmentManager.findFragmentById(R.id.viewPager) as NavHostFragment
+//        val navController = navHostFragment.findNavController()
+//        binding.bottomMenuBar.setupWithNavController(navController)
 
         mCurrentTab = TabTag.Home
         fragmentStack[TabTag.Home] = Stack<Fragment>()
@@ -79,15 +87,27 @@ class MainActivity : AppCompatActivity() {
     private fun setOnBottomBarClick() {
         binding.bottomMenuBar.setOnItemSelectedListener { item ->
             mCurrentTab = when(item.itemId) {
-                R.id.bottom_menu_home -> TabTag.Home
-                R.id.bottom_menu_search -> TabTag.Search
-                R.id.bottom_menu_playlist -> TabTag.Playlist
-                R.id.bottom_menu_my_page -> TabTag.MyPage
+                R.id.bottom_menu_home -> {
+                    binding.viewPager.currentItem = 0
+                    TabTag.Home
+                }
+                R.id.bottom_menu_search -> {
+                    binding.viewPager.currentItem = 1
+                    TabTag.Search
+                }
+                R.id.bottom_menu_playlist -> {
+                    binding.viewPager.currentItem = 2
+                    TabTag.Playlist
+                }
+                R.id.bottom_menu_my_page -> {
+                    binding.viewPager.currentItem = 3
+                    TabTag.MyPage
+                }
                 else -> return@setOnItemSelectedListener false
             }
 
-            val nextFragment = fragmentStack[mCurrentTab]!!.lastElement()
-            pushFragments(mCurrentTab, nextFragment!!)
+//            val nextFragment = fragmentStack[mCurrentTab]!!.lastElement()
+//            pushFragments(mCurrentTab, nextFragment!!)
 
             true
         }
