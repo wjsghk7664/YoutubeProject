@@ -30,11 +30,11 @@ class SignUpViewModel @Inject constructor(
                     if(likelist){
                         var user = User(null,name, id, password, intro)
                         if(profile!=null){
-                            uploadProfileUseCase(profile,id){ uri ->
-                                if(uri==null){
+                            uploadProfileUseCase(profile,id){ url ->
+                                if(url==null){
                                     _uiState.value = SignUpUiState.FailureRegister(notify)
                                 }else{
-                                    registerOrModifyUserDataUseCase(user.copy(profile = uri)){
+                                    registerOrModifyUserDataUseCase(user.copy(profile = url)){
                                         if(it){
                                             _uiState.value = SignUpUiState.Success
                                         }else{
@@ -43,12 +43,13 @@ class SignUpViewModel @Inject constructor(
                                     }
                                 }
                             }
-                        }
-                        registerOrModifyUserDataUseCase(user){
-                            if(it){
-                                _uiState.value = SignUpUiState.Success
-                            }else{
-                                _uiState.value = SignUpUiState.FailureRegister(notify)
+                        }else{
+                            registerOrModifyUserDataUseCase(user){
+                                if(it){
+                                    _uiState.value = SignUpUiState.Success
+                                }else{
+                                    _uiState.value = SignUpUiState.FailureRegister(notify)
+                                }
                             }
                         }
                     }else{
