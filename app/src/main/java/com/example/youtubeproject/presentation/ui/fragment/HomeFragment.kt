@@ -14,6 +14,7 @@ import com.example.youtubeproject.presentation.ui.ChannelCategoryAdapter
 import com.example.youtubeproject.presentation.ui.ChannelCategoryItem
 import com.example.youtubeproject.presentation.ui.PopularVideosAdapter
 import com.example.youtubeproject.presentation.ui.VideoItem
+import com.example.youtubeproject.presentation.ui.navigation.FragmentTag
 
 class HomeFragment : Fragment() {
 
