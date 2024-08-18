@@ -49,6 +49,7 @@ class StartActivity : AppCompatActivity() {
                     val intent = Intent(this@StartActivity, MainActivity::class.java)
                     intent.putExtra("userData",it.user)
                     startActivity(intent)
+                    finish()
                 }else {
                     supportFragmentManager.beginTransaction().replace(R.id.main, LoginFragment.newInstance()).commit()
                 }
