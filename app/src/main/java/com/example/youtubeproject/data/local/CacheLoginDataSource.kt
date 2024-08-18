@@ -5,7 +5,6 @@ import com.google.gson.Gson
 import javax.inject.Inject
 
 class CacheLoginDataSource @Inject constructor(@CacheLogin private val sharedPreferencesLogin: SharedPreferences) {
-    val gson = Gson()
 
     fun saveLoginData(id:String, password:String):Boolean{
         return sharedPreferencesLogin.edit().putString("id",id).putString("password",password).commit()
