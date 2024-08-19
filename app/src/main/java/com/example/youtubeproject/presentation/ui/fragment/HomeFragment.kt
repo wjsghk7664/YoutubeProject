@@ -18,6 +18,7 @@ import com.example.youtubeproject.presentation.ui.ChannelCategoryAdapter
 import com.example.youtubeproject.presentation.ui.ChannelCategoryItem
 import com.example.youtubeproject.presentation.viewmodel.HomeViewModel
 import dagger.hilt.android.AndroidEntryPoint
+
 @AndroidEntryPoint
 class HomeFragment : Fragment() {
 
@@ -53,7 +54,6 @@ class HomeFragment : Fragment() {
                     description = videoResponse.snippet?.title ?: ""
                 )
             }
-
             popularVideosAdapter.submitList(videoItems)
         }
 
