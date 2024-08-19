@@ -19,7 +19,6 @@ import com.example.youtubeproject.presentation.ui.MainActivity
 import com.example.youtubeproject.presentation.ui.dialog.CreatePlaylistDialog
 import com.example.youtubeproject.presentation.ui.dialog.DeletePlaylistDialog
 import com.example.youtubeproject.presentation.ui.navigation.FragmentTag
-import com.example.youtubeproject.presentation.uistate.LoginUiState
 import com.example.youtubeproject.presentation.uistate.PlaylistUiState
 import com.example.youtubeproject.presentation.viewmodel.LoginViewModel
 import com.example.youtubeproject.presentation.viewmodel.PlaylistViewModel
