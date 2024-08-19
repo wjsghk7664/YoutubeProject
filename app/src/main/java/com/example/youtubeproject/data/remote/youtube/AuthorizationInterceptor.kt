@@ -7,6 +7,7 @@ import javax.inject.Inject
 class AuthorizationInterceptor @Inject constructor() : Interceptor {
 
     private val KEY="AIzaSyDpDV7GVlJ4fcEmDcM0uW2gmwkSC1QlByY"
+    //AIzaSyC0HGcNrgdLphj9dX68pH8wF4K-bCRUPPM
 
     override fun intercept(chain: Interceptor.Chain): Response {
         val originRequest = chain.request()

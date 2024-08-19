@@ -69,6 +69,10 @@
     <string name="popular_videos">가장 많이 본 영상</string>
     <string name="category">카테고리</string>
     <string name="channel_category">채널 카테고리</string>
+    <string-array name="category_options">
+        <item>카테고리 1</item>
+        <item>카테고리 2</item>
+    </string-array>
 
 
 </resources>

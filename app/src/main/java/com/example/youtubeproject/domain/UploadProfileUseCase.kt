@@ -6,9 +6,9 @@ import javax.inject.Inject
 
 class UploadProfileUseCase @Inject constructor(private val remoteImageRepository: RemoteImageRepository) {
     operator fun invoke(bitmap: Bitmap, id:String, callback:(String?)->Unit){
-        remoteImageRepository.uploadImage(bitmap,id){bool,uri ->
+        remoteImageRepository.uploadImage(bitmap,id){bool,url ->
             if(bool){
-                callback(uri)
+                callback(url)
             }else{
                 callback(null)
             }

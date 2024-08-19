@@ -18,7 +18,9 @@ import com.example.youtubeproject.presentation.ui.navigation.TabTag
 import com.example.youtubeproject.presentation.ui.viewpager.MainViewPager
 import com.google.android.material.tabs.TabLayout.Tab
 import java.util.Stack
+import dagger.hilt.android.AndroidEntryPoint
 
+@AndroidEntryPoint
 class MainActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivityMainBinding

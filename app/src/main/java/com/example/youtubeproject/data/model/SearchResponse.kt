@@ -20,7 +20,11 @@ data class searchSnippet(
 )
 
 data class Thumbnails(
-    val default:Thumbnail?
+    val default:Thumbnail?,
+    val medium: Thumbnail?,
+    val high: Thumbnail?,
+    val standard: Thumbnail?,
+    val maxres: Thumbnail?
 )
 
 data class Thumbnail(

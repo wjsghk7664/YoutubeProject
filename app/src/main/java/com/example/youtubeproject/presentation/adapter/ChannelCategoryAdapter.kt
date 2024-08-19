@@ -6,6 +6,8 @@ import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
+import com.bumptech.glide.Glide
+import com.bumptech.glide.load.resource.bitmap.CircleCrop
 import com.example.youtubeproject.R
 
 data class ChannelCategoryItem(
@@ -28,7 +30,11 @@ class ChannelCategoryAdapter(private val channelList: List<ChannelCategoryItem>)
 
     override fun onBindViewHolder(holder: ChannelViewHolder, position: Int) {
         val channelItem = channelList[position]
-        holder.imageView.setImageResource(channelItem.imageResId)
+
+        Glide.with(holder.itemView)
+            .load(channelItem.imageResId)
+            .into(holder.imageView)
+
         holder.textView.text = channelItem.channelName
     }
 

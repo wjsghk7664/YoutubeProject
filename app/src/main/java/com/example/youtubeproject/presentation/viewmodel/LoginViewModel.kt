@@ -5,7 +5,7 @@ import androidx.lifecycle.viewModelScope
 import com.example.youtubeproject.domain.CacheLoginDataUseCase
 import com.example.youtubeproject.domain.CheckLoginUseCase
 import com.example.youtubeproject.domain.GetCacheLoginDataUseCase
-import com.example.youtubeproject.presentation.LoginUiState
+import com.example.youtubeproject.presentation.uistate.LoginUiState
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
@@ -38,13 +38,25 @@ class LoginViewModel @Inject constructor(private val checkLoginUseCase: CheckLog
     }
 
     fun autoLogin(){
-        getCacheLoginDataUseCase()?.let {
-            val id = it.first
-            val password = it.second
-            if(id!=null&&password!=null){
-                loginCheck(id,password,true)
+        val result = getCacheLoginDataUseCase()
+        if(result!=null){
+            result.let {
+                val id = it.first
+                val password = it.second
+                if(id!=null&&password!=null){
+                    loginCheck(id,password,true)
+                }else{
+                    viewModelScope.launch {
+                        _uiState.emit(LoginUiState.AutoLoginFailure)
+                    }
+                }
+            }
+        }else{
+            viewModelScope.launch {
+                _uiState.emit(LoginUiState.AutoLoginFailure)
             }
         }
+
 
     }
 }
