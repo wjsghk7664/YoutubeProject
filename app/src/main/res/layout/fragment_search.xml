@@ -49,12 +49,17 @@
         android:layout_height=".5dp"
         android:background="@color/white"/>
 
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/search_category_rv"
+    <com.example.youtubeproject.presentation.ui.viewpager.nestedscroll.NestedScrollableHost
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:clipToPadding="false"
-        android:padding="16dp"/>
+        android:layout_height="wrap_content">
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/search_category_rv"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:clipToPadding="false"
+            android:padding="16dp"/>
+    </com.example.youtubeproject.presentation.ui.viewpager.nestedscroll.NestedScrollableHost>
 
     <LinearLayout
         android:id="@+id/searching_loading_indicator"
