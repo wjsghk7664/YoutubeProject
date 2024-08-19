@@ -55,6 +55,7 @@ class PlaylistFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
 
         initView()
+        initialize()
     }
 
     override fun onDestroyView() {
@@ -92,17 +93,17 @@ class PlaylistFragment : Fragment() {
         }
 
         playlistsLiveData.observe(viewLifecycleOwner) {
-            //TODO: Update Playlist RecyclerView Adapter
+            playlistRv.submitList(it)
         }
 
         binding.addPlaylistBtn.setOnClickListener {
             //TODO: Create a Empty Playlist.
-            (requireActivity() as MainActivity)
-                .pushFragments(
-                    PlaylistDetailFragment.newInstance(Playlist(1L, "Hello")),
-                    FragmentTag.PlaylistDetailFragment
-                )
+
+            viewmodel.createPlaylist()
         }
     }
 
+    private fun initialize() {
+        viewmodel.getPlaylists()
+    }
 }

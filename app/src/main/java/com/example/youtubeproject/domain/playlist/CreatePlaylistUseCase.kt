@@ -6,7 +6,8 @@ import javax.inject.Inject
 class CreatePlaylistUseCase @Inject constructor(
     //private val remotePlaylistRepository: RemotePlaylistRepository
 ) {
-    suspend operator fun invoke(playlist: Playlist) {
-        //remotePlaylistRepository.create(playlist)
+    suspend operator fun invoke(title: String): Playlist {
+        //remotePlaylistRepository.create(title)
+        return Playlist(1L, "")
     }
 }

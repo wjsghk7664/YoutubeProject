@@ -26,7 +26,7 @@ class PlaylistViewModel @Inject constructor(
     private val _uiState = MutableStateFlow<PlaylistUiState>(PlaylistUiState.Init)
     val uiState = _uiState.asStateFlow()
 
-    fun getPlaylist() {
+    fun getPlaylists() {
         viewModelScope.launch {
             runCatching {
                 getPlaylistUseCase.invoke()
@@ -48,10 +48,10 @@ class PlaylistViewModel @Inject constructor(
             }
         }
     }
-    fun createPlaylist(playlist: Playlist) {
+    fun createPlaylist(title: String) {
         viewModelScope.launch {
             runCatching {
-                createPlaylistUseCase.invoke(playlist)
+                createPlaylistUseCase.invoke(title)
             }.onFailure {
                 _uiState.emit(PlaylistUiState.Failure)
             }.onSuccess {
