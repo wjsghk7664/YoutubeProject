@@ -7,7 +7,6 @@ import com.example.youtubeproject.domain.playlist.CreatePlaylistUseCase
 import com.example.youtubeproject.domain.playlist.DeletePlaylistUseCase
 import com.example.youtubeproject.domain.playlist.GetPlaylistUseCase
 import com.example.youtubeproject.domain.playlist.SavePlaylistUseCase
-import com.example.youtubeproject.presentation.uistate.LoginUiState
 import com.example.youtubeproject.presentation.uistate.PlaylistUiState
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.CoroutineScope
