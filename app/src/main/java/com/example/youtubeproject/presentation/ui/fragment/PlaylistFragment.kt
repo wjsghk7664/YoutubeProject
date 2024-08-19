@@ -78,6 +78,7 @@ class PlaylistFragment : Fragment() {
                     is PlaylistUiState.Init -> null
 
                     is PlaylistUiState.GetPlaylistsSuccess -> {
+                        Log.d("PlaylistFragment", "GetPlaylistsSuccess: ${it.playlists.size}")
                         playlistsLiveData.value = it.playlists.toMutableList()
                     }
 
@@ -110,11 +111,12 @@ class PlaylistFragment : Fragment() {
             playlistRv.submitList(it.toList())
             Log.d("PlaylistFragment", "playlistRv Changed: ${playlistRv.currentList.size}")
 
-            if(playlistRv.currentList.isEmpty()) {
-                binding.emptyTv.visibility = View.VISIBLE
-            } else {
-                binding.emptyTv.visibility = View.INVISIBLE
-            }
+            binding.emptyTv.visibility =
+                if(playlistRv.currentList.isEmpty()) {
+                    View.VISIBLE
+                } else {
+                    View.INVISIBLE
+                }
         }
 
         binding.addPlaylistBtn.setOnClickListener {
