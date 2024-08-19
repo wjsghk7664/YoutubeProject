@@ -61,7 +61,7 @@
 
         android:orientation="vertical"
 
-        tools:listitem="@layout/playlist_item"
+        tools:listitem="@layout/item_playlist"
         >
 
     </androidx.recyclerview.widget.RecyclerView>
@@ -80,6 +80,8 @@
         android:text="@string/playlist_empty_text"
         android:textColor="@color/white"
         android:textSize="18sp"
+
+        android:visibility="invisible"
         />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

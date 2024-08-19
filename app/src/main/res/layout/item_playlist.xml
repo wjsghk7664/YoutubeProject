@@ -10,10 +10,11 @@
         android:layout_width="200dp"
         android:layout_height="125dp"
 
+        android:contentDescription="@null"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintStart_toStartOf="parent"
 
-        android:src="@color/button_unselected"
+        android:src="@drawable/logo"
         />
 
     <TextView

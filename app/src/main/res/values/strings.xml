@@ -53,6 +53,7 @@
 
     <string name="search_bar_hint">검색어를 입력하세요.</string>
     <string name="search_result_empty_text">검색 결과가 없습니다.\n다른 키워드로 검색해주세요.</string>
+    <string name="search_result_fail_text">요청에 실패했습니다.\n다시 시도해 주세요.</string>
 
 
     <string name="menu_home_title">홈</string>
@@ -66,13 +67,24 @@
     <string name="video_views_text">조회수 %d회</string>
     <string name="video_past_text">%s 전</string>
 
+    <string name="save_playlist_success_message">플레이리스트를 저장하였습니다.</string>
+    <string name="create_playlist_success_message">새 플레이리스트를 생성하였습니다.</string>
+    <string name="playlist_failure_message">실패하였습니다. 나중에 다시 이용해주세요.</string>
+
+    <string name="create_playlist_dialog_title">새 플레이리스트 생성</string>
+    <string name="dialog_confirm_text">확인</string>
+    <string name="dialog_cancel_text">취소</string>
+
     <string name="popular_videos">가장 많이 본 영상</string>
     <string name="category">카테고리</string>
     <string name="channel_category">채널 카테고리</string>
+    <string name="delete_playlist_dialog_title">해당 플레이리스트를 삭제할까요?</string>
+    <string name="delete_playlist_success_message">해당 플레이리스트를 삭제하였습니다.</string>
     <string-array name="category_options">
         <item>카테고리 1</item>
         <item>카테고리 2</item>
     </string-array>
+
 
 
 </resources>
