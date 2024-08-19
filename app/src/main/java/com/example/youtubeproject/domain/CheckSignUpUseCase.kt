@@ -37,7 +37,7 @@ class CheckSignUpUseCase @Inject constructor(private val remoteUserDataRepositor
                 "사용 가능한 비밀번호입니다."
             }else{
                 resultFlag=false
-                "영문과 특수문자 하나 이상 섞어서 8자리 이상으로 입력하여 주세요."
+                "영문과 숫자, 특수문자를 하나 이상 넣어서 8자리 이상으로 입력하여 주세요."
             }
 
             if(name.isEmpty()){

@@ -14,10 +14,9 @@ import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
 import com.example.youtubeproject.R
 import com.example.youtubeproject.databinding.FragmentSignUpBinding
-import com.example.youtubeproject.presentation.SignUpUiState
+import com.example.youtubeproject.presentation.uistate.UiState
 import com.example.youtubeproject.presentation.viewmodel.SignUpViewModel
 import dagger.hilt.android.AndroidEntryPoint
-import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 
@@ -51,23 +50,20 @@ class SignUpFragment : Fragment() {
         viewLifecycleOwner.lifecycleScope.launch {
             viewmodel.uiState.collectLatest {
                 when(it){
-                    is SignUpUiState.Init -> null
-                    is SignUpUiState.Failure -> {
-                        signupTvNotify.visibility=View.VISIBLE
-                        signupTvNotify.text = it.reason
-                    }
-                    is SignUpUiState.FailureRegister -> {
-                        signupTvNotify.visibility=View.VISIBLE
-                        signupTvNotify.text = it.reason
+                    is UiState.Init -> null
+                    is UiState.Failure -> {
+                        if(it.e[0]!='N')
                         Toast.makeText(requireActivity(), "오류로 인해 등록에 실패하였습니다. 다시시도 해주세요.",Toast.LENGTH_SHORT).show()
+                        signupTvNotify.visibility=View.VISIBLE
+                        signupTvNotify.text = it.e.substring(1)
                     }
-                    is SignUpUiState.Success -> {
+                    is UiState.Success -> {
                         Toast.makeText(requireActivity(),"회원가입 성공",Toast.LENGTH_SHORT).show()
                         parentFragmentManager.beginTransaction().replace(R.id.main,
                             LoginFragment.newInstance()
                         ).commit()
                     }
-                    is SignUpUiState.Loading -> null
+                    is UiState.Loading -> null
                 }
             }
         }
