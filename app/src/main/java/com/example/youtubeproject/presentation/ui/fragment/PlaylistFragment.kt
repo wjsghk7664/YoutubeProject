@@ -7,15 +7,21 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.activity.OnBackPressedCallback
+import androidx.fragment.app.activityViewModels
+import androidx.fragment.app.viewModels
 import com.example.youtubeproject.R
 import com.example.youtubeproject.databinding.FragmentPlaylistBinding
 import com.example.youtubeproject.presentation.ui.MainActivity
 import com.example.youtubeproject.presentation.ui.navigation.FragmentTag
+import com.example.youtubeproject.presentation.viewmodel.LoginViewModel
+import com.example.youtubeproject.presentation.viewmodel.PlaylistViewModel
 
 
 class PlaylistFragment : Fragment() {
     private var _binding: FragmentPlaylistBinding? = null
     private val binding get() = _binding!!
+
+    private val viewmodel: PlaylistViewModel by viewModels()
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -57,5 +63,9 @@ class PlaylistFragment : Fragment() {
         Log.d("PlaylistFragment", "onStop")
     }
 
+    override fun onDestroyView() {
+        super.onDestroyView()
+        _binding = null
+    }
 
 }
