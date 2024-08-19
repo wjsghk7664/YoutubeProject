@@ -8,6 +8,7 @@ sealed class PlaylistUiState {
     data class CreatePlaylistSuccess(val playlist: Playlist) : PlaylistUiState()
 
     data object SavePlaylistSuccess: PlaylistUiState()
+    data object DeletePlaylistSuccess: PlaylistUiState()
 
     data object Failure: PlaylistUiState()
     data object Loading: PlaylistUiState()

@@ -19,6 +19,7 @@ import com.example.youtubeproject.presentation.adapter.PlaylistsAdapter
 import com.example.youtubeproject.presentation.adapter.deco.PlaylistAdapterDecoration
 import com.example.youtubeproject.presentation.ui.MainActivity
 import com.example.youtubeproject.presentation.ui.dialog.CreatePlaylistDialog
+import com.example.youtubeproject.presentation.ui.dialog.DeletePlaylistDialog
 import com.example.youtubeproject.presentation.ui.navigation.FragmentTag
 import com.example.youtubeproject.presentation.uistate.LoginUiState
 import com.example.youtubeproject.presentation.uistate.PlaylistUiState
@@ -35,12 +36,20 @@ class PlaylistFragment : Fragment() {
     private val viewmodel: PlaylistViewModel by activityViewModels()
 
     private val playlistsLiveData = MutableLiveData(mutableListOf<Playlist>())
-    private val playlistRv = PlaylistsAdapter { playlist ->
-        (requireActivity() as MainActivity).pushFragments(
-            PlaylistDetailFragment.newInstance(playlist),
-            FragmentTag.PlaylistDetailFragment
-        )
-    }
+    private val playlistRv = PlaylistsAdapter(
+        onItemClick = { playlist ->
+            (requireActivity() as MainActivity).pushFragments(
+                PlaylistDetailFragment.newInstance(playlist),
+                FragmentTag.PlaylistDetailFragment
+            )
+        },
+        onLongItemClick = { playlist ->
+            DeletePlaylistDialog {
+                viewmodel.deletePlaylist(playlist)
+            }.show(requireActivity().supportFragmentManager, CreatePlaylistDialog.TAG)
+            true
+        }
+    )
 
 
     override fun onCreateView(
@@ -84,6 +93,9 @@ class PlaylistFragment : Fragment() {
                         playlistsLiveData.value?.add(it.playlist)
                         Toast.makeText(requireContext(), getString(R.string.create_playlist_success_message), Toast.LENGTH_SHORT).show()
                     }
+
+                    is PlaylistUiState.DeletePlaylistSuccess ->
+                        Toast.makeText(requireContext(), getString(R.string.delete_playlist_success_message), Toast.LENGTH_SHORT).show()
 
                     is PlaylistUiState.SavePlaylistSuccess ->
                         Toast.makeText(requireContext(), getString(R.string.save_playlist_success_message), Toast.LENGTH_SHORT).show()

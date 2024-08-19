@@ -4,6 +4,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.youtubeproject.data.model.Playlist
 import com.example.youtubeproject.domain.playlist.CreatePlaylistUseCase
+import com.example.youtubeproject.domain.playlist.DeletePlaylistUseCase
 import com.example.youtubeproject.domain.playlist.GetPlaylistUseCase
 import com.example.youtubeproject.domain.playlist.SavePlaylistUseCase
 import com.example.youtubeproject.presentation.uistate.LoginUiState
@@ -20,7 +21,8 @@ import javax.inject.Inject
 class PlaylistViewModel @Inject constructor(
     private val getPlaylistUseCase: GetPlaylistUseCase,
     private val savePlaylistUseCase: SavePlaylistUseCase,
-    private val createPlaylistUseCase: CreatePlaylistUseCase
+    private val createPlaylistUseCase: CreatePlaylistUseCase,
+    private val deletePlaylistUseCase: DeletePlaylistUseCase
 ) : ViewModel() {
 
     private val _uiState = MutableStateFlow<PlaylistUiState>(PlaylistUiState.Init)
@@ -56,6 +58,18 @@ class PlaylistViewModel @Inject constructor(
                 _uiState.emit(PlaylistUiState.Failure)
             }.onSuccess {
                 _uiState.emit(PlaylistUiState.CreatePlaylistSuccess(it))
+            }
+        }
+    }
+
+    fun deletePlaylist(playlist: Playlist) {
+        viewModelScope.launch {
+            runCatching {
+                deletePlaylistUseCase.invoke(playlist)
+            }.onFailure {
+                _uiState.emit(PlaylistUiState.Failure)
+            }.onSuccess {
+                _uiState.emit(PlaylistUiState.DeletePlaylistSuccess)
             }
         }
     }
