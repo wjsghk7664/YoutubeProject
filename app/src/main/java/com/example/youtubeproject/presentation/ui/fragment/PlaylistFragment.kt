@@ -36,6 +36,7 @@ class PlaylistFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+
         binding.addPlaylistBtn.setOnClickListener {
             (requireActivity() as MainActivity).pushFragments(PlaylistDetailFragment(), FragmentTag.PlaylistVideoDetailFragment)
         }
@@ -55,4 +56,6 @@ class PlaylistFragment : Fragment() {
         super.onStop()
         Log.d("PlaylistFragment", "onStop")
     }
+
+
 }
