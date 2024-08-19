@@ -7,15 +7,14 @@ import android.widget.ImageView
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
-import com.bumptech.glide.load.resource.bitmap.CircleCrop
 import com.example.youtubeproject.R
 
 data class ChannelCategoryItem(
-    val imageResId: Int,
+    val imageResId: String?,
     val channelName: String
 )
 
-class ChannelCategoryAdapter(private val channelList: List<ChannelCategoryItem>) :
+class ChannelCategoryAdapter(private var channelList: List<ChannelCategoryItem>) :
     RecyclerView.Adapter<ChannelCategoryAdapter.ChannelViewHolder>() {
 
     inner class ChannelViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
@@ -39,4 +38,9 @@ class ChannelCategoryAdapter(private val channelList: List<ChannelCategoryItem>)
     }
 
     override fun getItemCount(): Int = channelList.size
+
+    fun submitList(newChannelList: List<ChannelCategoryItem>) {
+        channelList = newChannelList
+        notifyDataSetChanged()
+    }
 }
