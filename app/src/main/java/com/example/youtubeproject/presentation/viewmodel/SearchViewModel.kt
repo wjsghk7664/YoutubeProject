@@ -20,8 +20,8 @@ class SearchViewModel @Inject constructor(private val searchUseCase: SearchUseCa
     private val _searchResult = MutableStateFlow<MutableList<SearchResponse>>(mutableListOf())
     val searchResult: StateFlow<MutableList<SearchResponse>> = _searchResult.asStateFlow()
 
-    private val _selectCategory = MutableStateFlow<String?>(null)
-    val selectCategory: StateFlow<String?> = _selectCategory.asStateFlow()
+    private val _isLoadMore = MutableStateFlow(false)
+    val isLoadMore: StateFlow<Boolean> = _isLoadMore.asStateFlow()
 
     fun searchVideo(query: String, page: String?, category: String?) {
         viewModelScope.launch {
@@ -31,8 +31,6 @@ class SearchViewModel @Inject constructor(private val searchUseCase: SearchUseCa
                 if (it?.items != null) {
                     if (it.items.isEmpty()) _uiState.value = SearchUiState.Empty
                     else {
-                        if (page == null) _searchResult.value = mutableListOf()
-
                         _uiState.value = SearchUiState.Success(it)
                         _searchResult.value = it.items.toMutableList()
                     }
@@ -43,16 +41,11 @@ class SearchViewModel @Inject constructor(private val searchUseCase: SearchUseCa
         }
     }
 
-    private val _isLoadMore = MutableStateFlow(false)
-    val isLoadMore: StateFlow<Boolean> = _isLoadMore.asStateFlow()
-
     fun searchResultMore(query: String, page: String, category: String?) {
         viewModelScope.launch {
             _isLoadMore.value = true
 
             searchUseCase(query, page, category) {
-                _uiState.value = SearchUiState.LoadingMore
-
                 if (it?.items != null) {
                     if (it.items.isEmpty()) _uiState.value = SearchUiState.Empty
                     else {
@@ -65,6 +58,8 @@ class SearchViewModel @Inject constructor(private val searchUseCase: SearchUseCa
                     }
 
                     _isLoadMore.value = false
+                } else {
+                    _uiState.value = SearchUiState.Failure
                 }
             }
         }
