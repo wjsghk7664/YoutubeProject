@@ -30,6 +30,7 @@ class CreatePlaylistDialog(
                 .setPositiveButton(getString(R.string.dialog_confirm_text)) { dialog, id ->
                     if(titleEditText.text.isNotBlank()) {
                         onConfirm(titleEditText.text.toString())
+                        dismiss()
                     } else {
                         Toast.makeText(requireContext(), "제목을 입력해주세요.", Toast.LENGTH_SHORT).show()
                     }

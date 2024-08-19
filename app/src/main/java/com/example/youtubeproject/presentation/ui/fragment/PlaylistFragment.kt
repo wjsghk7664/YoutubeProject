@@ -18,6 +18,7 @@ import com.example.youtubeproject.databinding.FragmentPlaylistBinding
 import com.example.youtubeproject.presentation.adapter.PlaylistsAdapter
 import com.example.youtubeproject.presentation.adapter.deco.PlaylistAdapterDecoration
 import com.example.youtubeproject.presentation.ui.MainActivity
+import com.example.youtubeproject.presentation.ui.dialog.CreatePlaylistDialog
 import com.example.youtubeproject.presentation.ui.navigation.FragmentTag
 import com.example.youtubeproject.presentation.uistate.LoginUiState
 import com.example.youtubeproject.presentation.uistate.PlaylistUiState
@@ -69,11 +70,20 @@ class PlaylistFragment : Fragment() {
                 when(it) {
                     is PlaylistUiState.Init -> null
 
-                    is PlaylistUiState.GetPlaylistsSuccess ->
+                    is PlaylistUiState.GetPlaylistsSuccess -> {
                         playlistsLiveData.value?.addAll(it.playlists)
 
-                    is PlaylistUiState.CreatePlaylistSuccess ->
+                        if(playlistsLiveData.value.isNullOrEmpty()) {
+                            binding.emptyTv.visibility = View.VISIBLE
+                        } else {
+                            binding.emptyTv.visibility = View.INVISIBLE
+                        }
+                    }
+
+                    is PlaylistUiState.CreatePlaylistSuccess -> {
+                        playlistsLiveData.value?.add(it.playlist)
                         Toast.makeText(requireContext(), getString(R.string.create_playlist_success_message), Toast.LENGTH_SHORT).show()
+                    }
 
                     is PlaylistUiState.SavePlaylistSuccess ->
                         Toast.makeText(requireContext(), getString(R.string.save_playlist_success_message), Toast.LENGTH_SHORT).show()
@@ -97,9 +107,9 @@ class PlaylistFragment : Fragment() {
         }
 
         binding.addPlaylistBtn.setOnClickListener {
-            //TODO: Create a Empty Playlist.
-
-            viewmodel.createPlaylist()
+            CreatePlaylistDialog { title ->
+                viewmodel.createPlaylist(title)
+            }.show(requireActivity().supportFragmentManager, CreatePlaylistDialog.TAG)
         }
     }
 

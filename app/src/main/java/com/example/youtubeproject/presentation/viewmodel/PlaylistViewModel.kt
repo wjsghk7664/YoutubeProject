@@ -55,7 +55,7 @@ class PlaylistViewModel @Inject constructor(
             }.onFailure {
                 _uiState.emit(PlaylistUiState.Failure)
             }.onSuccess {
-                _uiState.emit(PlaylistUiState.CreatePlaylistSuccess)
+                _uiState.emit(PlaylistUiState.CreatePlaylistSuccess(it))
             }
         }
     }
