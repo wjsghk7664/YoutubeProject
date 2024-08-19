@@ -7,6 +7,10 @@ import javax.inject.Inject
 class RemoteUserDataRepositoryImpl @Inject constructor(private val db: FirebaseFirestore) :
     RemoteUserDataRepository {
     override fun CheckDupId(id:String, callback:(Boolean,Int) -> Unit){
+        if(id.isEmpty()){
+            callback(false,0)
+            return
+        }
         db.collection("User").document(id).get().addOnSuccessListener { document->
             if(document.exists()){
                 callback(false,0)
