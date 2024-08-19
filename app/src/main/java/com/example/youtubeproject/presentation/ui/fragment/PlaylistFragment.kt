@@ -38,7 +38,7 @@ class PlaylistFragment : Fragment() {
     private val playlistRv = PlaylistsAdapter(
         onItemClick = { playlist ->
             (requireActivity() as MainActivity).pushFragments(
-                PlaylistDetailFragment.newInstance(playlist),
+                PlaylistDetailFragment.newInstance(playlist.id),
                 FragmentTag.PlaylistDetailFragment
             )
         },
