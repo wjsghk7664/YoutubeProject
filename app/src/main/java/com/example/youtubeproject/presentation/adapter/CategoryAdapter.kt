@@ -35,7 +35,7 @@ class CategoryAdapter :
         Glide.with(holder.itemView)
             .load(videoItem.mainImageUrl)
             .into(holder.imageView)
-        holder.textView.text = videoItem.description
+        holder.textView.text = videoItem.title
     }
 
     class CategoryDiffCallback : DiffUtil.ItemCallback<VideoItem>() {
