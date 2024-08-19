@@ -66,6 +66,10 @@
     <string name="video_views_text">조회수 %d회</string>
     <string name="video_past_text">%s 전</string>
 
+    <string name="save_playlist_success_message">플레이리스트를 저장하였습니다.</string>
+    <string name="create_playlist_success_message">새 플레이리스트를 생성하였습니다.</string>
+    <string name="playlist_failure_message">실패하였습니다. 나중에 다시 이용해주세요.</string>
+
     <string name="popular_videos">가장 많이 본 영상</string>
     <string name="category">카테고리</string>
     <string name="channel_category">채널 카테고리</string>
@@ -73,6 +77,7 @@
         <item>카테고리 1</item>
         <item>카테고리 2</item>
     </string-array>
+
 
 
 </resources>

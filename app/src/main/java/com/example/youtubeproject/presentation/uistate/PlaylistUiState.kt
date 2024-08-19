@@ -4,7 +4,7 @@ import com.example.youtubeproject.data.model.Playlist
 import com.example.youtubeproject.data.model.User
 
 sealed class PlaylistUiState {
-    data class GetPlaylistSuccess(val playlist: Playlist): PlaylistUiState()
+    data class GetPlaylistsSuccess(val playlists: List<Playlist>): PlaylistUiState()
 
     data object SavePlaylistSuccess: PlaylistUiState()
     data object CreatePlaylistSuccess: PlaylistUiState()

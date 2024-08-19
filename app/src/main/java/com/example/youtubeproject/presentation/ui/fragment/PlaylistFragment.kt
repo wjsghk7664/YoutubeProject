@@ -6,15 +6,23 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.activity.OnBackPressedCallback
 import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.viewModels
+import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.lifecycleScope
 import com.example.youtubeproject.R
+import com.example.youtubeproject.data.model.Playlist
 import com.example.youtubeproject.databinding.FragmentPlaylistBinding
 import com.example.youtubeproject.presentation.ui.MainActivity
 import com.example.youtubeproject.presentation.ui.navigation.FragmentTag
+import com.example.youtubeproject.presentation.uistate.LoginUiState
+import com.example.youtubeproject.presentation.uistate.PlaylistUiState
 import com.example.youtubeproject.presentation.viewmodel.LoginViewModel
 import com.example.youtubeproject.presentation.viewmodel.PlaylistViewModel
+import kotlinx.coroutines.flow.collectLatest
+import kotlinx.coroutines.launch
 
 
 class PlaylistFragment : Fragment() {
@@ -23,6 +31,7 @@ class PlaylistFragment : Fragment() {
 
     private val viewmodel: PlaylistViewModel by viewModels()
 
+    private val playlistsLiveData = MutableLiveData(mutableListOf<Playlist>())
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -34,7 +43,6 @@ class PlaylistFragment : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        // Inflate the layout for this fragment
         Log.d("PlaylistFragment", "onCreateView")
         _binding = FragmentPlaylistBinding.inflate(inflater)
         return binding.root
@@ -43,29 +51,44 @@ class PlaylistFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        binding.addPlaylistBtn.setOnClickListener {
-            (requireActivity() as MainActivity).pushFragments(PlaylistDetailFragment(), FragmentTag.PlaylistVideoDetailFragment)
-        }
-    }
-
-    override fun onPause() {
-        super.onPause()
-        Log.d("PlaylistFragment", "onPause")
-    }
-
-    override fun onResume() {
-        super.onResume()
-        Log.d("PlaylistFragment", "onResume")
-    }
-
-    override fun onStop() {
-        super.onStop()
-        Log.d("PlaylistFragment", "onStop")
+        initView()
     }
 
     override fun onDestroyView() {
         super.onDestroyView()
         _binding = null
+    }
+
+    private fun initView() {
+        lifecycleScope.launch {
+            viewmodel.uiState.collectLatest {
+                when(it) {
+                    is PlaylistUiState.Init -> null
+
+                    is PlaylistUiState.GetPlaylistsSuccess ->
+                        playlistsLiveData.value?.addAll(it.playlists)
+
+                    is PlaylistUiState.CreatePlaylistSuccess ->
+                        Toast.makeText(requireContext(), getString(R.string.create_playlist_success_message), Toast.LENGTH_SHORT).show()
+
+                    is PlaylistUiState.SavePlaylistSuccess ->
+                        Toast.makeText(requireContext(), getString(R.string.save_playlist_success_message), Toast.LENGTH_SHORT).show()
+
+                    is PlaylistUiState.Failure ->
+                        Toast.makeText(requireContext(), getString(R.string.playlist_failure_message), Toast.LENGTH_SHORT).show()
+
+                    is PlaylistUiState.Loading -> null
+                }
+            }
+        }
+
+        playlistsLiveData.observe(viewLifecycleOwner) {
+            //TODO: Update Playlist RecyclerView Adapter
+        }
+
+        binding.addPlaylistBtn.setOnClickListener {
+            (requireActivity() as MainActivity).pushFragments(PlaylistDetailFragment(), FragmentTag.PlaylistVideoDetailFragment)
+        }
     }
 
 }
