@@ -118,7 +118,7 @@ class SearchFragment : Fragment() {
                         searchingLoadingIndicator.visibility = View.GONE
                         searchResultStatusText.visibility = View.GONE
                         searchResultRv.visibility = View.VISIBLE
-                        binding.searchMoreLoadingIndicator.visibility = View.GONE
+                        searchMoreLoadingIndicator.visibility = View.GONE
 
                         nextPage = it.searchResultModel.nextPageToken.toString()
                     }
@@ -143,7 +143,7 @@ class SearchFragment : Fragment() {
                         searchResultRv.visibility = View.GONE
                     }
                     is SearchUiState.LoadingMore -> {
-                        binding.searchMoreLoadingIndicator.visibility = View.VISIBLE
+                        searchMoreLoadingIndicator.visibility = View.VISIBLE
                         searchResultRv.smoothScrollToPosition(searchResultAdapter.itemCount - 1)
                     }
                     is SearchUiState.Failure -> {
