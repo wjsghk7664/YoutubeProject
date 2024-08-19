@@ -4,6 +4,7 @@ import android.graphics.Bitmap
 import androidx.lifecycle.ViewModel
 import com.example.youtubeproject.data.model.User
 import com.example.youtubeproject.domain.CheckSignUpUseCase
+import com.example.youtubeproject.domain.CreateLikeListUseCase
 import com.example.youtubeproject.domain.RegisterOrModifyUserDataUseCase
 import com.example.youtubeproject.domain.UploadProfileUseCase
 import com.example.youtubeproject.presentation.uistate.SignUpUiState
@@ -16,7 +17,8 @@ import javax.inject.Inject
 class SignUpViewModel @Inject constructor(
     private val checkSignUpUseCase: CheckSignUpUseCase,
     private val registerOrModifyUserDataUseCase: RegisterOrModifyUserDataUseCase,
-    private val uploadProfileUseCase: UploadProfileUseCase
+    private val uploadProfileUseCase: UploadProfileUseCase,
+    private val createLikeListUseCase: CreateLikeListUseCase
 ):ViewModel() {
     private val _uiState = MutableStateFlow<SignUpUiState>(SignUpUiState.Init)
     val uiState = _uiState.asStateFlow()
@@ -24,13 +26,25 @@ class SignUpViewModel @Inject constructor(
     fun signUp(id:String, password:String, name:String, intro:String, profile:Bitmap?){
         checkSignUpUseCase(id,password,name){ notify,isEnable ->
             if(isEnable){
-                var user = User(null,name, id, password, intro)
-                if(profile!=null){
-                    uploadProfileUseCase(profile,id){ uri ->
-                        if(uri==null){
-                            _uiState.value = SignUpUiState.FailureRegister(notify)
+                createLikeListUseCase(id){ likelist->
+                    if(likelist){
+                        var user = User(null,name, id, password, intro)
+                        if(profile!=null){
+                            uploadProfileUseCase(profile,id){ url ->
+                                if(url==null){
+                                    _uiState.value = SignUpUiState.FailureRegister(notify)
+                                }else{
+                                    registerOrModifyUserDataUseCase(user.copy(profile = url)){
+                                        if(it){
+                                            _uiState.value = SignUpUiState.Success
+                                        }else{
+                                            _uiState.value = SignUpUiState.FailureRegister(notify)
+                                        }
+                                    }
+                                }
+                            }
                         }else{
-                            registerOrModifyUserDataUseCase(user.copy(profile = uri)){
+                            registerOrModifyUserDataUseCase(user){
                                 if(it){
                                     _uiState.value = SignUpUiState.Success
                                 }else{
@@ -38,13 +52,8 @@ class SignUpViewModel @Inject constructor(
                                 }
                             }
                         }
-                    }
-                }
-                registerOrModifyUserDataUseCase(user){
-                    if(it){
-                        _uiState.value = SignUpUiState.Success
                     }else{
-                        _uiState.value = SignUpUiState.FailureRegister(notify)
+                        _uiState.value = SignUpUiState.FailureRegister("fail to make likelist")
                     }
                 }
             }else{

@@ -44,7 +44,6 @@
         android:background="@drawable/login_corner_box_blue"
         android:padding="24dp"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.166"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/login_tv_title">
 
@@ -109,7 +108,7 @@
             android:textColor="@color/white"
             app:layout_constraintBottom_toTopOf="@+id/login_btn_login"
             app:layout_constraintStart_toEndOf="@+id/login_cb_autologin"
-            app:layout_constraintTop_toBottomOf="@+id/signup_ll_etcontainer" />
+            app:layout_constraintTop_toBottomOf="@+id/login_ll_etcontainer" />
 
         <androidx.appcompat.widget.AppCompatButton
             android:id="@+id/login_btn_login"
