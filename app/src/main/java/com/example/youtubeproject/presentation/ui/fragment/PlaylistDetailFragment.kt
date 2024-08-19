@@ -7,18 +7,19 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.fragment.app.activityViewModels
 import com.example.youtubeproject.R
 import com.example.youtubeproject.data.model.Playlist
+import com.example.youtubeproject.presentation.viewmodel.PlaylistViewModel
 
 class PlaylistDetailFragment : Fragment() {
 
+    private val viewModel: PlaylistViewModel by activityViewModels()
+
+    //TODO: 초기화 방법 잘못됨. 다시 생각해보기
     private val playlist by lazy {
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
-            arguments?.getParcelable(PLAYLIST, Playlist::class.java)!!
-        } else {
-            @Suppress("DEPRECATION")
-            arguments?.getParcelable(PLAYLIST)!!
-        }
+        val id = arguments?.getLong(PLAYLIST)!!
+        viewModel.getPlaylistDetail(id)
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -36,13 +37,13 @@ class PlaylistDetailFragment : Fragment() {
     }
 
     companion object {
-        private const val PLAYLIST = "PLAYLIST_ITEM"
+        private const val PLAYLIST = "PLAYLIST_ID"
 
         @JvmStatic
-        fun newInstance(playlist: Playlist) =
+        fun newInstance(playlistId: Long) =
             PlaylistDetailFragment().apply {
                 arguments = Bundle().apply {
-                    putParcelable(PLAYLIST, playlist)
+                    putLong(PLAYLIST, playlistId)
                 }
             }
     }
