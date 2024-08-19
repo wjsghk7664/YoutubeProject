@@ -38,9 +38,9 @@ class SearchFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View {
         val categoryList = mapOf(
-            "1" to "영화/애니메이션", "2" to "자동차", "10" to "음악", "15" to "반려동물/동물", "17" to "스포츠", "19" to "여행/이벤트",
-            "20" to "게임", "22" to "인물/블로그", "23" to "코미디", "24" to "엔터테인먼트", "25" to "뉴스/정치",
-            "26" to "노하우/스타일", "27" to "교육", "28" to "과학기술"
+            null to "전체", "1" to "영화/애니메이션", "2" to "자동차", "10" to "음악", "15" to "반려동물/동물", "17" to "스포츠",
+            "19" to "여행/이벤트", "20" to "게임", "22" to "인물/블로그", "23" to "코미디", "24" to "엔터테인먼트",
+            "25" to "뉴스/정치", "26" to "노하우/스타일", "27" to "교육", "28" to "과학기술"
         )
         val categoryRecyclerView = binding.searchCategoryRv
         val searchResultRecyclerView = binding.searchResultRv
@@ -50,8 +50,6 @@ class SearchFragment : Fragment() {
 
             if (query.isNotEmpty()) {
                 searchViewModel.searchVideo(query, null, categoryNumber)
-            } else {
-                Toast.makeText(context, "검색어를 입력해 주세요.", Toast.LENGTH_SHORT).show()
             }
         }
         searchCategoryAdapter.submitList(categoryList.values.toList())
@@ -114,6 +112,7 @@ class SearchFragment : Fragment() {
             searchViewModel.uiState.collectLatest {
                 when (it) {
                     is SearchUiState.Success -> {
+                        searchCategoryRvNestedScrollHost.visibility = View.VISIBLE
                         searchingLoadingIndicator.visibility = View.GONE
                         searchResultIsEmptyText.visibility = View.GONE
                         searchResultRv.visibility = View.VISIBLE
@@ -126,11 +125,13 @@ class SearchFragment : Fragment() {
                         searchResultRv.visibility = View.GONE
                     }
                     is SearchUiState.Init -> {
+                        searchCategoryRvNestedScrollHost.visibility = View.GONE
                         searchingLoadingIndicator.visibility = View.GONE
                         searchResultIsEmptyText.visibility = View.GONE
                         searchResultRv.visibility = View.GONE
                     }
                     is SearchUiState.Loading -> {
+                        searchCategoryRvNestedScrollHost.visibility = View.GONE
                         searchingLoadingIndicator.visibility = View.VISIBLE
                         searchResultIsEmptyText.visibility = View.GONE
                         searchResultRv.visibility = View.GONE

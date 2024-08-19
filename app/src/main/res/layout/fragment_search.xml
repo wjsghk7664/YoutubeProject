@@ -50,6 +50,7 @@
         android:background="@color/white"/>
 
     <com.example.youtubeproject.presentation.ui.viewpager.nestedscroll.NestedScrollableHost
+        android:id="@+id/search_category_rv_nested_scroll_host"
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
 
