@@ -16,7 +16,7 @@ import com.example.youtubeproject.R
 import com.example.youtubeproject.data.model.User
 import com.example.youtubeproject.databinding.ActivityStartBinding
 import com.example.youtubeproject.presentation.ui.fragment.LoginFragment
-import com.example.youtubeproject.presentation.uistate.LoginUiState
+import com.example.youtubeproject.presentation.uistate.UiState
 import com.example.youtubeproject.presentation.viewmodel.LoginViewModel
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.async
@@ -41,13 +41,13 @@ class StartActivity : AppCompatActivity() {
         lifecycleScope.launch {
             viewmodel.uiState.collectLatest {
                 Log.d("로그",it.toString())
-                if(it is LoginUiState.Init){
+                if(it is UiState.Init){
                     viewmodel.autoLogin()
                 }
-                else if(it is LoginUiState.Success){
+                else if(it is UiState.Success){
                     Toast.makeText(this@StartActivity,"로그인 성공",Toast.LENGTH_SHORT).show()
                     val intent = Intent(this@StartActivity, MainActivity::class.java)
-                    intent.putExtra("userData",it.user)
+                    intent.putExtra("userData",it.data)
                     startActivity(intent)
                     finish()
                 }else {

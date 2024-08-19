@@ -7,7 +7,7 @@ import com.example.youtubeproject.domain.CheckSignUpUseCase
 import com.example.youtubeproject.domain.CreateLikeListUseCase
 import com.example.youtubeproject.domain.RegisterOrModifyUserDataUseCase
 import com.example.youtubeproject.domain.UploadProfileUseCase
-import com.example.youtubeproject.presentation.uistate.SignUpUiState
+import com.example.youtubeproject.presentation.uistate.UiState
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
@@ -20,7 +20,7 @@ class SignUpViewModel @Inject constructor(
     private val uploadProfileUseCase: UploadProfileUseCase,
     private val createLikeListUseCase: CreateLikeListUseCase
 ):ViewModel() {
-    private val _uiState = MutableStateFlow<SignUpUiState>(SignUpUiState.Init)
+    private val _uiState = MutableStateFlow<UiState<Unit>>(UiState.Init)
     val uiState = _uiState.asStateFlow()
 
     fun signUp(id:String, password:String, name:String, intro:String, profile:Bitmap?){
@@ -32,13 +32,13 @@ class SignUpViewModel @Inject constructor(
                         if(profile!=null){
                             uploadProfileUseCase(profile,id){ url ->
                                 if(url==null){
-                                    _uiState.value = SignUpUiState.FailureRegister(notify)
+                                    _uiState.value = UiState.Failure("N"+notify)
                                 }else{
                                     registerOrModifyUserDataUseCase(user.copy(profile = url)){
                                         if(it){
-                                            _uiState.value = SignUpUiState.Success
+                                            _uiState.value = UiState.Success(Unit)
                                         }else{
-                                            _uiState.value = SignUpUiState.FailureRegister(notify)
+                                            _uiState.value = UiState.Failure("F"+notify)
                                         }
                                     }
                                 }
@@ -46,18 +46,18 @@ class SignUpViewModel @Inject constructor(
                         }else{
                             registerOrModifyUserDataUseCase(user){
                                 if(it){
-                                    _uiState.value = SignUpUiState.Success
+                                    _uiState.value = UiState.Success(Unit)
                                 }else{
-                                    _uiState.value = SignUpUiState.FailureRegister(notify)
+                                    _uiState.value = UiState.Failure("F"+notify)
                                 }
                             }
                         }
                     }else{
-                        _uiState.value = SignUpUiState.FailureRegister("fail to make likelist")
+                        _uiState.value = UiState.Failure("Lfail to make likelist")
                     }
                 }
             }else{
-                _uiState.value = SignUpUiState.Failure(notify)
+                _uiState.value = UiState.Failure("N"+notify)
             }
         }
     }
