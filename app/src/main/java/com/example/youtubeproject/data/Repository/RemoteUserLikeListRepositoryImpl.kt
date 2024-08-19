@@ -16,6 +16,7 @@ class RemoteUserLikeListRepositoryImpl @Inject constructor(private val db:Fireba
             }
     }
 
+
     override fun DeleteLike(id: String, videoModel: VideoModel, callback: (Boolean) -> Unit) {
         db.collection("LikeList").document(id).update("likeList", FieldValue.arrayRemove(videoModel))
             .addOnSuccessListener {
@@ -53,4 +54,5 @@ class RemoteUserLikeListRepositoryImpl @Inject constructor(private val db:Fireba
             callback(null)
         }
     }
+
 }
