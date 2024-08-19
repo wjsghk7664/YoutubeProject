@@ -33,12 +33,6 @@ class PlaylistFragment : Fragment() {
 
     private val playlistsLiveData = MutableLiveData(mutableListOf<Playlist>())
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-
-        Log.d("PlaylistFragment", "onCreate")
-    }
-
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -87,7 +81,8 @@ class PlaylistFragment : Fragment() {
         }
 
         binding.addPlaylistBtn.setOnClickListener {
-            (requireActivity() as MainActivity).pushFragments(PlaylistDetailFragment(), FragmentTag.PlaylistVideoDetailFragment)
+            //TODO: Create a Empty Playlist.
+            //(requireActivity() as MainActivity).pushFragments(PlaylistDetailFragment(), FragmentTag.PlaylistVideoDetailFragment)
         }
     }
 

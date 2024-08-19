@@ -61,7 +61,7 @@
 
         android:orientation="vertical"
 
-        tools:listitem="@layout/playlist_item"
+        tools:listitem="@layout/item_playlist"
         >
 
     </androidx.recyclerview.widget.RecyclerView>
