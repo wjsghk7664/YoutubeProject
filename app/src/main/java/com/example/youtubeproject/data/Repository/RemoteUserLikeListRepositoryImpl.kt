@@ -44,7 +44,7 @@ class RemoteUserLikeListRepositoryImpl @Inject constructor(private val db:Fireba
 
     override fun getList(id: String, callback: (LikeList?) -> Unit) {
         db.collection("LikeList").document(id).get().addOnSuccessListener { document->
-            if(document.exists()){
+            if(document!=null&&document.exists()){
                 val list = document.toObject(LikeList::class.java)
                 callback(list)
             }else {
