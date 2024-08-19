@@ -9,6 +9,6 @@ class GetPlaylistUseCase @Inject constructor(
     suspend operator fun invoke(): List<Playlist> {
         //TODO
         //remotePlaylistRepository.getPlaylist(userId)
-        return listOf()
+        return listOf(Playlist(1L, "Test"))
     }
 }

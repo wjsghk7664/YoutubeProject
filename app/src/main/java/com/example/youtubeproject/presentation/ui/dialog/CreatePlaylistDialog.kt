@@ -3,8 +3,10 @@ package com.example.youtubeproject.presentation.ui.dialog
 import android.app.AlertDialog
 import android.app.Dialog
 import android.os.Bundle
+import android.util.AttributeSet
 import android.widget.EditText
 import android.widget.Toast
+import androidx.core.view.marginLeft
 import androidx.fragment.app.DialogFragment
 import com.example.youtubeproject.R
 

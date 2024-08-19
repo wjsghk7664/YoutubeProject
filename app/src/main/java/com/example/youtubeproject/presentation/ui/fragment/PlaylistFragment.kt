@@ -7,9 +7,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
-import androidx.activity.OnBackPressedCallback
 import androidx.fragment.app.activityViewModels
-import androidx.fragment.app.viewModels
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.lifecycleScope
 import com.example.youtubeproject.R
@@ -36,6 +34,7 @@ class PlaylistFragment : Fragment() {
     private val viewmodel: PlaylistViewModel by activityViewModels()
 
     private val playlistsLiveData = MutableLiveData(mutableListOf<Playlist>())
+
     private val playlistRv = PlaylistsAdapter(
         onItemClick = { playlist ->
             (requireActivity() as MainActivity).pushFragments(
@@ -56,7 +55,6 @@ class PlaylistFragment : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        Log.d("PlaylistFragment", "onCreateView")
         _binding = FragmentPlaylistBinding.inflate(inflater)
         return binding.root
     }
@@ -80,17 +78,11 @@ class PlaylistFragment : Fragment() {
                     is PlaylistUiState.Init -> null
 
                     is PlaylistUiState.GetPlaylistsSuccess -> {
-                        playlistsLiveData.value?.addAll(it.playlists)
-
-                        if(playlistsLiveData.value.isNullOrEmpty()) {
-                            binding.emptyTv.visibility = View.VISIBLE
-                        } else {
-                            binding.emptyTv.visibility = View.INVISIBLE
-                        }
+                        playlistsLiveData.value = it.playlists.toMutableList()
                     }
 
                     is PlaylistUiState.CreatePlaylistSuccess -> {
-                        playlistsLiveData.value?.add(it.playlist)
+                        viewmodel.getPlaylists()
                         Toast.makeText(requireContext(), getString(R.string.create_playlist_success_message), Toast.LENGTH_SHORT).show()
                     }
 
@@ -115,7 +107,14 @@ class PlaylistFragment : Fragment() {
         }
 
         playlistsLiveData.observe(viewLifecycleOwner) {
-            playlistRv.submitList(it)
+            playlistRv.submitList(it.toList())
+            Log.d("PlaylistFragment", "playlistRv Changed: ${playlistRv.currentList.size}")
+
+            if(playlistRv.currentList.isEmpty()) {
+                binding.emptyTv.visibility = View.VISIBLE
+            } else {
+                binding.emptyTv.visibility = View.INVISIBLE
+            }
         }
 
         binding.addPlaylistBtn.setOnClickListener {
