@@ -19,13 +19,6 @@ import com.example.youtubeproject.presentation.ui.ChannelCategoryItem
 
 import androidx.recyclerview.widget.RecyclerView
 import com.example.youtubeproject.R
-import com.example.youtubeproject.presentation.ui.CategoryAdapter
-import com.example.youtubeproject.presentation.ui.CategoryItem
-import com.example.youtubeproject.presentation.ui.ChannelCategoryAdapter
-import com.example.youtubeproject.presentation.ui.ChannelCategoryItem
-import com.example.youtubeproject.presentation.ui.PopularVideosAdapter
-import com.example.youtubeproject.presentation.ui.VideoItem
-import com.example.youtubeproject.presentation.ui.navigation.FragmentTag
 import com.example.youtubeproject.presentation.viewmodel.HomeViewModel
 import dagger.hilt.android.AndroidEntryPoint
 
