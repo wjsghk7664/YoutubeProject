@@ -10,7 +10,7 @@ import com.example.youtubeproject.data.model.Playlist
 import com.example.youtubeproject.databinding.ItemPlaylistBinding
 
 class PlaylistsAdapter(
-    private val onItemClick: () -> (Unit)
+    private val onItemClick: (Playlist) -> (Unit)
 ): ListAdapter<Playlist, PlaylistsAdapter.PlaylistViewHolder>(
     object: DiffUtil.ItemCallback<Playlist>() {
         override fun areItemsTheSame(oldItem: Playlist, newItem: Playlist): Boolean {
@@ -32,7 +32,7 @@ class PlaylistsAdapter(
                 playlistSizeTv.text = item.size.toString()
 
                 root.setOnClickListener {
-                    onItemClick
+                    onItemClick(item)
                 }
             }
         }

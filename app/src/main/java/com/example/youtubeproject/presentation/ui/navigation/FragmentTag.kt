@@ -7,6 +7,8 @@ enum class FragmentTag {
     PlaylistFragment,
     MyPageFragment,
 
+    PlaylistDetailFragment,
+
     HomeVideoDetailFragment,
     SearchVideoDetailFragment,
     PlaylistVideoDetailFragment,

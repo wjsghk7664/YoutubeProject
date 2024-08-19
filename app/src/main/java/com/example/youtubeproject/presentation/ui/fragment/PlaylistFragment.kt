@@ -15,6 +15,8 @@ import androidx.lifecycle.lifecycleScope
 import com.example.youtubeproject.R
 import com.example.youtubeproject.data.model.Playlist
 import com.example.youtubeproject.databinding.FragmentPlaylistBinding
+import com.example.youtubeproject.presentation.adapter.PlaylistsAdapter
+import com.example.youtubeproject.presentation.adapter.deco.PlaylistAdapterDecoration
 import com.example.youtubeproject.presentation.ui.MainActivity
 import com.example.youtubeproject.presentation.ui.navigation.FragmentTag
 import com.example.youtubeproject.presentation.uistate.LoginUiState
@@ -29,9 +31,16 @@ class PlaylistFragment : Fragment() {
     private var _binding: FragmentPlaylistBinding? = null
     private val binding get() = _binding!!
 
-    private val viewmodel: PlaylistViewModel by viewModels()
+    private val viewmodel: PlaylistViewModel by activityViewModels()
 
     private val playlistsLiveData = MutableLiveData(mutableListOf<Playlist>())
+    private val playlistRv = PlaylistsAdapter { playlist ->
+        (requireActivity() as MainActivity).pushFragments(
+            PlaylistDetailFragment.newInstance(playlist),
+            FragmentTag.PlaylistDetailFragment
+        )
+    }
+
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -76,13 +85,23 @@ class PlaylistFragment : Fragment() {
             }
         }
 
+        //Recycler View
+        with(binding.playlistRecyclerView) {
+            adapter = playlistRv
+            addItemDecoration(PlaylistAdapterDecoration())
+        }
+
         playlistsLiveData.observe(viewLifecycleOwner) {
             //TODO: Update Playlist RecyclerView Adapter
         }
 
         binding.addPlaylistBtn.setOnClickListener {
             //TODO: Create a Empty Playlist.
-            //(requireActivity() as MainActivity).pushFragments(PlaylistDetailFragment(), FragmentTag.PlaylistVideoDetailFragment)
+            (requireActivity() as MainActivity)
+                .pushFragments(
+                    PlaylistDetailFragment.newInstance(Playlist(1L, "Hello")),
+                    FragmentTag.PlaylistDetailFragment
+                )
         }
     }
 

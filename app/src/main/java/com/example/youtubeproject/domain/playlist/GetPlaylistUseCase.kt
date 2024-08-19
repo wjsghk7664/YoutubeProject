@@ -6,9 +6,9 @@ import javax.inject.Inject
 class GetPlaylistUseCase @Inject constructor(
     //private val remotePlaylistRepository: RemotePlaylistRepository
 ) {
-    suspend operator fun invoke(): Playlist {
+    suspend operator fun invoke(): List<Playlist> {
         //TODO
         //remotePlaylistRepository.getPlaylist(userId)
-        return Playlist(1L)
+        return listOf()
     }
 }

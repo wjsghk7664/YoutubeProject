@@ -1,10 +1,12 @@
 package com.example.youtubeproject.data.model
 
+import android.os.Parcelable
+import kotlinx.parcelize.Parcelize
+
+@Parcelize
 data class Playlist(
     val id: Long,
     val title: String,
-) {
-    //TODO: Change 'Long' to 'Video'
-    val lists = listOf<Long>()
-    val size = lists.size
-}
+    val lists: List<Long> = listOf(),   //TODO: Change 'Long' to 'Video'
+    val size: Int = lists.size
+): Parcelable
