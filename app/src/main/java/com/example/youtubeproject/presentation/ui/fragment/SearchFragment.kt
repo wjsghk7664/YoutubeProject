@@ -13,6 +13,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.youtubeproject.databinding.FragmentSearchBinding
 import com.example.youtubeproject.presentation.adapter.SearchCategoryAdapter
 import com.example.youtubeproject.presentation.adapter.deco.SearchCategoryItemDecoration
+import com.example.youtubeproject.presentation.ui.navigation.FragmentTag
 
 class SearchFragment : Fragment() {
     private val binding by lazy { FragmentSearchBinding.inflate(layoutInflater) }
