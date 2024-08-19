@@ -44,6 +44,7 @@ class SearchViewModel @Inject constructor(private val searchUseCase: SearchUseCa
     fun searchResultMore(query: String, page: String, category: String?) {
         viewModelScope.launch {
             _isLoadMore.value = true
+            _uiState.value = SearchUiState.LoadingMore
 
             searchUseCase(query, page, category) {
                 if (it?.items != null) {
