@@ -2,7 +2,6 @@ package com.example.youtubeproject.presentation.ui.fragment
 
 import android.content.Context.INPUT_METHOD_SERVICE
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -15,6 +14,7 @@ import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.example.youtubeproject.R
 import com.example.youtubeproject.databinding.FragmentSearchBinding
 import com.example.youtubeproject.presentation.adapter.SearchCategoryAdapter
 import com.example.youtubeproject.presentation.adapter.SearchResultAdapter
@@ -31,6 +31,7 @@ class SearchFragment : Fragment() {
     private val searchViewModel by viewModels<SearchViewModel>()
     private val searchResultAdapter by lazy { SearchResultAdapter() }
     private var nextPage: String? = null
+    private var selectedCategory: String? = null
     private var isMoreLoading = false
 
     override fun onCreateView(
@@ -49,6 +50,7 @@ class SearchFragment : Fragment() {
             val query = binding.searchingEt.text.toString()
 
             if (query.isNotEmpty()) {
+                selectedCategory = categoryNumber
                 searchViewModel.searchVideo(query, null, categoryNumber)
             }
         }
@@ -114,31 +116,38 @@ class SearchFragment : Fragment() {
                     is SearchUiState.Success -> {
                         searchCategoryRvNestedScrollHost.visibility = View.VISIBLE
                         searchingLoadingIndicator.visibility = View.GONE
-                        searchResultIsEmptyText.visibility = View.GONE
+                        searchResultStatusText.visibility = View.GONE
                         searchResultRv.visibility = View.VISIBLE
 
                         nextPage = it.searchResultModel.nextPageToken.toString()
                     }
                     is SearchUiState.Empty -> {
+                        searchCategoryRvNestedScrollHost.visibility = View.GONE
                         searchingLoadingIndicator.visibility = View.GONE
-                        searchResultIsEmptyText.visibility = View.VISIBLE
+                        searchResultStatusText.visibility = View.VISIBLE
                         searchResultRv.visibility = View.GONE
+
+                        searchResultStatusText.text = context?.getString(R.string.search_result_empty_text)
                     }
                     is SearchUiState.Init -> {
                         searchCategoryRvNestedScrollHost.visibility = View.GONE
                         searchingLoadingIndicator.visibility = View.GONE
-                        searchResultIsEmptyText.visibility = View.GONE
+                        searchResultStatusText.visibility = View.GONE
                         searchResultRv.visibility = View.GONE
                     }
                     is SearchUiState.Loading -> {
                         searchCategoryRvNestedScrollHost.visibility = View.GONE
                         searchingLoadingIndicator.visibility = View.VISIBLE
-                        searchResultIsEmptyText.visibility = View.GONE
+                        searchResultStatusText.visibility = View.GONE
                         searchResultRv.visibility = View.GONE
                     }
-                    is SearchUiState.LoadingMore -> {}
                     is SearchUiState.Failure -> {
-                        Log.e("TAG", "observeSearchRes: failure")
+                        searchCategoryRvNestedScrollHost.visibility = View.GONE
+                        searchingLoadingIndicator.visibility = View.GONE
+                        searchResultStatusText.visibility = View.VISIBLE
+                        searchResultRv.visibility = View.GONE
+
+                        searchResultStatusText.text = context?.getString(R.string.search_result_fail_text)
                     }
                 }
             }
@@ -162,7 +171,7 @@ class SearchFragment : Fragment() {
                 if (!recyclerView.canScrollVertically(1) && newState == RecyclerView.SCROLL_STATE_IDLE) {
                     if (!isMoreLoading && nextPage != null) {
                         val query = binding.searchingEt.text.toString()
-                        searchViewModel.searchResultMore(query, nextPage!!, searchViewModel.selectCategory.value)
+                        searchViewModel.searchResultMore(query, nextPage!!, selectedCategory)
                     }
                 }
             }

@@ -78,10 +78,9 @@
     </LinearLayout>
 
     <TextView
-        android:id="@+id/search_result_is_empty_text"
+        android:id="@+id/search_result_status_text"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:text="@string/search_result_empty_text"
         android:textSize="16sp"
         android:textColor="@color/white"
         android:visibility="gone"
