@@ -1,5 +1,6 @@
 package com.example.youtubeproject.presentation.ui
 
+import VideoItem
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -17,7 +18,7 @@ data class CategoryItem(
 )
 
 class CategoryAdapter :
-    ListAdapter<CategoryItem, CategoryAdapter.CategoryViewHolder>(CategoryDiffCallback()) {
+    ListAdapter<VideoItem, CategoryAdapter.CategoryViewHolder>(CategoryDiffCallback()) {
 
     inner class CategoryViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         val imageView: ImageView = itemView.findViewById(R.id.category_image)
@@ -30,19 +31,19 @@ class CategoryAdapter :
     }
 
     override fun onBindViewHolder(holder: CategoryViewHolder, position: Int) {
-        val categoryItem = getItem(position)
+        val videoItem = getItem(position)
         Glide.with(holder.itemView)
-            .load(categoryItem.imageResId)
+            .load(videoItem.mainImageUrl)
             .into(holder.imageView)
-        holder.textView.text = categoryItem.categoryName
+        holder.textView.text = videoItem.description
     }
 
-    class CategoryDiffCallback : DiffUtil.ItemCallback<CategoryItem>() {
-        override fun areItemsTheSame(oldItem: CategoryItem, newItem: CategoryItem): Boolean {
-            return oldItem.categoryName == newItem.categoryName
+    class CategoryDiffCallback : DiffUtil.ItemCallback<VideoItem>() {
+        override fun areItemsTheSame(oldItem: VideoItem, newItem: VideoItem): Boolean {
+            return oldItem.description == newItem.description
         }
 
-        override fun areContentsTheSame(oldItem: CategoryItem, newItem: CategoryItem): Boolean {
+        override fun areContentsTheSame(oldItem: VideoItem, newItem: VideoItem): Boolean {
             return oldItem == newItem
         }
     }

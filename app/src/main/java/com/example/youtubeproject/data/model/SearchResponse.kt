@@ -1,34 +1,32 @@
 package com.example.youtubeproject.data.model
 
+import com.google.gson.annotations.SerializedName
+
 data class SearchResponse(
-    val id: Id?,
-    val snippet:searchSnippet?
+    @SerializedName("id") val id: Id?,
+    @SerializedName("snippet") val snippet:SearchSnippet?
 )
 
 data class Id(
-    val kind:String?,
-    val video:String?,
+    @SerializedName("kind") val kind:String?,
+    @SerializedName("videoId") val videoId:String?,
 )
 
-data class searchSnippet(
-    val publishedAt: String?,
-    val channelId: String?,
-    val title: String?,
-    val description:String?,
-    val thumbnails: Thumbnails?,
-    val channelTitle:String?,
+data class SearchSnippet(
+    @SerializedName("publishedAt") val publishedAt: String?,
+    @SerializedName("channelId") val channelId: String?,
+    @SerializedName("title") val title: String?,
+    @SerializedName("description") val description:String?,
+    @SerializedName("thumbnails") val thumbnails: Thumbnails?,
+    @SerializedName("channelTitle") val channelTitle:String?,
 )
 
 data class Thumbnails(
-    val default:Thumbnail?,
-    val medium: Thumbnail?,
-    val high: Thumbnail?,
-    val standard: Thumbnail?,
-    val maxres: Thumbnail?
+    @SerializedName("high") val high:Thumbnail?
 )
 
 data class Thumbnail(
-    val url:String?,
-    val width: String?,
-    val height: String?
+    @SerializedName("url") val url:String?,
+    @SerializedName("width") val width: String?,
+    @SerializedName("height") val height: String?
 )

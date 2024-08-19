@@ -53,6 +53,7 @@
 
     <string name="search_bar_hint">검색어를 입력하세요.</string>
     <string name="search_result_empty_text">검색 결과가 없습니다.\n다른 키워드로 검색해주세요.</string>
+    <string name="search_result_fail_text">요청에 실패했습니다.\n다시 시도해 주세요.</string>
 
 
     <string name="menu_home_title">홈</string>
