@@ -14,12 +14,11 @@ import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
 import retrofit2.HttpException
 import javax.inject.Inject
-
+//
 @HiltViewModel
 class HomeViewModel @Inject constructor(
     private val mostPopularVideoUseCase: MostPopularVideoUseCase,
     private val categoryVideoUseCase: CategoryVideoUseCase,
-    private val channelCategoryUseCase: ChannelCategoryUseCase
 ) : ViewModel() {
 
     private val _popularVideos = MutableLiveData<CategoryVideoModel>()
@@ -56,16 +55,6 @@ class HomeViewModel @Inject constructor(
 
 
 
-    fun loadCategoryChannels(categoryId: String) {
-        viewModelScope.launch {
-            try {
-                val categoryChannels = channelCategoryUseCase(categoryId)
-                _categoryChannels.value = categoryChannels
-            } catch (e: Exception) {
-                Log.e("에러 loadCategoryChannels", "Error", e)
-            }
-        }
-    }
 
 
 
