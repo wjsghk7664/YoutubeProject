@@ -146,6 +146,7 @@ class PlaylistDetailFragment : Fragment() {
                         lists = playlistLiveData.value!!.lists.toMutableList().apply {
                             addAll(added)
                         }
+
                     )
                 },
                 titleList
