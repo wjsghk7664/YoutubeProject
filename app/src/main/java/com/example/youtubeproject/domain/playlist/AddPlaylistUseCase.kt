@@ -8,8 +8,8 @@ import javax.inject.Inject
 class AddPlaylistUseCase @Inject constructor(
     private val remotePlaylistRepository: RemoteUserPlayListRepository
 ) {
-    operator fun invoke(playlist: Playlist, callback: (Boolean) -> (Unit)): Playlist {
-        remotePlaylistRepository.AddPlayList(playlist.id, playlist, callback)
+    operator fun invoke(userId: String, playlist: Playlist, callback: (Boolean) -> (Unit)): Playlist {
+        remotePlaylistRepository.AddPlayList(userId, playlist, callback)
         return playlist
     }
 }

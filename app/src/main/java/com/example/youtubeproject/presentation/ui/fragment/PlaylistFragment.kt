@@ -1,5 +1,6 @@
 package com.example.youtubeproject.presentation.ui.fragment
 
+import android.os.Build
 import android.os.Bundle
 import android.util.Log
 import androidx.fragment.app.Fragment
@@ -13,6 +14,7 @@ import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.youtubeproject.R
 import com.example.youtubeproject.data.model.Playlist
+import com.example.youtubeproject.data.model.User
 import com.example.youtubeproject.databinding.FragmentPlaylistBinding
 import com.example.youtubeproject.presentation.adapter.PlaylistsAdapter
 import com.example.youtubeproject.presentation.adapter.deco.PlaylistAdapterDecoration
@@ -34,8 +36,13 @@ class PlaylistFragment : Fragment() {
     private val viewmodel: PlaylistViewModel by activityViewModels()
 
     private val playlistsLiveData = MutableLiveData(mutableListOf<Playlist>())
-    private val userId by lazy {
-        requireActivity().intent.getStringExtra("userData")!!
+    private val userData by lazy {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+            requireActivity().intent.getParcelableExtra("userData", User::class.java)!!
+        } else {
+            @Suppress("DEPRECATION")
+            requireActivity().intent.getParcelableExtra("userData")!!
+        }
     }
 
     private val playlistRv = PlaylistsAdapter(
@@ -47,7 +54,7 @@ class PlaylistFragment : Fragment() {
         },
         onLongItemClick = { playlist ->
             DeletePlaylistDialog {
-                viewmodel.deletePlaylist(playlist)
+                viewmodel.deletePlaylist(userData.id, playlist)
             }.show(requireActivity().supportFragmentManager, CreatePlaylistDialog.TAG)
             true
         }
@@ -86,12 +93,15 @@ class PlaylistFragment : Fragment() {
                     }
 
                     is PlaylistUiState.CreatePlaylistSuccess -> {
-                        viewmodel.getPlaylists(userId)
+                        viewmodel.getPlaylists(userData.id)
                         Toast.makeText(requireContext(), getString(R.string.create_playlist_success_message), Toast.LENGTH_SHORT).show()
                     }
 
-                    is PlaylistUiState.DeletePlaylistSuccess ->
+                    is PlaylistUiState.DeletePlaylistSuccess -> {
+                        viewmodel.getPlaylists(userData.id)
                         Toast.makeText(requireContext(), getString(R.string.delete_playlist_success_message), Toast.LENGTH_SHORT).show()
+                    }
+
 
                     is PlaylistUiState.SavePlaylistSuccess ->
                         Toast.makeText(requireContext(), getString(R.string.save_playlist_success_message), Toast.LENGTH_SHORT).show()
@@ -117,10 +127,9 @@ class PlaylistFragment : Fragment() {
 
         playlistsLiveData.observe(viewLifecycleOwner) {
             playlistRv.submitList(it.toList())
-            Log.d("PlaylistFragment", "playlistRv Changed: ${playlistRv.currentList.size}")
 
             binding.emptyTv.visibility =
-                if(playlistRv.currentList.isEmpty()) {
+                if(it.isEmpty()) {
                     View.VISIBLE
                 } else {
                     View.INVISIBLE
@@ -129,12 +138,12 @@ class PlaylistFragment : Fragment() {
 
         binding.addPlaylistBtn.setOnClickListener {
             CreatePlaylistDialog { title ->
-                viewmodel.createPlaylist(title)
+                viewmodel.createPlaylist(userData.id, title)
             }.show(requireActivity().supportFragmentManager, CreatePlaylistDialog.TAG)
         }
     }
 
     private fun initialize() {
-        viewmodel.getPlaylists(userId)
+        viewmodel.getPlaylists(userData.id)
     }
 }

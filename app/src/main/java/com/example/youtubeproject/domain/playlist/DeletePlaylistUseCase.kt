@@ -7,7 +7,7 @@ import javax.inject.Inject
 class DeletePlaylistUseCase @Inject constructor(
     private val remotePlaylistRepository: RemoteUserPlayListRepository
 ) {
-    operator fun invoke(playlist: Playlist, callback: (Boolean) -> (Unit)) {
-        remotePlaylistRepository.DeletePlayLists(playlist.id, callback)
+    operator fun invoke(userId: String, playlist: Playlist, callback: (Boolean) -> (Unit)) {
+        remotePlaylistRepository.deletePlayList(userId, playlist, callback)
     }
 }

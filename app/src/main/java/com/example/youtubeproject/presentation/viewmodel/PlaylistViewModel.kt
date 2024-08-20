@@ -1,5 +1,6 @@
 package com.example.youtubeproject.presentation.viewmodel
 
+import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.youtubeproject.data.model.Playlist
@@ -45,12 +46,15 @@ class PlaylistViewModel @Inject constructor(
         runCatching {
             getPlaylistUseCase.invoke(userId) { playlists ->
                 if(playlists != null) {
+                    Log.d("PlaylistViewModel", "GetPlaylists: ${userId} success")
                     _uiState.value = PlaylistUiState.GetPlaylistsSuccess(playlists.playLists)
                 } else {
+                    Log.d("PlaylistViewModel", "GetPlaylists: ${userId} fail")
                     _uiState.value = PlaylistUiState.Failure
                 }
             }
         }.onFailure {
+            Log.d("PlaylistViewModel", "GetPlaylists: ${userId} onFailure")
             _uiState.value = PlaylistUiState.Failure
         }
     }
@@ -67,27 +71,30 @@ class PlaylistViewModel @Inject constructor(
             _uiState.value = PlaylistUiState.Failure
         }
     }
-    fun createPlaylist(title: String) {
+    fun createPlaylist(userId: String, title: String) {
         runCatching {
             val newPlaylist = Playlist(
                 LocalDateTime.now().toString(),
                 title
             )
-            addPlaylistUseCase.invoke(newPlaylist) { isSuccess ->
+            addPlaylistUseCase.invoke(userId, newPlaylist) { isSuccess ->
                 if(isSuccess) {
+                    Log.d("PlaylistViewModel", "createPlaylist: ${newPlaylist.title} success")
                     _uiState.value = PlaylistUiState.CreatePlaylistSuccess(newPlaylist)
                 } else {
+                    Log.d("PlaylistViewModel", "createPlaylist: ${newPlaylist.title} fail")
                     _uiState.value = PlaylistUiState.Failure
                 }
             }
         }.onFailure {
+            Log.d("PlaylistViewModel", "createPlaylist onFailure")
             _uiState.value = PlaylistUiState.Failure
         }
     }
 
-    fun deletePlaylist(playlist: Playlist) {
+    fun deletePlaylist(userId: String, playlist: Playlist) {
         runCatching {
-            deletePlaylistUseCase.invoke(playlist) { isDeleted ->
+            deletePlaylistUseCase.invoke(userId, playlist) { isDeleted ->
                 if(isDeleted) {
                     _uiState.value = PlaylistUiState.DeletePlaylistSuccess
                 } else {
