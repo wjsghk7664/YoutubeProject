@@ -2,13 +2,14 @@ package com.example.youtubeproject.domain.playlist
 
 import com.example.youtubeproject.data.Repository.RemoteUserPlayListRepository
 import com.example.youtubeproject.data.model.Playlist
-import com.example.youtubeproject.data.model.UserPlayLists
+import java.time.LocalDateTime
 import javax.inject.Inject
 
-class GetPlaylistUseCase @Inject constructor(
+class AddPlaylistUseCase @Inject constructor(
     private val remotePlaylistRepository: RemoteUserPlayListRepository
 ) {
-    operator fun invoke(userId: String, callback: (UserPlayLists?) -> (Unit)) {
-        remotePlaylistRepository.getAllPlayLists(userId, callback)
+    operator fun invoke(userId: String, playlist: Playlist, callback: (Boolean) -> (Unit)): Playlist {
+        remotePlaylistRepository.AddPlayList(userId, playlist, callback)
+        return playlist
     }
 }

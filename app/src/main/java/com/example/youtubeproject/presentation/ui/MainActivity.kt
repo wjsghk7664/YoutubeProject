@@ -1,6 +1,8 @@
 package com.example.youtubeproject.presentation.ui
 
+import android.os.Build
 import android.os.Bundle
+import android.service.autofill.UserData
 import android.util.Log
 import android.widget.Toast
 import androidx.activity.OnBackPressedCallback
@@ -8,11 +10,8 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
 import androidx.viewpager2.widget.ViewPager2
 import com.example.youtubeproject.R
+import com.example.youtubeproject.data.model.User
 import com.example.youtubeproject.databinding.ActivityMainBinding
-import com.example.youtubeproject.presentation.ui.fragment.HomeFragment
-import com.example.youtubeproject.presentation.ui.fragment.MyPageFragment
-import com.example.youtubeproject.presentation.ui.fragment.PlaylistFragment
-import com.example.youtubeproject.presentation.ui.fragment.SearchFragment
 import com.example.youtubeproject.presentation.ui.navigation.FragmentTag
 import com.example.youtubeproject.presentation.ui.navigation.TabTag
 import com.example.youtubeproject.presentation.ui.viewpager.MainViewPager

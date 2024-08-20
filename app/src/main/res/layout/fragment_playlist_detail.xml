@@ -21,6 +21,19 @@
         android:textSize="24sp"
         android:textStyle="bold"
         />
+
+    <ImageView
+        android:id="@+id/add_video_btn"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+
+        app:layout_constraintTop_toTopOf="@id/play_list_title_tv"
+        app:layout_constraintBottom_toBottomOf="@id/play_list_title_tv"
+        app:layout_constraintEnd_toEndOf="parent"
+
+        android:src="@drawable/add_icon"
+        />
+
     <View
         android:id="@+id/title_division"
         android:layout_width="match_parent"

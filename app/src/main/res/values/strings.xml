@@ -80,6 +80,8 @@
     <string name="channel_category">채널 카테고리</string>
     <string name="delete_playlist_dialog_title">해당 플레이리스트를 삭제할까요?</string>
     <string name="delete_playlist_success_message">해당 플레이리스트를 삭제하였습니다.</string>
+    <string name="delete_video_success_message">해당 영상을 삭제하였습니다.</string>
+    <string name="add_videos_dialog_title">추가할 영상을 고르세요.</string>
     <string-array name="category_options">
         <item>카테고리 1</item>
         <item>카테고리 2</item>

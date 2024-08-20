@@ -14,5 +14,4 @@ class MainViewPager(fragmentActivity: FragmentActivity): FragmentStateAdapter(fr
 
     override fun getItemCount(): Int = fragments.size
     override fun createFragment(position: Int) = fragments[position]
-
 }
