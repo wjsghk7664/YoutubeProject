@@ -2,6 +2,7 @@ package com.example.youtubeproject.presentation.viewmodel
 
 import android.util.Log
 import android.widget.Toast
+import androidx.lifecycle.ViewModel
 import com.example.youtubeproject.data.model.LikeList
 import com.example.youtubeproject.data.model.VideoModel
 import com.example.youtubeproject.domain.AddLikeUseCase
@@ -15,7 +16,7 @@ class LikeVideoViewModel(
     private val getUserLikeUseCase: GetUserLikesUseCase,
     private val addLikesUseCase: AddLikeUseCase,
     private val deleteLikeUseCase: DeleteLikeUseCase
-) {
+): ViewModel() {
     fun getUserLikesVideos(userId: String, callback: (LikeList?) -> (Unit)) {
         runCatching {
             getUserLikeUseCase.invoke(userId, callback)
