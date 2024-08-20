@@ -5,6 +5,7 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
 import androidx.recyclerview.widget.ListAdapter
+import com.bumptech.glide.Glide
 import com.example.youtubeproject.R
 import com.example.youtubeproject.data.model.Playlist
 import com.example.youtubeproject.data.model.VideoModel
@@ -26,9 +27,11 @@ class VideoDetailAdapter(
 ) {
     inner class VideoDetailViewHolder(private val binding: VideoDetailItemBinding): RecyclerView.ViewHolder(binding.root) {
         fun bind(item: VideoModel) {
-//            GlideApp.with(binding.root)
-//                .load(item.thumbnailImg.high.url)
-//                .into(binding.thumbnailImg)
+            Glide.with(binding.root)
+                .load(item.snippet.thumbnails?.high?.url.toString())
+                .error(R.drawable.logo)
+                .into(binding.thumbnailImg)
+
             with(binding) {
                 videoTitleTv.text = item.snippet.title
                 videoOwnerTv.text = item.snippet.channelTitle

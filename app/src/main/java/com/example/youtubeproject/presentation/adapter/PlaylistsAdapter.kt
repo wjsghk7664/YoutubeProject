@@ -6,6 +6,7 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
+import com.bumptech.glide.Glide
 import com.example.youtubeproject.R
 import com.example.youtubeproject.data.model.Playlist
 import com.example.youtubeproject.databinding.ItemPlaylistBinding
@@ -26,9 +27,14 @@ class PlaylistsAdapter(
 
     inner class PlaylistViewHolder(private val binding: ItemPlaylistBinding): RecyclerView.ViewHolder(binding.root) {
         fun bind(item: Playlist) {
-//            GlideApp.with(binding.root)
-//                .load(item.imageUrl)
-//                .into(binding.image)
+            if(item.lists.isNotEmpty()) {
+                Glide.with(binding.root)
+                    .load(item.lists[0].snippet.thumbnails?.high?.url.toString())
+                    .error(R.drawable.logo)
+                    .into(binding.thumbnailImg)
+            }
+
+
             with(binding) {
                 playlistTitleTv.text = item.title
                 playlistSizeTv.text = item.size.toString()
