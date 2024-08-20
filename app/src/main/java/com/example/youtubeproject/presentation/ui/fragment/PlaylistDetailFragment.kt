@@ -18,7 +18,7 @@ class PlaylistDetailFragment : Fragment() {
 
     //TODO: 초기화 방법 잘못됨. 다시 생각해보기
     private val playlist by lazy {
-        val id = arguments?.getLong(PLAYLIST)!!
+        val id = arguments?.getString(PLAYLIST)!!
         viewModel.getPlaylistDetail(id)
     }
 
@@ -40,10 +40,10 @@ class PlaylistDetailFragment : Fragment() {
         private const val PLAYLIST = "PLAYLIST_ID"
 
         @JvmStatic
-        fun newInstance(playlistId: Long) =
+        fun newInstance(playlistId: String) =
             PlaylistDetailFragment().apply {
                 arguments = Bundle().apply {
-                    putLong(PLAYLIST, playlistId)
+                    putString(PLAYLIST, playlistId)
                 }
             }
     }

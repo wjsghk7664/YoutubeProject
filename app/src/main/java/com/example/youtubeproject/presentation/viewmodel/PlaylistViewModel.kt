@@ -25,53 +25,72 @@ class PlaylistViewModel @Inject constructor(
     private val _uiState = MutableStateFlow<PlaylistUiState>(PlaylistUiState.Init)
     val uiState = _uiState.asStateFlow()
 
-    fun getPlaylistDetail(id: Long): Playlist {
-        return Playlist(1L, "TITLE")
+    fun getPlaylistDetail(userId: String, playlistId: String) {
+        runCatching {
+            getPlaylistUseCase.invoke(userId) { result ->
+                if(result != null) {
+                    val detail = result.playLists.first { it.id == playlistId }
+                    _uiState.value = PlaylistUiState.GetPlaylistDetailSuccess(detail)
+                } else {
+                    _uiState.value = PlaylistUiState.Failure
+                }
+            }
+        }.onFailure {
+            _uiState.value = PlaylistUiState.Failure
+        }
     }
 
-    fun getPlaylists() {
-        viewModelScope.launch {
-            runCatching {
-                getPlaylistUseCase.invoke()
-            }.onFailure {
-                _uiState.emit(PlaylistUiState.Failure)
-            }.onSuccess {
-                _uiState.emit(PlaylistUiState.GetPlaylistsSuccess(it))
+    fun getPlaylists(userId: String) {
+        runCatching {
+            getPlaylistUseCase.invoke(userId) { playlists ->
+                if(playlists != null) {
+                    _uiState.value = PlaylistUiState.GetPlaylistsSuccess(playlists.playLists)
+                } else {
+                    _uiState.value = PlaylistUiState.Failure
+                }
             }
+        }.onFailure {
+            _uiState.value = PlaylistUiState.Failure
         }
     }
     fun savePlaylist(playlist: Playlist) {
-        viewModelScope.launch {
-            runCatching {
-                savePlaylistUseCase.invoke(playlist)
-            }.onFailure {
-                _uiState.emit(PlaylistUiState.Failure)
-            }.onSuccess {
-                _uiState.emit(PlaylistUiState.SavePlaylistSuccess)
+        runCatching {
+            savePlaylistUseCase.invoke(playlist) { isSuccess ->
+                if(isSuccess) {
+                    _uiState.value = PlaylistUiState.SavePlaylistSuccess
+                } else {
+                    _uiState.value = PlaylistUiState.Failure
+                }
             }
+        }.onFailure {
+            _uiState.value = PlaylistUiState.Failure
         }
     }
-    fun createPlaylist(title: String) {
-        viewModelScope.launch {
-            runCatching {
-                addPlaylistUseCase.invoke(title)
-            }.onFailure {
-                _uiState.emit(PlaylistUiState.Failure)
-            }.onSuccess {
-                _uiState.emit(PlaylistUiState.CreatePlaylistSuccess(it))
+    fun createPlaylist(playlist: Playlist) {
+        runCatching {
+            addPlaylistUseCase.invoke(playlist) { isSuccess ->
+                if(isSuccess) {
+                    _uiState.value = PlaylistUiState.CreatePlaylistSuccess(playlist)
+                } else {
+                    _uiState.value = PlaylistUiState.Failure
+                }
             }
+        }.onFailure {
+            _uiState.value = PlaylistUiState.Failure
         }
     }
 
     fun deletePlaylist(playlist: Playlist) {
-        viewModelScope.launch {
-            runCatching {
-                deletePlaylistUseCase.invoke(playlist)
-            }.onFailure {
-                _uiState.emit(PlaylistUiState.Failure)
-            }.onSuccess {
-                _uiState.emit(PlaylistUiState.DeletePlaylistSuccess)
+        runCatching {
+            deletePlaylistUseCase.invoke(playlist) { isDeleted ->
+                if(isDeleted) {
+                    _uiState.value = PlaylistUiState.DeletePlaylistSuccess
+                } else {
+                    _uiState.value = PlaylistUiState.Failure
+                }
             }
+        }.onFailure {
+            _uiState.value = PlaylistUiState.Failure
         }
     }
 }
