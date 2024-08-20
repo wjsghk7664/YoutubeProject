@@ -5,6 +5,7 @@ import androidx.lifecycle.ViewModel
 import com.example.youtubeproject.data.model.User
 import com.example.youtubeproject.domain.CheckSignUpUseCase
 import com.example.youtubeproject.domain.CreateLikeListUseCase
+import com.example.youtubeproject.domain.CreatePlayListsUseCase
 import com.example.youtubeproject.domain.RegisterOrModifyUserDataUseCase
 import com.example.youtubeproject.domain.UploadProfileUseCase
 import com.example.youtubeproject.presentation.uistate.UiState
@@ -18,7 +19,8 @@ class SignUpViewModel @Inject constructor(
     private val checkSignUpUseCase: CheckSignUpUseCase,
     private val registerOrModifyUserDataUseCase: RegisterOrModifyUserDataUseCase,
     private val uploadProfileUseCase: UploadProfileUseCase,
-    private val createLikeListUseCase: CreateLikeListUseCase
+    private val createLikeListUseCase: CreateLikeListUseCase,
+    private val createPlayListsUseCase: CreatePlayListsUseCase
 ):ViewModel() {
     private val _uiState = MutableStateFlow<UiState<Unit>>(UiState.Init)
     val uiState = _uiState.asStateFlow()
@@ -26,15 +28,27 @@ class SignUpViewModel @Inject constructor(
     fun signUp(id:String, password:String, name:String, intro:String, profile:Bitmap?){
         checkSignUpUseCase(id,password,name){ notify,isEnable ->
             if(isEnable){
-                createLikeListUseCase(id){ likelist->
-                    if(likelist){
-                        var user = User(null,name, id, password, intro)
-                        if(profile!=null){
-                            uploadProfileUseCase(profile,id){ url ->
-                                if(url==null){
-                                    _uiState.value = UiState.Failure("N"+notify)
+                createPlayListsUseCase(id){ playlist->
+                    if(playlist){
+                        createLikeListUseCase(id){ likelist->
+                            if(likelist){
+                                var user = User(null,name, id, password, intro)
+                                if(profile!=null){
+                                    uploadProfileUseCase(profile,id){ url ->
+                                        if(url==null){
+                                            _uiState.value = UiState.Failure("N"+notify)
+                                        }else{
+                                            registerOrModifyUserDataUseCase(user.copy(profile = url)){
+                                                if(it){
+                                                    _uiState.value = UiState.Success(Unit)
+                                                }else{
+                                                    _uiState.value = UiState.Failure("F"+notify)
+                                                }
+                                            }
+                                        }
+                                    }
                                 }else{
-                                    registerOrModifyUserDataUseCase(user.copy(profile = url)){
+                                    registerOrModifyUserDataUseCase(user){
                                         if(it){
                                             _uiState.value = UiState.Success(Unit)
                                         }else{
@@ -42,18 +56,12 @@ class SignUpViewModel @Inject constructor(
                                         }
                                     }
                                 }
-                            }
-                        }else{
-                            registerOrModifyUserDataUseCase(user){
-                                if(it){
-                                    _uiState.value = UiState.Success(Unit)
-                                }else{
-                                    _uiState.value = UiState.Failure("F"+notify)
-                                }
+                            }else{
+                                _uiState.value = UiState.Failure("Lfail to make likelist")
                             }
                         }
                     }else{
-                        _uiState.value = UiState.Failure("Lfail to make likelist")
+                        _uiState.value = UiState.Failure("Lfail to make playlist")
                     }
                 }
             }else{
