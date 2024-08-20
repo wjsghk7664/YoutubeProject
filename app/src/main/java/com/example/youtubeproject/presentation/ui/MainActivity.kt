@@ -35,7 +35,10 @@ class MainActivity : AppCompatActivity() {
             if(curStack.size == 0) {
                 if(mCurrentTab == TabTag.Home) {
                     finishApp()
-                } else binding.viewPager.currentItem = 0
+                } else {
+                    mCurrentTab = TabTag.Home
+                    binding.viewPager.currentItem = 0
+                }
             } else popFragments()
         }
 

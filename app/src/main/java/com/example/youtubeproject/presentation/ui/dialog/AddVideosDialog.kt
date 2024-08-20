@@ -50,6 +50,7 @@ class AddVideosDialog(
     }
 
     companion object {
+        const val TAG = "ADD_VIDEOS_DIALOG"
         private const val VIDEO_TITLES = "VIDEO_TITLES"
 
         @JvmStatic
