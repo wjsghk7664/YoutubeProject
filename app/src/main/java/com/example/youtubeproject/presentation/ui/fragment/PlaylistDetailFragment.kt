@@ -22,6 +22,7 @@ import com.example.youtubeproject.presentation.ui.dialog.DeletePlaylistDialog
 import com.example.youtubeproject.presentation.ui.navigation.FragmentTag
 import com.example.youtubeproject.presentation.uistate.PlaylistUiState
 import com.example.youtubeproject.presentation.viewmodel.PlaylistViewModel
+import com.example.youtubeproject.presentation.viewmodel.VideoDetailViewModel
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 
@@ -29,9 +30,11 @@ class PlaylistDetailFragment : Fragment() {
     private var _binding: FragmentPlaylistDetailBinding? = null
     private val binding get() = _binding!!
 
-    private val viewModel: PlaylistViewModel by activityViewModels()
+    private val playlistViewModel: PlaylistViewModel by activityViewModels()
+    private val videoDetailViewModel: VideoDetailViewModel by activityViewModels()
 
     private val playlistLiveData = MutableLiveData<Playlist?>(null)
+
 
     private val userData by lazy {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
@@ -44,7 +47,7 @@ class PlaylistDetailFragment : Fragment() {
 
     private val playlistRv = VideoDetailAdapter(
         onItemClick = { videoModel ->
-            //TODO: Change PushFragment
+            videoDetailViewModel.videoModel = videoModel
             (requireActivity() as MainActivity).pushFragments(
                 VideoDetailFragment(),
                 FragmentTag.PlaylistVideoDetailFragment
@@ -52,7 +55,6 @@ class PlaylistDetailFragment : Fragment() {
         },
         onLongItemClick = { videoModel ->
             DeletePlaylistDialog {
-                //playlist update 후 submitList, getPlaylistDetail
                 playlistLiveData.value = playlistLiveData.value!!.copy(
                     lists = playlistLiveData.value!!.lists.toMutableList().apply {
                         remove(videoModel)
@@ -80,7 +82,7 @@ class PlaylistDetailFragment : Fragment() {
     override fun onDestroyView() {
         super.onDestroyView()
 
-        viewModel.savePlaylist(userData.id, playlistLiveData.value!!)
+        playlistViewModel.savePlaylist(userData.id, playlistLiveData.value!!)
 
         _binding = null
     }
@@ -99,7 +101,7 @@ class PlaylistDetailFragment : Fragment() {
 
     private fun initView() {
         lifecycleScope.launch {
-            viewModel.uiState.collectLatest {
+            playlistViewModel.uiState.collectLatest {
                 when(it) {
                     is PlaylistUiState.Init -> null
 
@@ -119,7 +121,7 @@ class PlaylistDetailFragment : Fragment() {
         }
 
         val playlistId = arguments?.getString(PLAYLIST)!!
-        viewModel.getPlaylistDetail(userData.id, playlistId)
+        playlistViewModel.getPlaylistDetail(userData.id, playlistId)
 
         playlistLiveData.observe(viewLifecycleOwner) {
             playlistRv.submitList(it?.lists ?: listOf())
@@ -132,27 +134,33 @@ class PlaylistDetailFragment : Fragment() {
         }
 
         binding.addVideoBtn.setOnClickListener {
-            val titleList = listOf<String>()        //TODO: change to titles of my favorite videos.
-            if(titleList.isEmpty()) {
-                Toast.makeText(requireContext(), "좋아요한 영상이 없습니다.", Toast.LENGTH_SHORT).show()
-                return@setOnClickListener
-            }
-
-            AddVideosDialog.newInstance({ result ->
-                    val added = listOf<VideoModel>().filter {
-                        result.contains(it.snippet.title)
-                    }
-                    playlistLiveData.value = playlistLiveData.value!!.copy(
-                        lists = playlistLiveData.value!!.lists.toMutableList().apply {
-                            addAll(added)
-                        }
-                    )
-                },
-                titleList
-            ).show(
-                requireActivity().supportFragmentManager,
-                AddVideosDialog.TAG
-            )
+            //TODO
+//            likeVideoViewModel.getUserLikesVideos(userData.id) { result ->
+//                val titleList = result?.likeList!!.map {
+//                    it.snippet.title!!
+//                }
+//
+//                if(titleList.isEmpty()) {
+//                    Toast.makeText(requireContext(), "좋아요한 영상이 없습니다.", Toast.LENGTH_SHORT).show()
+//                    return@getUserLikesVideos
+//                }
+//
+//                AddVideosDialog.newInstance({ addTo ->
+//                    val added = listOf<VideoModel>().filter {
+//                        addTo.contains(it.snippet.title)
+//                    }
+//                    playlistLiveData.value = playlistLiveData.value!!.copy(
+//                        lists = playlistLiveData.value!!.lists.toMutableList().apply {
+//                            addAll(added)
+//                        }
+//                    )
+//                },
+//                    titleList
+//                ).show(
+//                    requireActivity().supportFragmentManager,
+//                    AddVideosDialog.TAG
+//                )
+//            }
         }
     }
 
