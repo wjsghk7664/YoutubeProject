@@ -10,3 +10,5 @@ data class Playlist(
     val lists: List<VideoModel> = listOf(),   //TODO: Change 'Long' to 'Video'
     val size: Int = lists.size
 )
+
+
