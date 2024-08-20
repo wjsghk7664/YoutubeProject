@@ -63,7 +63,7 @@ class HomeViewModel @Inject constructor(
                         VideoItem(
                             mainImageUrl = videoResponse.snippet?.thumbnails?.high?.url,
                             profileImageUrl = videoResponse.snippet?.thumbnails?.high?.url,
-                            description = videoResponse.snippet?.description?: "",
+                            description = videoResponse.snippet?.description ?: "",
                             title = videoResponse.snippet?.title ?: ""
                         )
                     }
@@ -75,10 +75,10 @@ class HomeViewModel @Inject constructor(
                     } else {
                     }
                 }.onFailure { e ->
-                    Log.e("오류", "비디오 로딩 실패 ", e)
+                    Log.e("오류", "비디오 로딩 실패23 - category ID: $categoryId", e)
                 }
             } catch (e: Exception) {
-                Log.e("오류", "오류발생", e)
+                Log.e("오류", "오류발생 - category ID: $categoryId", e)
             }
         }
     }
@@ -96,7 +96,7 @@ class HomeViewModel @Inject constructor(
                     }
                     _categoryChannels.value = channelItems
                 }.onFailure { e ->
-                    Log.e("오류", "비디오 로딩 실패 ", e)
+                    Log.e("오류", "비디오 로딩 실패123 ", e)
                 }
             } catch (e: Exception) {
                 Log.e("오류", "오류발생", e)

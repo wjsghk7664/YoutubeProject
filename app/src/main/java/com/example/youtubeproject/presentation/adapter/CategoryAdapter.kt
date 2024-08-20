@@ -10,6 +10,8 @@ import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
+import com.bumptech.glide.load.resource.bitmap.RoundedCorners
+import com.bumptech.glide.request.RequestOptions
 import com.example.youtubeproject.R
 
 data class CategoryItem(
@@ -26,7 +28,8 @@ class CategoryAdapter :
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): CategoryViewHolder {
-        val view = LayoutInflater.from(parent.context).inflate(R.layout.item_category, parent, false)
+        val view =
+            LayoutInflater.from(parent.context).inflate(R.layout.item_category, parent, false)
         return CategoryViewHolder(view)
     }
 
@@ -35,6 +38,7 @@ class CategoryAdapter :
         Glide.with(holder.itemView)
             .load(videoItem.mainImageUrl)
             .into(holder.imageView)
+
         holder.textView.text = videoItem.title
     }
 
