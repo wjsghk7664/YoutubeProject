@@ -49,13 +49,10 @@ class LikeVideosViewModel @Inject constructor(
             }
         }
     }
-    fun deleteList(id:String, likeLists: LikeList,videoModel: VideoModel){
+    fun deleteList(id:String,videoModel: VideoModel){
         deleteLikeListUseCase(id,videoModel){
-            if(it){
-                val newlist = likeLists.likeList.toMutableList().also { it.remove(videoModel) }
-                _uiState.value = UiState.Success(newlist)
-            }else{
-                _uiState.value = UiState.Failure("D:fail to deleteList")
+            if(it) {
+                getList(id)
             }
         }
     }

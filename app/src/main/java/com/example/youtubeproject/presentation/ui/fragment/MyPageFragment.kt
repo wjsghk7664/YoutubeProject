@@ -104,8 +104,8 @@ class MyPageFragment : Fragment() {
         )
     }
 
-    private val onClickDelete:(LikeList,VideoModel) -> Unit = { likeList,videoModel ->
-        viewModel.deleteList(user.id,likeList,videoModel)
+    private val onClickDelete:(VideoModel) -> Unit = { videoModel ->
+        viewModel.deleteList(user.id,videoModel)
     }
 
     override fun onDestroyView() {
