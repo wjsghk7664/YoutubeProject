@@ -16,14 +16,5 @@ class HiltApplication: Application() {
     override fun onCreate() {
         super.onCreate()
 
-        remoteUserLikeListRepository.AddLike("111", VideoModel("1", Snippet(title = "1"))){}
-        remoteUserLikeListRepository.AddLike("111", VideoModel("2", Snippet(title = "2"))){}
-        remoteUserLikeListRepository.AddLike("111", VideoModel("3", Snippet(title = "3"))){}
-        remoteUserLikeListRepository.AddLike("111", VideoModel("4", Snippet(title = "4"))){}
-        remoteUserLikeListRepository.getList("111"){
-            Log.d("좋아요 체크",it?.likeList.toString())
-        }
-
-
     }
 }
