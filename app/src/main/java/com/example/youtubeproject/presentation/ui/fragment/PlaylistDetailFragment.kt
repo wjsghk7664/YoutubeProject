@@ -2,7 +2,6 @@ package com.example.youtubeproject.presentation.ui.fragment
 
 import android.os.Build
 import android.os.Bundle
-import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
@@ -16,11 +15,9 @@ import com.example.youtubeproject.data.model.Playlist
 import com.example.youtubeproject.data.model.User
 import com.example.youtubeproject.data.model.VideoModel
 import com.example.youtubeproject.databinding.FragmentPlaylistDetailBinding
-import com.example.youtubeproject.presentation.adapter.PlaylistsAdapter
 import com.example.youtubeproject.presentation.adapter.VideoDetailAdapter
 import com.example.youtubeproject.presentation.ui.MainActivity
-import com.example.youtubeproject.presentation.ui.dialog.AddVideosFragment
-import com.example.youtubeproject.presentation.ui.dialog.CreatePlaylistDialog
+import com.example.youtubeproject.presentation.ui.dialog.AddVideosDialog
 import com.example.youtubeproject.presentation.ui.dialog.DeletePlaylistDialog
 import com.example.youtubeproject.presentation.ui.navigation.FragmentTag
 import com.example.youtubeproject.presentation.uistate.PlaylistUiState
@@ -135,7 +132,7 @@ class PlaylistDetailFragment : Fragment() {
         }
 
         binding.addVideoBtn.setOnClickListener {
-            AddVideosFragment.newInstance({ result ->
+            AddVideosDialog.newInstance({ result ->
                     val added = listOf<VideoModel>().filter {
                         result.contains(it.snippet.title)
                     }
@@ -145,7 +142,7 @@ class PlaylistDetailFragment : Fragment() {
                         }
                     )
                 },
-                listOf()
+                listOf()        //TODO: change to titles of my favorite videos.
             )
         }
     }
