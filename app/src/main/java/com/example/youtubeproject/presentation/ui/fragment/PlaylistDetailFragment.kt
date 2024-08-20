@@ -123,18 +123,17 @@ class PlaylistDetailFragment : Fragment() {
         viewModel.getPlaylistDetail(userData.id, playlistId)
 
         playlistLiveData.observe(viewLifecycleOwner) {
-            if(it?.lists?.isEmpty() == true) {
-                Log.d("PlaylistDetailFragment", "playlistLiveData is Empty...")
-            }
-
             playlistRv.submitList(it?.lists ?: listOf())
-
             binding.emptyTv.visibility =
                 if(it?.lists?.isEmpty() == true) {
                     View.VISIBLE
                 } else {
                     View.INVISIBLE
                 }
+        }
+
+        binding.addVideoBtn.setOnClickListener {
+
         }
     }
 
