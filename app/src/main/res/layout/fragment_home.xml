@@ -49,6 +49,7 @@
 
         android:spinnerMode="dropdown"
         android:background="@android:color/black"
+        android:background="@color/white"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/popular_videos_recycler_view" />
 

@@ -50,6 +50,15 @@ class HomeFragment : Fragment() {
 
         // 인기 비디오 관찰
         homeViewModel.popularVideos.observe(viewLifecycleOwner) { videoItems ->
+        homeViewModel.popularVideos.observe(viewLifecycleOwner) { categoryVideoModel ->
+            val videoItems = categoryVideoModel.items.map { videoResponse ->
+                VideoItem(
+                    mainImageUrl = videoResponse.snippet?.thumbnails?.high?.url,
+                    profileImageUrl = videoResponse.snippet?.thumbnails?.high?.url,
+                    title = videoResponse.snippet?.title ?: "",
+                    description = videoResponse.snippet?.description ?: "",
+                )
+            }
             popularVideosAdapter.submitList(videoItems)
         }
 
@@ -60,7 +69,8 @@ class HomeFragment : Fragment() {
                 VideoItem(
                     mainImageUrl = videoResponse.snippet?.thumbnails?.high?.url,
                     profileImageUrl = videoResponse.snippet?.thumbnails?.high?.url,
-                    description = videoResponse.snippet?.title ?: ""
+                    title = videoResponse.snippet?.title ?: "",
+                    description = videoResponse.snippet?.description ?: "",
                 )
             }
             categoryAdapter.submitList(videoItems)
@@ -87,9 +97,22 @@ class HomeFragment : Fragment() {
 
     private fun setupPopularVideosRecyclerView() {
         popularVideosAdapter = PopularVideosAdapter()
+
+        popularVideosAdapter.itemClick = object : PopularVideosAdapter.ItemClick{
+            override fun onClick(item: VideoItem) {
+                val frag = VideoDetailFragment.newInstance(item)
+
+                parentFragmentManager.beginTransaction()
+                    .replace(R.id.fragment_container_view, frag)
+                    .addToBackStack(null)
+                    .commit()
+            }
+        }
+
         binding.popularVideosRecyclerView.apply {
             layoutManager = LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
             adapter = popularVideosAdapter
+
         }
     }
 

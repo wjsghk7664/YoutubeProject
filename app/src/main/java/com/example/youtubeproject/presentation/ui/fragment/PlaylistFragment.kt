@@ -10,6 +10,7 @@ import android.widget.Toast
 import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.lifecycleScope
+import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.youtubeproject.R
 import com.example.youtubeproject.data.model.Playlist
 import com.example.youtubeproject.databinding.FragmentPlaylistBinding
@@ -37,7 +38,7 @@ class PlaylistFragment : Fragment() {
     private val playlistRv = PlaylistsAdapter(
         onItemClick = { playlist ->
             (requireActivity() as MainActivity).pushFragments(
-                PlaylistDetailFragment.newInstance(playlist),
+                PlaylistDetailFragment.newInstance(playlist.id),
                 FragmentTag.PlaylistDetailFragment
             )
         },
@@ -102,6 +103,9 @@ class PlaylistFragment : Fragment() {
 
         //Recycler View
         with(binding.playlistRecyclerView) {
+            layoutManager = LinearLayoutManager(requireContext()).apply {
+                orientation = LinearLayoutManager.VERTICAL
+            }
             adapter = playlistRv
             addItemDecoration(PlaylistAdapterDecoration())
         }

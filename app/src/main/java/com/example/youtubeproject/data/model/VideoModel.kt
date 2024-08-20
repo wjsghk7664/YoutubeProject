@@ -1,5 +1,8 @@
 package com.example.youtubeproject.data.model
 
+import android.os.Parcelable
+import kotlinx.parcelize.Parcelize
+
 data class VideoModel(
     val id: String = "",
     val snippet: Snippet = Snippet(),

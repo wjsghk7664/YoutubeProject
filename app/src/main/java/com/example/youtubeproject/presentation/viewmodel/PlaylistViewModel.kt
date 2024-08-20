@@ -27,6 +27,10 @@ class PlaylistViewModel @Inject constructor(
     private val _uiState = MutableStateFlow<PlaylistUiState>(PlaylistUiState.Init)
     val uiState = _uiState.asStateFlow()
 
+    fun getPlaylistDetail(id: Long): Playlist {
+        return Playlist(1L, "TITLE")
+    }
+
     fun getPlaylists() {
         viewModelScope.launch {
             runCatching {
