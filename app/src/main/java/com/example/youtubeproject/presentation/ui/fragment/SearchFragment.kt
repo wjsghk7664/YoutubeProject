@@ -10,16 +10,21 @@ import android.view.inputmethod.InputMethodManager
 import android.widget.EditText
 import android.widget.Toast
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.youtubeproject.R
+import com.example.youtubeproject.data.model.VideoModel
 import com.example.youtubeproject.databinding.FragmentSearchBinding
 import com.example.youtubeproject.presentation.adapter.SearchCategoryAdapter
 import com.example.youtubeproject.presentation.adapter.SearchResultAdapter
 import com.example.youtubeproject.presentation.adapter.deco.SearchCategoryItemDecoration
+import com.example.youtubeproject.presentation.ui.MainActivity
+import com.example.youtubeproject.presentation.ui.navigation.FragmentTag
 import com.example.youtubeproject.presentation.uistate.SearchUiState
+import com.example.youtubeproject.presentation.viewmodel.LikeVideosViewModel
 import com.example.youtubeproject.presentation.viewmodel.SearchViewModel
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.collectLatest
@@ -29,10 +34,22 @@ import kotlinx.coroutines.launch
 class SearchFragment : Fragment() {
     private val binding by lazy { FragmentSearchBinding.inflate(layoutInflater) }
     private val searchViewModel by viewModels<SearchViewModel>()
-    private val searchResultAdapter by lazy { SearchResultAdapter() }
+    private val searchResultAdapter by lazy { SearchResultAdapter().apply {
+        itemClick = object: SearchResultAdapter.ItemClick {
+            override fun onClick(item: VideoModel) {
+                likeVideosViewModel.videoModel = item
+                (requireActivity() as MainActivity).pushFragments(
+                    VideoDetailFragment(),
+                    FragmentTag.SearchVideoDetailFragment
+                )
+            }
+        }
+    } }
     private var nextPage: String? = null
     private var selectedCategory: String? = null
     private var isMoreLoading = false
+
+    private val likeVideosViewModel: LikeVideosViewModel by activityViewModels()
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,

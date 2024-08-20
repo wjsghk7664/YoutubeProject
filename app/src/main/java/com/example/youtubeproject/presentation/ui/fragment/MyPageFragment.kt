@@ -6,21 +6,17 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.ListAdapter
-import androidx.collection.intListOf
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.GridLayoutManager
 import com.bumptech.glide.Glide
-import com.example.youtubeproject.R
 import com.example.youtubeproject.data.model.LikeList
 import com.example.youtubeproject.data.model.User
 import com.example.youtubeproject.data.model.VideoModel
 import com.example.youtubeproject.databinding.FragmentMyPageBinding
 import com.example.youtubeproject.presentation.adapter.LikeListAdapter
-import com.example.youtubeproject.presentation.ui.navigation.FragmentTag
 import com.example.youtubeproject.presentation.uistate.UiState
-import com.example.youtubeproject.presentation.viewmodel.MyPageViewModel
+import com.example.youtubeproject.presentation.viewmodel.LikeVideosViewModel
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
@@ -31,7 +27,7 @@ class MyPageFragment : Fragment() {
     private var _binding :FragmentMyPageBinding? = null
     private val binding get() = _binding!!
 
-    val viewModel:MyPageViewModel by viewModels()
+    val viewModel:LikeVideosViewModel by viewModels()
 
     private lateinit var user: User
 

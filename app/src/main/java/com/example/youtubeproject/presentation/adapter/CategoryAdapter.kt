@@ -13,6 +13,10 @@ import com.bumptech.glide.Glide
 import com.bumptech.glide.load.resource.bitmap.RoundedCorners
 import com.bumptech.glide.request.RequestOptions
 import com.example.youtubeproject.R
+import com.example.youtubeproject.data.model.Playlist
+import com.example.youtubeproject.data.model.VideoModel
+import com.example.youtubeproject.databinding.ItemCategoryBinding
+import com.example.youtubeproject.databinding.ItemPlaylistBinding
 
 data class CategoryItem(
     val imageResId: Int,
@@ -22,24 +26,33 @@ data class CategoryItem(
 class CategoryAdapter :
     ListAdapter<VideoItem, CategoryAdapter.CategoryViewHolder>(CategoryDiffCallback()) {
 
-    inner class CategoryViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
-        val imageView: ImageView = itemView.findViewById(R.id.category_image)
-        val textView: TextView = itemView.findViewById(R.id.category_name)
+    interface ItemClick {
+        fun onClick(item: VideoModel)
+    }
+
+    var itemClick : ItemClick? = null
+
+    inner class CategoryViewHolder(private val binding: ItemCategoryBinding) : RecyclerView.ViewHolder(binding.root) {
+        fun bind(item: VideoItem) {
+            Glide.with(binding.root)
+                .load(item.mainImageUrl)
+                .into(binding.categoryImage)
+
+            binding.categoryName.text = item.title
+
+            binding.root.setOnClickListener {
+                itemClick!!.onClick()
+            }
+        }
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): CategoryViewHolder {
-        val view =
-            LayoutInflater.from(parent.context).inflate(R.layout.item_category, parent, false)
-        return CategoryViewHolder(view)
+        val view = LayoutInflater.from(parent.context).inflate(R.layout.item_category, parent, false)
+        return CategoryViewHolder(ItemCategoryBinding.bind(view))
     }
 
     override fun onBindViewHolder(holder: CategoryViewHolder, position: Int) {
-        val videoItem = getItem(position)
-        Glide.with(holder.itemView)
-            .load(videoItem.mainImageUrl)
-            .into(holder.imageView)
-
-        holder.textView.text = videoItem.title
+        holder.bind(getItem(position))
     }
 
     class CategoryDiffCallback : DiffUtil.ItemCallback<VideoItem>() {

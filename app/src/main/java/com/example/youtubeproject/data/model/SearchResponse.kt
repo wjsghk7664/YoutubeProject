@@ -5,7 +5,22 @@ import com.google.gson.annotations.SerializedName
 data class SearchResponse(
     @SerializedName("id") val id: Id?,
     @SerializedName("snippet") val snippet:SearchSnippet?
-)
+) {
+    fun toVideoModel(): VideoModel
+        = VideoModel(
+        id = id!!.videoId!!,
+        snippet = Snippet(
+            publishedAt = snippet!!.publishedAt,
+            channelId = snippet.channelId,
+            title = snippet.title,
+            description = snippet.description,
+            thumbnails = snippet.thumbnails,
+            channelTitle = snippet.channelTitle
+        )
+
+    )
+
+}
 
 data class Id(
     @SerializedName("kind") val kind:String?,

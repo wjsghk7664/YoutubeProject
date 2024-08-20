@@ -2,6 +2,7 @@ package com.example.youtubeproject.presentation.ui.fragment
 
 import android.os.Build
 import android.os.Bundle
+import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
@@ -21,8 +22,9 @@ import com.example.youtubeproject.presentation.ui.dialog.AddVideosDialog
 import com.example.youtubeproject.presentation.ui.dialog.DeletePlaylistDialog
 import com.example.youtubeproject.presentation.ui.navigation.FragmentTag
 import com.example.youtubeproject.presentation.uistate.PlaylistUiState
+import com.example.youtubeproject.presentation.uistate.UiState
+import com.example.youtubeproject.presentation.viewmodel.LikeVideosViewModel
 import com.example.youtubeproject.presentation.viewmodel.PlaylistViewModel
-import com.example.youtubeproject.presentation.viewmodel.VideoDetailViewModel
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 
@@ -31,7 +33,7 @@ class PlaylistDetailFragment : Fragment() {
     private val binding get() = _binding!!
 
     private val playlistViewModel: PlaylistViewModel by activityViewModels()
-    private val videoDetailViewModel: VideoDetailViewModel by activityViewModels()
+    private val likeVideosViewModel: LikeVideosViewModel by activityViewModels()
 
     private val playlistLiveData = MutableLiveData<Playlist?>(null)
 
@@ -47,7 +49,7 @@ class PlaylistDetailFragment : Fragment() {
 
     private val playlistRv = VideoDetailAdapter(
         onItemClick = { videoModel ->
-            videoDetailViewModel.videoModel = videoModel
+            likeVideosViewModel.videoModel = videoModel
             (requireActivity() as MainActivity).pushFragments(
                 VideoDetailFragment(),
                 FragmentTag.PlaylistVideoDetailFragment
@@ -118,6 +120,20 @@ class PlaylistDetailFragment : Fragment() {
                     else -> null
                 }
             }
+
+            likeVideosViewModel.uiState.collectLatest {
+                when(it) {
+                    is UiState.Success -> {
+                        val titles = it.data.map { video ->
+                            video.snippet.title!!
+                        }
+
+                        onGetLikes(titles)
+                    }
+
+                    else -> null
+                }
+            }
         }
 
         val playlistId = arguments?.getString(PLAYLIST)!!
@@ -134,35 +150,32 @@ class PlaylistDetailFragment : Fragment() {
         }
 
         binding.addVideoBtn.setOnClickListener {
-            //TODO
-//            likeVideoViewModel.getUserLikesVideos(userData.id) { result ->
-//                val titleList = result?.likeList!!.map {
-//                    it.snippet.title!!
-//                }
-//
-//                if(titleList.isEmpty()) {
-//                    Toast.makeText(requireContext(), "좋아요한 영상이 없습니다.", Toast.LENGTH_SHORT).show()
-//                    return@getUserLikesVideos
-//                }
-//
-//                AddVideosDialog.newInstance({ addTo ->
-//                    val added = listOf<VideoModel>().filter {
-//                        addTo.contains(it.snippet.title)
-//                    }
-//                    playlistLiveData.value = playlistLiveData.value!!.copy(
-//                        lists = playlistLiveData.value!!.lists.toMutableList().apply {
-//                            addAll(added)
-//                        }
-//                    )
-//                },
-//                    titleList
-//                ).show(
-//                    requireActivity().supportFragmentManager,
-//                    AddVideosDialog.TAG
-//                )
-//            }
+            likeVideosViewModel.getList(userData.id)
         }
     }
 
+    private fun onGetLikes(titles: List<String>) {
+        if(titles.isEmpty()) {
+            Toast.makeText(requireContext(), "좋아요한 영상이 없습니다.", Toast.LENGTH_SHORT).show()
+            return
+        }
+
+        AddVideosDialog.newInstance({ addTo ->
+            val added = listOf<VideoModel>().filter {
+                addTo.contains(it.snippet.title)
+            }
+            playlistLiveData.value = playlistLiveData.value!!.copy(
+                lists = playlistLiveData.value!!.lists.toMutableList().apply {
+                    addAll(added)
+                }
+            )
+        },
+            titles
+        ).show(
+            requireActivity().supportFragmentManager,
+            AddVideosDialog.TAG
+        )
+
+    }
 
 }

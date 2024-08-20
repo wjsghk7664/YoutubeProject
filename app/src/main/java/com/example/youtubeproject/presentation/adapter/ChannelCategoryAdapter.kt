@@ -1,5 +1,6 @@
 package com.example.youtubeproject.presentation.ui
 
+import VideoItem
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
