@@ -14,10 +14,12 @@ import androidx.lifecycle.lifecycleScope
 import com.example.youtubeproject.R
 import com.example.youtubeproject.data.model.Playlist
 import com.example.youtubeproject.data.model.User
+import com.example.youtubeproject.data.model.VideoModel
 import com.example.youtubeproject.databinding.FragmentPlaylistDetailBinding
 import com.example.youtubeproject.presentation.adapter.PlaylistsAdapter
 import com.example.youtubeproject.presentation.adapter.VideoDetailAdapter
 import com.example.youtubeproject.presentation.ui.MainActivity
+import com.example.youtubeproject.presentation.ui.dialog.AddVideosFragment
 import com.example.youtubeproject.presentation.ui.dialog.CreatePlaylistDialog
 import com.example.youtubeproject.presentation.ui.dialog.DeletePlaylistDialog
 import com.example.youtubeproject.presentation.ui.navigation.FragmentTag
@@ -133,7 +135,18 @@ class PlaylistDetailFragment : Fragment() {
         }
 
         binding.addVideoBtn.setOnClickListener {
-
+            AddVideosFragment.newInstance({ result ->
+                    val added = listOf<VideoModel>().filter {
+                        result.contains(it.snippet.title)
+                    }
+                    playlistLiveData.value = playlistLiveData.value!!.copy(
+                        lists = playlistLiveData.value!!.lists.toMutableList().apply {
+                            addAll(added)
+                        }
+                    )
+                },
+                listOf()
+            )
         }
     }
 
