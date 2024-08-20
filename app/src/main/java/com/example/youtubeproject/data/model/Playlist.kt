@@ -4,9 +4,9 @@ import android.os.Parcelable
 import kotlinx.parcelize.Parcelize
 
 data class Playlist(
-    val id: Long =0L,       //TODO: id 바꾸기 / TimeStamp or String ...
-    val title: String ="",
-    val lists: List<VideoModel> = listOf(),   //TODO: Change 'Long' to 'Video'
+    val id: String = "",
+    val title: String = "",
+    val lists: List<VideoModel> = listOf(),
     val size: Int = lists.size
 )
 
