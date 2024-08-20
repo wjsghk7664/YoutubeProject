@@ -12,7 +12,7 @@ import com.example.youtubeproject.data.model.LikeList
 import com.example.youtubeproject.data.model.VideoModel
 import com.example.youtubeproject.databinding.ItemMypageLikeBinding
 
-class LikeListAdapter(val onClickOpen:(VideoModel)->Unit, val onClickDelete:(LikeList, VideoModel)->Unit):
+class LikeListAdapter(val onClickOpen:(VideoModel)->Unit, val onClickDelete:(VideoModel)->Unit):
     ListAdapter<VideoModel, ViewHolder>(diffUtil) {
 
     companion object{
@@ -42,7 +42,7 @@ class LikeListAdapter(val onClickOpen:(VideoModel)->Unit, val onClickDelete:(Lik
     }
 
     class LikeListViewHolder(private val binding: ItemMypageLikeBinding) : RecyclerView.ViewHolder(binding.root){
-        fun bind(videoModel: VideoModel,likeList: LikeList,onClickOpen:(VideoModel)->Unit, onClickDelete:(LikeList,VideoModel)->Unit) = with(binding){
+        fun bind(videoModel: VideoModel,likeList: LikeList,onClickOpen:(VideoModel)->Unit, onClickDelete:(VideoModel)->Unit) = with(binding){
             Glide.with(binding.root.context)
                 .load(videoModel.snippet.thumbnails?.high?.url)
                 .into(mypageitemIv)
@@ -51,7 +51,7 @@ class LikeListAdapter(val onClickOpen:(VideoModel)->Unit, val onClickDelete:(Lik
                 onClickOpen(videoModel)
             }
             root.setOnLongClickListener {
-                onClickDelete(likeList,videoModel)
+                onClickDelete(videoModel)
                 return@setOnLongClickListener true
             }
         }
