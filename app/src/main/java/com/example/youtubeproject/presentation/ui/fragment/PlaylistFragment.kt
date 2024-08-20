@@ -34,6 +34,9 @@ class PlaylistFragment : Fragment() {
     private val viewmodel: PlaylistViewModel by activityViewModels()
 
     private val playlistsLiveData = MutableLiveData(mutableListOf<Playlist>())
+    private val userId by lazy {
+        requireActivity().intent.getStringExtra("userData")!!
+    }
 
     private val playlistRv = PlaylistsAdapter(
         onItemClick = { playlist ->
@@ -83,7 +86,7 @@ class PlaylistFragment : Fragment() {
                     }
 
                     is PlaylistUiState.CreatePlaylistSuccess -> {
-                        viewmodel.getPlaylists()
+                        viewmodel.getPlaylists(userId)
                         Toast.makeText(requireContext(), getString(R.string.create_playlist_success_message), Toast.LENGTH_SHORT).show()
                     }
 
@@ -97,6 +100,8 @@ class PlaylistFragment : Fragment() {
                         Toast.makeText(requireContext(), getString(R.string.playlist_failure_message), Toast.LENGTH_SHORT).show()
 
                     is PlaylistUiState.Loading -> null
+
+                    else -> null
                 }
             }
         }
@@ -130,6 +135,6 @@ class PlaylistFragment : Fragment() {
     }
 
     private fun initialize() {
-        viewmodel.getPlaylists()
+        viewmodel.getPlaylists(userId)
     }
 }

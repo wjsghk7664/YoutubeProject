@@ -10,16 +10,20 @@ import android.view.ViewGroup
 import androidx.fragment.app.activityViewModels
 import com.example.youtubeproject.R
 import com.example.youtubeproject.data.model.Playlist
+import com.example.youtubeproject.databinding.FragmentPlaylistDetailBinding
 import com.example.youtubeproject.presentation.viewmodel.PlaylistViewModel
 
 class PlaylistDetailFragment : Fragment() {
+    private var _binding: FragmentPlaylistDetailBinding? = null
+    private val binding get() = _binding!!
 
     private val viewModel: PlaylistViewModel by activityViewModels()
 
-    //TODO: 초기화 방법 잘못됨. 다시 생각해보기
+    //TODO: 초기화 방법 위험할수도?
     private val playlist by lazy {
-        val id = arguments?.getString(PLAYLIST)!!
-        viewModel.getPlaylistDetail(id)
+        val playlistId = arguments?.getString(PLAYLIST)!!
+        val userId = requireActivity().intent.getStringExtra("userData")!!
+        viewModel.getPlaylistDetail(userId, playlistId)
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -30,10 +34,14 @@ class PlaylistDetailFragment : Fragment() {
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
-        // Inflate the layout for this fragment
-        Log.d("PlaylistDetailFragment", "title: ${playlist.title}")
-        return inflater.inflate(R.layout.fragment_playlist_detail, container, false)
+    ): View {
+        _binding = FragmentPlaylistDetailBinding.inflate(inflater)
+        return binding.root
+    }
+
+    override fun onDestroyView() {
+        super.onDestroyView()
+        _binding = null
     }
 
     companion object {

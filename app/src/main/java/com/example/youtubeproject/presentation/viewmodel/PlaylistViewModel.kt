@@ -12,6 +12,7 @@ import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
+import java.time.LocalDateTime
 import javax.inject.Inject
 
 @HiltViewModel
@@ -66,11 +67,15 @@ class PlaylistViewModel @Inject constructor(
             _uiState.value = PlaylistUiState.Failure
         }
     }
-    fun createPlaylist(playlist: Playlist) {
+    fun createPlaylist(title: String) {
         runCatching {
-            addPlaylistUseCase.invoke(playlist) { isSuccess ->
+            val newPlaylist = Playlist(
+                LocalDateTime.now().toString(),
+                title
+            )
+            addPlaylistUseCase.invoke(newPlaylist) { isSuccess ->
                 if(isSuccess) {
-                    _uiState.value = PlaylistUiState.CreatePlaylistSuccess(playlist)
+                    _uiState.value = PlaylistUiState.CreatePlaylistSuccess(newPlaylist)
                 } else {
                     _uiState.value = PlaylistUiState.Failure
                 }
