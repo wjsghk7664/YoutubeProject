@@ -98,6 +98,15 @@ class HomeFragment : Fragment() {
             "10" to "Music",
             "15" to "Pets & Animals",
             "17" to "Sports",
+            "19" to "Travel & Events",
+            "20" to "Gaming",
+            "22" to "People & Blogs",
+            "23" to "Comedy",
+            "24" to "Entertainment",
+            "25" to "News & Politics",
+            "26" to "Howto & Style",
+            "28" to "Science & Technology",
+            "29" to "Nonprofits & Activism"
         )
 
         val categoryNames = categories.map { it.second }
@@ -110,15 +119,21 @@ class HomeFragment : Fragment() {
             binding.categorySpinner.setSelection(defaultPosition)
         }
 
-        binding.categorySpinner.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
-            override fun onItemSelected(parent: AdapterView<*>, view: View?, position: Int, id: Long) {
-                val categoryId = categories[position].first
-                homeViewModel.loadCategoryVideos(categoryId)
-            }
+        binding.categorySpinner.onItemSelectedListener =
+            object : AdapterView.OnItemSelectedListener {
+                override fun onItemSelected(
+                    parent: AdapterView<*>,
+                    view: View?,
+                    position: Int,
+                    id: Long
+                ) {
+                    val categoryId = categories[position].first
+                    homeViewModel.loadCategoryVideos(categoryId)
+                }
 
-            override fun onNothingSelected(parent: AdapterView<*>) {
+                override fun onNothingSelected(parent: AdapterView<*>) {
+                }
             }
-        }
     }
 
     override fun onDestroyView() {

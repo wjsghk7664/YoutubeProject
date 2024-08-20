@@ -7,18 +7,19 @@
 
     <ImageView
         android:id="@+id/category_image"
-        android:layout_width="220dp"
-        android:layout_height="130dp"
+        android:layout_width="260dp"
+        android:layout_height="140dp"
         android:scaleType="centerCrop"
         android:src="@drawable/sample_image" />
 
     <TextView
         android:id="@+id/category_name"
-        android:layout_width="match_parent"
+        android:layout_width="260dp"
         android:layout_height="wrap_content"
         android:gravity="center"
         android:text="Category Name"
         android:maxLines="2"
+        android:ellipsize="end"
         android:textColor="@android:color/white"
-        android:textSize="14sp" />
+        android:textSize="12sp" />
 </LinearLayout>
