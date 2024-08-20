@@ -1,61 +1,109 @@
 package com.example.youtubeproject.presentation.ui.fragment
 
 import android.os.Bundle
+import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.ListAdapter
+import androidx.collection.intListOf
+import androidx.fragment.app.viewModels
+import androidx.lifecycle.lifecycleScope
+import androidx.recyclerview.widget.GridLayoutManager
+import com.bumptech.glide.Glide
 import com.example.youtubeproject.R
+import com.example.youtubeproject.data.model.LikeList
+import com.example.youtubeproject.data.model.User
+import com.example.youtubeproject.data.model.VideoModel
+import com.example.youtubeproject.databinding.FragmentMyPageBinding
+import com.example.youtubeproject.presentation.adapter.LikeListAdapter
 import com.example.youtubeproject.presentation.ui.navigation.FragmentTag
+import com.example.youtubeproject.presentation.uistate.UiState
+import com.example.youtubeproject.presentation.viewmodel.MyPageViewModel
+import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.flow.collectLatest
+import kotlinx.coroutines.launch
 
-// TODO: Rename parameter arguments, choose names that match
-// the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-private const val ARG_PARAM1 = "param1"
-private const val ARG_PARAM2 = "param2"
-
-/**
- * A simple [Fragment] subclass.
- * Use the [MyPageFragment.newInstance] factory method to
- * create an instance of this fragment.
- */
+@AndroidEntryPoint
 class MyPageFragment : Fragment() {
-    // TODO: Rename and change types of parameters
-    private var param1: String? = null
-    private var param2: String? = null
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        arguments?.let {
-            param1 = it.getString(ARG_PARAM1)
-            param2 = it.getString(ARG_PARAM2)
-        }
-    }
+    private var _binding :FragmentMyPageBinding? = null
+    private val binding get() = _binding!!
+
+    val viewModel:MyPageViewModel by viewModels()
+
+    private lateinit var user: User
+
+    private lateinit var likeListAdapter: LikeListAdapter
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_my_page, container, false)
+        _binding = FragmentMyPageBinding.inflate(inflater,container,false)
+        return binding.root
+    }
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+        getUiState()
+        initView()
+
+    }
+    fun getUiState() = with(binding){
+        viewLifecycleOwner.lifecycleScope.launch {
+            viewModel.uiState.collectLatest {
+                when(it){
+                    is UiState.Loading -> mypageProgressbar.visibility = View.VISIBLE
+                    is UiState.Failure -> null
+                    is UiState.Init -> null
+                    is UiState.Success -> {
+                        Log.d("좋아요 체크",it.data.toString())
+                        mypageProgressbar.visibility = View.GONE
+                        likeListAdapter.submitList(it.data)
+                    }
+                }
+            }
+        }
+    }
+
+    fun initView() = with(binding){
+        user = requireActivity().intent.getParcelableExtra("userData")?:User()
+
+        viewModel.getList(user.id)
+        Log.d("좋아요 아이디",user.id)
+
+        likeListAdapter = LikeListAdapter(onClickOpen,onClickDelete)
+        rvFavoriteVideos.adapter = likeListAdapter
+        rvFavoriteVideos.layoutManager = GridLayoutManager(requireActivity(), 2)
+
+        Glide.with(requireActivity())
+            .load(user.profile)
+            .apply{
+                into(ivProfile)
+                into(circleIv)
+            }
+
+        tvUserName.setText(user.name)
+        tvUserDescription.setText(user.intro)
+    }
+
+    private val onClickOpen:(VideoModel) -> Unit ={ videoModel ->
+        //TODO("detail페이지 열기")
+    }
+
+    private val onClickDelete:(LikeList,VideoModel) -> Unit = { likeList,videoModel ->
+        viewModel.deleteList(user.id,likeList,videoModel)
+    }
+
+    override fun onDestroyView() {
+        super.onDestroyView()
+        _binding = null
     }
 
     companion object {
-        /**
-         * Use this factory method to create a new instance of
-         * this fragment using the provided parameters.
-         *
-         * @param param1 Parameter 1.
-         * @param param2 Parameter 2.
-         * @return A new instance of fragment MyPageFragment.
-         */
-        // TODO: Rename and change types and number of parameters
         @JvmStatic
-        fun newInstance(param1: String, param2: String) =
-            MyPageFragment().apply {
-                arguments = Bundle().apply {
-                    putString(ARG_PARAM1, param1)
-                    putString(ARG_PARAM2, param2)
-                }
-            }
+        fun newInstance() = MyPageFragment()
     }
 }
