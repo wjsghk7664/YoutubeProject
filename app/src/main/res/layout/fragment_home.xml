@@ -39,7 +39,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
-        android:layout_marginTop="25dp"
+        android:layout_marginTop="18dp"
         android:text="@string/popular_videos"
         android:textColor="@android:color/white"
         android:textSize="15sp"
@@ -85,6 +85,8 @@
         android:text="@string/channel_category"
         android:textColor="@android:color/white"
         android:textSize="15sp"
+        android:textStyle="bold"
+
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/category_recycler_view" />
 
@@ -93,7 +95,6 @@
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:clipToPadding="false"
-        android:textStyle="bold"
 
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
