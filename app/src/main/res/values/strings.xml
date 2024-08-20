@@ -68,6 +68,7 @@
     <string name="playlist_detail_title_text">재생 목록: %s</string>
     <string name="video_views_text">조회수 %d회</string>
     <string name="video_past_text">%s 전</string>
+    <string name="playlist_number_text">영상 %d개</string>
 
     <string name="save_playlist_success_message">플레이리스트를 저장하였습니다.</string>
     <string name="create_playlist_success_message">새 플레이리스트를 생성하였습니다.</string>

@@ -37,11 +37,11 @@ data class SearchSnippet(
 )
 
 data class Thumbnails(
-    @SerializedName("high") val high:Thumbnail?
+    @SerializedName("high") val high:Thumbnail? = null
 )
 
 data class Thumbnail(
-    @SerializedName("url") val url:String?,
-    @SerializedName("width") val width: String?,
-    @SerializedName("height") val height: String?
+    @SerializedName("url") val url:String? = "",
+    @SerializedName("width") val width: String? = "",
+    @SerializedName("height") val height: String? = ""
 )

@@ -48,12 +48,6 @@ class PopularVideosAdapter :
         val videoItem = getItem(position)
 
         Glide.with(holder.itemView)
-            .load(videoItem.mainImageUrl)
-            //  .placeholder(R.drawable.sample_image) // 로딩 이미지
-            //  .error(R.drawable.sample_image) // 에러 발생 시
-            .into(holder.mainImage)
-
-        Glide.with(holder.itemView)
             .load(videoItem.profileImageUrl)
             .transform(CircleCrop())
             //   .placeholder(R.drawable.sample_image) // 로딩 이미지
@@ -63,7 +57,7 @@ class PopularVideosAdapter :
         holder.videoDescription.text = videoItem.title
 
         holder.itemView.setOnClickListener {
-            itemClick?.onClick(videoItem)
+            //itemClick?.onClick()
         }
     }
 
@@ -73,9 +67,7 @@ class PopularVideosAdapter :
         }
 
         override fun areContentsTheSame(oldItem: VideoItem, newItem: VideoItem): Boolean {
-            return oldItem.mainImageUrl == newItem.mainImageUrl &&
-                    oldItem.profileImageUrl == newItem.profileImageUrl &&
-                    oldItem.title == newItem.title
+            return oldItem == newItem
         }
     }
 }

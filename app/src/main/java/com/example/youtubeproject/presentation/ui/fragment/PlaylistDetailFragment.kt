@@ -11,6 +11,7 @@ import android.widget.Toast
 import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.lifecycleScope
+import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.youtubeproject.R
 import com.example.youtubeproject.data.model.Playlist
 import com.example.youtubeproject.data.model.User
@@ -36,7 +37,7 @@ class PlaylistDetailFragment : Fragment() {
     private val likeVideosViewModel: LikeVideosViewModel by activityViewModels()
 
     private val playlistLiveData = MutableLiveData<Playlist?>(null)
-
+    private lateinit var initialPlaylistData: Playlist
 
     private val userData by lazy {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
@@ -84,7 +85,7 @@ class PlaylistDetailFragment : Fragment() {
     override fun onDestroyView() {
         super.onDestroyView()
 
-        playlistViewModel.savePlaylist(userData.id, playlistLiveData.value!!)
+        playlistViewModel.savePlaylist(userData.id, initialPlaylistData, playlistLiveData.value!!)
 
         _binding = null
     }
@@ -108,8 +109,13 @@ class PlaylistDetailFragment : Fragment() {
                     is PlaylistUiState.Init -> null
 
                     is PlaylistUiState.GetPlaylistDetailSuccess -> {
+                        initialPlaylistData = it.playlist
                         playlistLiveData.value = it.playlist
                         binding.playListTitleTv.text = getString(R.string.playlist_detail_title_text, playlistLiveData.value?.title)
+                    }
+
+                    is PlaylistUiState.SavePlaylistSuccess -> {
+                        Log.d("PlaylistDetailFragment", "Save Success")
                     }
 
                     is PlaylistUiState.Failure ->
@@ -120,24 +126,18 @@ class PlaylistDetailFragment : Fragment() {
                     else -> null
                 }
             }
-
-            likeVideosViewModel.uiState.collectLatest {
-                when(it) {
-                    is UiState.Success -> {
-                        val titles = it.data.map { video ->
-                            video.snippet.title!!
-                        }
-
-                        onGetLikes(titles)
-                    }
-
-                    else -> null
-                }
-            }
         }
 
         val playlistId = arguments?.getString(PLAYLIST)!!
         playlistViewModel.getPlaylistDetail(userData.id, playlistId)
+
+        with(binding.videoRecyclerView) {
+            layoutManager = LinearLayoutManager(requireContext()).apply {
+                orientation = LinearLayoutManager.VERTICAL
+            }
+            adapter = playlistRv
+        }
+
 
         playlistLiveData.observe(viewLifecycleOwner) {
             playlistRv.submitList(it?.lists ?: listOf())
@@ -150,20 +150,34 @@ class PlaylistDetailFragment : Fragment() {
         }
 
         binding.addVideoBtn.setOnClickListener {
-            likeVideosViewModel.getList(userData.id)
+            likeVideosViewModel.getList(userData.id) { result ->
+                result?.let {
+                    val titles =it.likeList.map { video ->
+                        video.snippet.title!!
+                    }
+                    onGetLikes(it.likeList, titles)
+                }
+
+            }
         }
     }
 
-    private fun onGetLikes(titles: List<String>) {
+    private fun onGetLikes(likeList:  List<VideoModel>, titles: List<String>) {
         if(titles.isEmpty()) {
             Toast.makeText(requireContext(), "좋아요한 영상이 없습니다.", Toast.LENGTH_SHORT).show()
             return
         }
 
         AddVideosDialog.newInstance({ addTo ->
-            val added = listOf<VideoModel>().filter {
+            val added = likeList.filter {
                 addTo.contains(it.snippet.title)
             }
+
+            Log.d("PlaylistDetailFragment", "add videos size: ${added.size}, " +
+                    "addTo size: ${addTo.size}")
+            Log.d("PlaylistDetailFragment", "added: ${playlistLiveData.value!!.lists.joinToString()}, " +
+                    "addTo: ${addTo.joinToString()}")
+
             playlistLiveData.value = playlistLiveData.value!!.copy(
                 lists = playlistLiveData.value!!.lists.toMutableList().apply {
                     addAll(added)

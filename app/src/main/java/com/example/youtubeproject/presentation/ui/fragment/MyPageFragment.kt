@@ -6,8 +6,11 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.viewModels
+import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
+import androidx.lifecycle.repeatOnLifecycle
 import androidx.recyclerview.widget.GridLayoutManager
 import com.bumptech.glide.Glide
 import com.example.youtubeproject.data.model.LikeList
@@ -15,6 +18,8 @@ import com.example.youtubeproject.data.model.User
 import com.example.youtubeproject.data.model.VideoModel
 import com.example.youtubeproject.databinding.FragmentMyPageBinding
 import com.example.youtubeproject.presentation.adapter.LikeListAdapter
+import com.example.youtubeproject.presentation.ui.MainActivity
+import com.example.youtubeproject.presentation.ui.navigation.FragmentTag
 import com.example.youtubeproject.presentation.uistate.UiState
 import com.example.youtubeproject.presentation.viewmodel.LikeVideosViewModel
 import dagger.hilt.android.AndroidEntryPoint
@@ -27,7 +32,7 @@ class MyPageFragment : Fragment() {
     private var _binding :FragmentMyPageBinding? = null
     private val binding get() = _binding!!
 
-    val viewModel:LikeVideosViewModel by viewModels()
+    val viewModel:LikeVideosViewModel by activityViewModels()
 
     private lateinit var user: User
 
@@ -57,6 +62,10 @@ class MyPageFragment : Fragment() {
                     is UiState.Success -> {
                         Log.d("좋아요 체크",it.data.toString())
                         mypageProgressbar.visibility = View.GONE
+                        Log.d("MyPageFragment", "sublist: ${it.data.size}")
+                        Log.d("MyPageFragment", "sublist: ${it.data.map {
+                            it.snippet.title
+                        }.joinToString()}")
                         likeListAdapter.submitList(it.data)
                     }
                 }
@@ -85,8 +94,14 @@ class MyPageFragment : Fragment() {
         tvUserDescription.setText(user.intro)
     }
 
-    private val onClickOpen:(VideoModel) -> Unit ={ videoModel ->
-        //TODO("detail페이지 열기")
+    private val onClickOpen:(VideoModel) -> Unit = { videoModel ->
+        Log.d("MyPageFragment", "Title: ${videoModel.snippet.title}")
+        viewModel.videoModel = videoModel
+        Log.d("MyPageFragment", "ViewModel.video: ${viewModel.videoModel!!.snippet.title}")
+        (requireActivity() as MainActivity).pushFragments(
+            VideoDetailFragment(),
+            FragmentTag.MyPageVideoDetailFragment
+        )
     }
 
     private val onClickDelete:(LikeList,VideoModel) -> Unit = { likeList,videoModel ->

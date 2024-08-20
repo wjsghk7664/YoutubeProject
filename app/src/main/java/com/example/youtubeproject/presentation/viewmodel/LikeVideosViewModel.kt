@@ -33,13 +33,19 @@ class LikeVideosViewModel @Inject constructor(
         }
     }
 
+    fun getList(id: String, callback: (LikeList?) -> Unit) {
+        getLikeListUseCase(id, callback)
+    }
+
     fun getList(id:String){
         getLikeListUseCase(id){
             Log.d("좋아요 뷰모델",it?.likeList.toString())
             if(it == null){
+                Log.d("좋아요 뷰모델","실패")
                 _uiState.value = UiState.Failure("G:fail to getList")
             }else{
-                _uiState.value =UiState.Success(it.likeList)
+                Log.d("좋아요 뷰모델","성공")
+                _uiState.value = UiState.Success(it.likeList)
             }
         }
     }

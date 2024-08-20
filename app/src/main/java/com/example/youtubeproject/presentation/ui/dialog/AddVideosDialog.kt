@@ -3,6 +3,7 @@ package com.example.youtubeproject.presentation.ui.dialog
 import android.app.AlertDialog
 import android.app.Dialog
 import android.os.Bundle
+import android.util.Log
 import android.view.View
 import android.widget.Toast
 import androidx.fragment.app.DialogFragment
@@ -17,11 +18,12 @@ class AddVideosDialog(
 
     override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
         return activity?.let {
-            val titles = arguments?.getStringArray(VIDEO_TITLES)!!
+            val titles = requireArguments().getStringArray(VIDEO_TITLES)!!
+            Log.d("AddVideosDialog", "Like size: ${titles.size}")
             checkedItems = BooleanArray(titles.size)
 
             val builder = AlertDialog.Builder(it)
-            builder.setMessage(getString(R.string.add_videos_dialog_title))
+            builder.setTitle(getString(R.string.add_videos_dialog_title))
                 .setMultiChoiceItems(titles, checkedItems) { dialog, position, isChecked ->
                     checkedItems[position] = isChecked
                 }
@@ -42,11 +44,6 @@ class AddVideosDialog(
                 }
             builder.create()
         } ?: throw IllegalStateException("Activity cannot be null")
-    }
-
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        super.onViewCreated(view, savedInstanceState)
-
     }
 
     companion object {
