@@ -11,8 +11,6 @@ import javax.inject.Inject
 @HiltAndroidApp
 class HiltApplication: Application() {
 
-    @Inject lateinit var remoteUserLikeListRepository: RemoteUserLikeListRepository
-
     override fun onCreate() {
         super.onCreate()
 
