@@ -88,7 +88,6 @@ class PlaylistFragment : Fragment() {
                     is PlaylistUiState.Init -> null
 
                     is PlaylistUiState.GetPlaylistsSuccess -> {
-                        Log.d("PlaylistFragment", "GetPlaylistsSuccess: ${it.playlists.size}")
                         playlistsLiveData.value = it.playlists.toMutableList()
                     }
 
@@ -102,8 +101,11 @@ class PlaylistFragment : Fragment() {
                         Toast.makeText(requireContext(), getString(R.string.delete_playlist_success_message), Toast.LENGTH_SHORT).show()
                     }
 
-                    is PlaylistUiState.SavePlaylistSuccess ->
+                    is PlaylistUiState.SavePlaylistSuccess -> {
+                        viewmodel.getPlaylists(userData.id)
                         Toast.makeText(requireContext(), getString(R.string.save_playlist_success_message), Toast.LENGTH_SHORT).show()
+                    }
+
 
                     is PlaylistUiState.Failure ->
                         Toast.makeText(requireContext(), getString(R.string.playlist_failure_message), Toast.LENGTH_SHORT).show()

@@ -13,11 +13,14 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.youtubeproject.R
+import com.example.youtubeproject.data.model.VideoModel
 import com.example.youtubeproject.databinding.FragmentHomeBinding
 import com.example.youtubeproject.presentation.adapter.CustomSpinnerAdapter
 import com.example.youtubeproject.presentation.ui.CategoryAdapter
 import com.example.youtubeproject.presentation.ui.ChannelCategoryAdapter
 import com.example.youtubeproject.presentation.ui.ChannelCategoryItem
+import com.example.youtubeproject.presentation.ui.MainActivity
+import com.example.youtubeproject.presentation.ui.navigation.FragmentTag
 import com.example.youtubeproject.presentation.viewmodel.HomeViewModel
 import dagger.hilt.android.AndroidEntryPoint
 
@@ -35,7 +38,7 @@ class HomeFragment : Fragment() {
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
+    ): View {
         _binding = FragmentHomeBinding.inflate(inflater, container, false)
         return binding.root
     }
@@ -68,7 +71,16 @@ class HomeFragment : Fragment() {
     }
 
     private fun setupPopularVideosRecyclerView() {
-        popularVideosAdapter = PopularVideosAdapter()
+        popularVideosAdapter = PopularVideosAdapter().apply {
+            itemClick = object: PopularVideosAdapter.ItemClick {
+                override fun onClick(item: VideoItem) {
+                    (requireActivity() as MainActivity).pushFragments(
+                        VideoDetailFragment(),
+                        FragmentTag.HomeVideoDetailFragment
+                    )
+                }
+            }
+        }
         binding.popularVideosRecyclerView.apply {
             layoutManager = LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
             adapter = popularVideosAdapter
@@ -76,7 +88,16 @@ class HomeFragment : Fragment() {
     }
 
     private fun setupCategoryRecyclerView() {
-        categoryAdapter = CategoryAdapter()
+        categoryAdapter = CategoryAdapter().apply {
+            itemClick = object: CategoryAdapter.ItemClick {
+                override fun onClick(item: VideoModel) {
+                    (requireActivity() as MainActivity).pushFragments(
+                        VideoDetailFragment(),
+                        FragmentTag.HomeVideoDetailFragment
+                    )
+                }
+            }
+        }
         binding.categoryRecyclerView.apply {
             layoutManager = LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
             adapter = categoryAdapter

@@ -12,14 +12,14 @@ import com.bumptech.glide.Glide
 import com.example.youtubeproject.R
 import com.example.youtubeproject.data.model.User
 import com.example.youtubeproject.databinding.FragmentVideoDetailBinding
-import com.example.youtubeproject.presentation.viewmodel.VideoDetailViewModel
+import com.example.youtubeproject.presentation.viewmodel.LikeVideosViewModel
 
 class VideoDetailFragment : Fragment() {
 
     private var _binding : FragmentVideoDetailBinding? = null
     private val binding get() = _binding!!
 
-    private val videoDetailViewModel: VideoDetailViewModel by activityViewModels()
+    private val videoDetailViewModel: LikeVideosViewModel by activityViewModels()
 
     private val userData by lazy {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {

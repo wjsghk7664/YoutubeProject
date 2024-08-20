@@ -58,9 +58,9 @@ class PlaylistViewModel @Inject constructor(
             _uiState.value = PlaylistUiState.Failure
         }
     }
-    fun savePlaylist(userId: String, playlist: Playlist) {
+    fun savePlaylist(userId: String, initial: Playlist, playlist: Playlist) {
         runCatching {
-            savePlaylistUseCase.invoke(userId, playlist) { isSuccess ->
+            savePlaylistUseCase.invoke(userId, initial, playlist) { isSuccess ->
                 if(isSuccess) {
                     _uiState.value = PlaylistUiState.SavePlaylistSuccess
                 } else {

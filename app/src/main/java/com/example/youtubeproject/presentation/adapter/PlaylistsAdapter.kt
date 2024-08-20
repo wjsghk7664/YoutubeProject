@@ -37,7 +37,7 @@ class PlaylistsAdapter(
 
             with(binding) {
                 playlistTitleTv.text = item.title
-                playlistSizeTv.text = item.size.toString()
+                playlistSizeTv.text = itemView.context.getString(R.string.playlist_number_text, item.lists.size)
 
                 root.setOnClickListener {
                     onItemClick(item)
