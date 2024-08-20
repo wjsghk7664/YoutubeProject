@@ -48,71 +48,30 @@ class HomeFragment : Fragment() {
         setupChannelCategoryRecyclerView()
         setupCategorySpinner()
 
-        // 인기 비디오 관찰
+        // 인기 비디오
         homeViewModel.popularVideos.observe(viewLifecycleOwner) { videoItems ->
-        homeViewModel.popularVideos.observe(viewLifecycleOwner) { categoryVideoModel ->
-            val videoItems = categoryVideoModel.items.map { videoResponse ->
-                VideoItem(
-                    mainImageUrl = videoResponse.snippet?.thumbnails?.high?.url,
-                    profileImageUrl = videoResponse.snippet?.thumbnails?.high?.url,
-                    title = videoResponse.snippet?.title ?: "",
-                    description = videoResponse.snippet?.description ?: "",
-                )
-            }
             popularVideosAdapter.submitList(videoItems)
         }
 
-
-        // 카테고리 비디오 관찰
-        homeViewModel.categoryVideos.observe(viewLifecycleOwner) { categoryVideoModel ->
-            val videoItems = categoryVideoModel.items.map { videoResponse ->
-                VideoItem(
-                    mainImageUrl = videoResponse.snippet?.thumbnails?.high?.url,
-                    profileImageUrl = videoResponse.snippet?.thumbnails?.high?.url,
-                    title = videoResponse.snippet?.title ?: "",
-                    description = videoResponse.snippet?.description ?: "",
-                )
-            }
+        // 카테고리 비디오
+        homeViewModel.categoryVideos.observe(viewLifecycleOwner) { videoItems ->
             categoryAdapter.submitList(videoItems)
         }
 
-        // 카테고리 채널 관찰
-        homeViewModel.categoryChannels.observe(viewLifecycleOwner) { categoryChannelModel ->
-            if (categoryChannelModel != null && categoryChannelModel.items != null) {
-                val channelItems = categoryChannelModel.items.mapNotNull { channelResponse ->
-                    ChannelCategoryItem(
-                        imageResId = channelResponse.snippet?.thumbnails?.high?.url,
-                        channelName = channelResponse.snippet?.title ?: ""
-                    )
-                }
-                channelCategoryAdapter.submitList(channelItems)
-            } else {
-                Log.e("홈프라그먼트", "null")
-            }
+        // 카테고리 채널
+        homeViewModel.categoryChannels.observe(viewLifecycleOwner) { channelItems ->
+            channelCategoryAdapter.submitList(channelItems)
         }
 
-        // 초기 로드: 인기 비디오
+        // 초기 가져오기 인기 비디오
         homeViewModel.loadPopularVideos()
     }
 
     private fun setupPopularVideosRecyclerView() {
         popularVideosAdapter = PopularVideosAdapter()
-
-        popularVideosAdapter.itemClick = object : PopularVideosAdapter.ItemClick{
-            override fun onClick(item: VideoItem) {
-                val frag = VideoDetailFragment.newInstance(item)
-
-                parentFragmentManager.beginTransaction()
-                    .replace(R.id.fragment_container_view, frag)
-                    .addToBackStack(null)
-                    .commit()
-            }
-        }
-
         binding.popularVideosRecyclerView.apply {
             layoutManager = LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
             adapter = popularVideosAdapter
-
         }
     }
 
@@ -131,6 +90,7 @@ class HomeFragment : Fragment() {
             adapter = channelCategoryAdapter
         }
     }
+
     private fun setupCategorySpinner() {
         val categories = listOf(
             "1" to "Film & Animation",
@@ -142,7 +102,6 @@ class HomeFragment : Fragment() {
 
         val categoryNames = categories.map { it.second }
 
-        // 커스텀 어댑터를 생성하고 스피너에 연결
         val adapter = CustomSpinnerAdapter(requireContext(), categoryNames)
         binding.categorySpinner.adapter = adapter
 
@@ -161,8 +120,6 @@ class HomeFragment : Fragment() {
             }
         }
     }
-
-
 
     override fun onDestroyView() {
         super.onDestroyView()
