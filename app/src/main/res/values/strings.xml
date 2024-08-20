@@ -5,6 +5,8 @@
     <string name="second_fragment_label">Second Fragment</string>
     <string name="next">Next</string>
     <string name="previous">Previous</string>
+    <string name="popular_videos">Most Popular Videos</string>
+    <string name="channel_category">Channels By Category</string>
 
     <string name="lorem_ipsum">
         Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nam in scelerisque sem. Mauris
@@ -75,9 +77,7 @@
     <string name="dialog_confirm_text">확인</string>
     <string name="dialog_cancel_text">취소</string>
 
-    <string name="popular_videos">가장 많이 본 영상</string>
     <string name="category">카테고리</string>
-    <string name="channel_category">채널 카테고리</string>
     <string name="delete_playlist_dialog_title">해당 플레이리스트를 삭제할까요?</string>
     <string name="delete_playlist_success_message">해당 플레이리스트를 삭제하였습니다.</string>
     <string-array name="category_options">
