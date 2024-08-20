@@ -11,8 +11,14 @@ import javax.inject.Inject
 @HiltAndroidApp
 class HiltApplication: Application() {
 
+    @Inject lateinit var remoteUserLikeListRepository: RemoteUserLikeListRepository
+
     override fun onCreate() {
         super.onCreate()
 
+        remoteUserLikeListRepository.AddLike("111", VideoModel("1",Snippet(title = "1"))){}
+        remoteUserLikeListRepository.AddLike("111", VideoModel("2",Snippet(title = "2"))){}
+        remoteUserLikeListRepository.AddLike("111", VideoModel("3",Snippet(title = "3"))){}
+        remoteUserLikeListRepository.AddLike("111", VideoModel("4",Snippet(title = "4"))){}
     }
 }

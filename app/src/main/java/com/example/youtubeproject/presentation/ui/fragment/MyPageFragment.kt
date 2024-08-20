@@ -93,8 +93,8 @@ class MyPageFragment : Fragment() {
         //TODO("detail페이지 열기")
     }
 
-    private val onClickDelete:(LikeList,VideoModel) -> Unit = { likeList,videoModel ->
-        viewModel.deleteList(user.id,likeList,videoModel)
+    private val onClickDelete:(VideoModel) -> Unit = { videoModel ->
+        viewModel.deleteList(user.id,videoModel)
     }
 
     override fun onDestroyView() {
