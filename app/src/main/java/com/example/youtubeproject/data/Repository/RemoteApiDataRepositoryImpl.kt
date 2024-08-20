@@ -1,5 +1,6 @@
 package com.example.youtubeproject.data.Repository
 
+import android.util.Log
 import com.example.youtubeproject.data.model.CategoryChannelModel
 import com.example.youtubeproject.data.model.CategoryVideoModel
 import com.example.youtubeproject.data.model.SearchResultModel
@@ -41,7 +42,15 @@ class RemoteApiDataRepositoryImpl @Inject constructor(
         page: String?
     ): Result<CategoryChannelModel> {
         return runCatching {
-            categoryChannelResult.getCategoryChannel(id = channelId, pageToken = page)
+            val response = categoryChannelResult.getCategoryChannel(id = channelId, pageToken = page)
+            response
+        }
+    }
+    override suspend fun getChannelThumbnail(channelId: String): Result<String> {
+        return runCatching {
+            val response = categoryChannelResult.getCategoryChannel(id = channelId)
+            val thumbnailUrl = response.items.firstOrNull()?.snippet?.thumbnails?.high?.url
+            thumbnailUrl ?: throw IllegalStateException("썸네일 오류")
         }
     }
 
