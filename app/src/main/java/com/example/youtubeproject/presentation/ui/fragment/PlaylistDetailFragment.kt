@@ -9,10 +9,18 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
 import androidx.fragment.app.activityViewModels
+import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.lifecycleScope
 import com.example.youtubeproject.R
 import com.example.youtubeproject.data.model.Playlist
+import com.example.youtubeproject.data.model.User
 import com.example.youtubeproject.databinding.FragmentPlaylistDetailBinding
+import com.example.youtubeproject.presentation.adapter.PlaylistsAdapter
+import com.example.youtubeproject.presentation.adapter.VideoDetailAdapter
+import com.example.youtubeproject.presentation.ui.MainActivity
+import com.example.youtubeproject.presentation.ui.dialog.CreatePlaylistDialog
+import com.example.youtubeproject.presentation.ui.dialog.DeletePlaylistDialog
+import com.example.youtubeproject.presentation.ui.navigation.FragmentTag
 import com.example.youtubeproject.presentation.uistate.PlaylistUiState
 import com.example.youtubeproject.presentation.viewmodel.PlaylistViewModel
 import kotlinx.coroutines.flow.collectLatest
@@ -24,7 +32,37 @@ class PlaylistDetailFragment : Fragment() {
 
     private val viewModel: PlaylistViewModel by activityViewModels()
 
-    private lateinit var playlist: Playlist
+    private val playlistLiveData = MutableLiveData<Playlist?>(null)
+
+    private val userData by lazy {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+            requireActivity().intent.getParcelableExtra("userData", User::class.java)!!
+        } else {
+            @Suppress("DEPRECATION")
+            requireActivity().intent.getParcelableExtra("userData")!!
+        }
+    }
+
+    private val playlistRv = VideoDetailAdapter(
+        onItemClick = { videoModel ->
+            //TODO: Change PushFragment
+            (requireActivity() as MainActivity).pushFragments(
+                VideoDetailFragment(),
+                FragmentTag.PlaylistVideoDetailFragment
+            )
+        },
+        onLongItemClick = { videoModel ->
+            DeletePlaylistDialog {
+                //playlist update 후 submitList, getPlaylistDetail
+                playlistLiveData.value = playlistLiveData.value!!.copy(
+                    lists = playlistLiveData.value!!.lists.toMutableList().apply {
+                        remove(videoModel)
+                    }
+                )
+            }.show(requireActivity().supportFragmentManager, DeletePlaylistDialog.TAG)
+            true
+        }
+    )
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -42,6 +80,9 @@ class PlaylistDetailFragment : Fragment() {
 
     override fun onDestroyView() {
         super.onDestroyView()
+
+        viewModel.savePlaylist(userData.id, playlistLiveData.value!!)
+
         _binding = null
     }
 
@@ -64,8 +105,8 @@ class PlaylistDetailFragment : Fragment() {
                     is PlaylistUiState.Init -> null
 
                     is PlaylistUiState.GetPlaylistDetailSuccess -> {
-                        playlist = it.playlist
-                        binding.playListTitleTv.text = getString(R.string.playlist_detail_title_text, playlist.title)
+                        playlistLiveData.value = it.playlist
+                        binding.playListTitleTv.text = getString(R.string.playlist_detail_title_text, playlistLiveData.value?.title)
                     }
 
                     is PlaylistUiState.Failure ->
@@ -79,9 +120,23 @@ class PlaylistDetailFragment : Fragment() {
         }
 
         val playlistId = arguments?.getString(PLAYLIST)!!
-        val userId = requireActivity().intent.getStringExtra("userData")!!
-        viewModel.getPlaylistDetail(userId, playlistId)
+        viewModel.getPlaylistDetail(userData.id, playlistId)
 
+        playlistLiveData.observe(viewLifecycleOwner) {
+            if(it?.lists?.isEmpty() == true) {
+                Log.d("PlaylistDetailFragment", "playlistLiveData is Empty...")
+            }
 
+            playlistRv.submitList(it?.lists ?: listOf())
+
+            binding.emptyTv.visibility =
+                if(it?.lists?.isEmpty() == true) {
+                    View.VISIBLE
+                } else {
+                    View.INVISIBLE
+                }
+        }
     }
+
+
 }

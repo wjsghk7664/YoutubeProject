@@ -55,7 +55,7 @@ class PlaylistFragment : Fragment() {
         onLongItemClick = { playlist ->
             DeletePlaylistDialog {
                 viewmodel.deletePlaylist(userData.id, playlist)
-            }.show(requireActivity().supportFragmentManager, CreatePlaylistDialog.TAG)
+            }.show(requireActivity().supportFragmentManager, DeletePlaylistDialog.TAG)
             true
         }
     )
@@ -101,7 +101,6 @@ class PlaylistFragment : Fragment() {
                         viewmodel.getPlaylists(userData.id)
                         Toast.makeText(requireContext(), getString(R.string.delete_playlist_success_message), Toast.LENGTH_SHORT).show()
                     }
-
 
                     is PlaylistUiState.SavePlaylistSuccess ->
                         Toast.makeText(requireContext(), getString(R.string.save_playlist_success_message), Toast.LENGTH_SHORT).show()
