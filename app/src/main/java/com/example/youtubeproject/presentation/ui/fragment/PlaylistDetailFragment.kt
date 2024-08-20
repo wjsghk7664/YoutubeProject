@@ -132,6 +132,12 @@ class PlaylistDetailFragment : Fragment() {
         }
 
         binding.addVideoBtn.setOnClickListener {
+            val titleList = listOf<String>()        //TODO: change to titles of my favorite videos.
+            if(titleList.isEmpty()) {
+                Toast.makeText(requireContext(), "좋아요한 영상이 없습니다.", Toast.LENGTH_SHORT).show()
+                return@setOnClickListener
+            }
+
             AddVideosDialog.newInstance({ result ->
                     val added = listOf<VideoModel>().filter {
                         result.contains(it.snippet.title)
@@ -142,7 +148,10 @@ class PlaylistDetailFragment : Fragment() {
                         }
                     )
                 },
-                listOf()        //TODO: change to titles of my favorite videos.
+                titleList
+            ).show(
+                requireActivity().supportFragmentManager,
+                AddVideosDialog.TAG
             )
         }
     }
