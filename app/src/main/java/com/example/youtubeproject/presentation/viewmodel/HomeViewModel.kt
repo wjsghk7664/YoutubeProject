@@ -31,25 +31,25 @@ class HomeViewModel @Inject constructor(
             try {
                 val result = remoteApiDataRepository.getPopularResult(null)
                 result.onSuccess { popularVideos ->
+
                     val videoItems = popularVideos.items.map { videoResponse ->
+
                         val channelId = videoResponse.snippet?.channelId ?: ""
                         val channelThumbnailUrl = remoteApiDataRepository.getChannelThumbnail(channelId).getOrNull()
 
                         VideoItem(
-                            mainImageUrl = videoResponse.snippet?.thumbnails?.high?.url,
-                            profileImageUrl = channelThumbnailUrl,
-                            description = videoResponse.snippet?.description ?: ""
-                            ,
+                            mainImageUrl = videoResponse.snippet?.thumbnails?.high?.url ?: "",
+                            profileImageUrl = channelThumbnailUrl ?: "",
+                            description = videoResponse.snippet?.description ?: "",
                             title = videoResponse.snippet?.title ?: ""
-
                         )
                     }
                     _popularVideos.value = videoItems
                 }.onFailure { e ->
-                    Log.e("에러 popularvideo", "Error", e)
+                    Log.e("에러체크", "인기있는 비디오", e)
                 }
             } catch (e: Exception) {
-                Log.e("에러 popularvideo", "Error", e)
+                Log.e("에러체크", "인기있는 비디오", e)
             }
         }
     }
@@ -73,12 +73,13 @@ class HomeViewModel @Inject constructor(
                     if (channelIds.isNotEmpty()) {
                         loadCategoryChannels(channelIds)
                     } else {
+                        Log.w("에러", "채널지원 안함")
                     }
                 }.onFailure { e ->
-                    Log.e("오류", "비디오 로딩 실패23 - category ID: $categoryId", e)
+                    Log.e("에러1", "카테고리 아이디 $categoryId", e)
                 }
             } catch (e: Exception) {
-                Log.e("오류", "오류발생 - category ID: $categoryId", e)
+                Log.e("에러2", "카테고리 아이디: $categoryId", e)
             }
         }
     }
@@ -96,10 +97,10 @@ class HomeViewModel @Inject constructor(
                     }
                     _categoryChannels.value = channelItems
                 }.onFailure { e ->
-                    Log.e("오류", "비디오 로딩 실패123 ", e)
+                    Log.e("에러11", "카테고리 채널", e)
                 }
             } catch (e: Exception) {
-                Log.e("오류", "오류발생", e)
+                Log.e("에러22", "카테고리 채널", e)
             }
         }
     }
