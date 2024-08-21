@@ -10,17 +10,17 @@ import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.resource.bitmap.CircleCrop
 import com.bumptech.glide.load.resource.bitmap.RoundedCorners
-import com.bumptech.glide.request.RequestOptions
 import com.example.youtubeproject.R
 import kotlinx.android.parcel.Parcelize
 
 @Parcelize
 data class VideoItem(
-    val mainImageUrl: String?,  // URL을 저장할 필드
-    val profileImageUrl: String?,  // 프로필 이미지 URL
+    val mainImageUrl: String?,
+    val profileImageUrl: String?,
     val title: String,
     val description: String
 ) : Parcelable
+
 
 
 class PopularVideosAdapter :
@@ -30,7 +30,7 @@ class PopularVideosAdapter :
         fun onClick(item: VideoItem)
     }
 
-    var itemClick : ItemClick? = null
+    var itemClick: ItemClick? = null
 
     inner class VideoViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         val mainImage: ImageView = itemView.findViewById(R.id.main_image)
@@ -47,17 +47,20 @@ class PopularVideosAdapter :
     override fun onBindViewHolder(holder: VideoViewHolder, position: Int) {
         val videoItem = getItem(position)
 
-        Glide.with(holder.itemView)
+        Glide.with(holder.itemView.context)
             .load(videoItem.profileImageUrl)
             .transform(CircleCrop())
-            //   .placeholder(R.drawable.sample_image) // 로딩 이미지
-            //  .error(R.drawable.sample_image) // 에러 발생 시
             .into(holder.profileImage)
+
+        Glide.with(holder.itemView.context)
+            .load(videoItem.mainImageUrl)
+            .transform(RoundedCorners(16))
+            .into(holder.mainImage)
 
         holder.videoDescription.text = videoItem.title
 
         holder.itemView.setOnClickListener {
-            //itemClick?.onClick()
+            itemClick?.onClick(videoItem)
         }
     }
 
