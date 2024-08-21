@@ -7,6 +7,7 @@ import com.example.youtubeproject.data.model.VideoModel
 import com.example.youtubeproject.domain.AddLikeUseCase
 import com.example.youtubeproject.domain.DeleteLikeListUseCase
 import com.example.youtubeproject.domain.GetLikeListUseCase
+import com.example.youtubeproject.domain.LogoutUseCase
 import com.example.youtubeproject.presentation.uistate.UiState
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -17,7 +18,8 @@ import javax.inject.Inject
 class LikeVideosViewModel @Inject constructor(
     private val addLikeUseCase: AddLikeUseCase,
     private val getLikeListUseCase: GetLikeListUseCase,
-    private val deleteLikeListUseCase: DeleteLikeListUseCase
+    private val deleteLikeListUseCase: DeleteLikeListUseCase,
+    private val logoutUseCase: LogoutUseCase
 ):ViewModel() {
 
     var videoModel: VideoModel? = null
@@ -55,5 +57,9 @@ class LikeVideosViewModel @Inject constructor(
                 getList(id)
             }
         }
+    }
+
+    fun logout():Boolean{
+        return logoutUseCase()
     }
 }
