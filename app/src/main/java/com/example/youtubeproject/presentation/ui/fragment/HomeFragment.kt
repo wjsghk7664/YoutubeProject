@@ -3,22 +3,18 @@ package com.example.youtubeproject.presentation.ui.fragment
 import PopularVideosAdapter
 import VideoItem
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.AdapterView
-import android.widget.ArrayAdapter
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.example.youtubeproject.R
 import com.example.youtubeproject.data.model.VideoModel
 import com.example.youtubeproject.databinding.FragmentHomeBinding
 import com.example.youtubeproject.presentation.adapter.CustomSpinnerAdapter
 import com.example.youtubeproject.presentation.ui.CategoryAdapter
 import com.example.youtubeproject.presentation.ui.ChannelCategoryAdapter
-import com.example.youtubeproject.presentation.ui.ChannelCategoryItem
 import com.example.youtubeproject.presentation.ui.MainActivity
 import com.example.youtubeproject.presentation.ui.navigation.FragmentTag
 import com.example.youtubeproject.presentation.viewmodel.HomeViewModel
@@ -74,10 +70,10 @@ class HomeFragment : Fragment() {
         popularVideosAdapter = PopularVideosAdapter().apply {
             itemClick = object: PopularVideosAdapter.ItemClick {
                 override fun onClick(item: VideoItem) {
-                    (requireActivity() as MainActivity).pushFragments(
-                        VideoDetailFragment(),
-                        FragmentTag.HomeVideoDetailFragment
-                    )
+//                    (requireActivity() as MainActivity).pushFragments(
+//                        VideoDetailFragment(),
+//                        FragmentTag.HomeVideoDetailFragment
+//                    )
                 }
             }
         }
