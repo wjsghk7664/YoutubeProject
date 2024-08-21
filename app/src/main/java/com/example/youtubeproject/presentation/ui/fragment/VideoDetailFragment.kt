@@ -12,6 +12,7 @@ import com.bumptech.glide.Glide
 import com.example.youtubeproject.R
 import com.example.youtubeproject.data.model.User
 import com.example.youtubeproject.databinding.FragmentVideoDetailBinding
+import com.example.youtubeproject.presentation.ui.MainActivity
 import com.example.youtubeproject.presentation.viewmodel.LikeVideosViewModel
 
 class VideoDetailFragment : Fragment() {
@@ -66,6 +67,10 @@ class VideoDetailFragment : Fragment() {
                 videoDetailViewModel.addLike(userData.id) { isSuccess ->
                     //TODO: do Something after success
                 }
+            }
+
+            ivBack.setOnClickListener {
+                (requireActivity() as MainActivity).popFragments()
             }
         }
     }
