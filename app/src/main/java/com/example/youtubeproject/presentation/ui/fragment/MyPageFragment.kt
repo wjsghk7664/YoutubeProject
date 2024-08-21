@@ -1,5 +1,6 @@
 package com.example.youtubeproject.presentation.ui.fragment
 
+import android.content.Intent
 import android.os.Bundle
 import android.util.Log
 import androidx.fragment.app.Fragment
@@ -19,6 +20,7 @@ import com.example.youtubeproject.data.model.VideoModel
 import com.example.youtubeproject.databinding.FragmentMyPageBinding
 import com.example.youtubeproject.presentation.adapter.LikeListAdapter
 import com.example.youtubeproject.presentation.ui.MainActivity
+import com.example.youtubeproject.presentation.ui.StartActivity
 import com.example.youtubeproject.presentation.ui.navigation.FragmentTag
 import com.example.youtubeproject.presentation.uistate.UiState
 import com.example.youtubeproject.presentation.viewmodel.LikeVideosViewModel
@@ -92,6 +94,13 @@ class MyPageFragment : Fragment() {
 
         tvUserName.setText(user.name)
         tvUserDescription.setText(user.intro)
+
+        mypageIvLogout.setOnClickListener {
+            if(viewModel.logout()){
+                startActivity(Intent(requireActivity(),StartActivity::class.java))
+                requireActivity().finish()
+            }
+        }
     }
 
     private val onClickOpen:(VideoModel) -> Unit = { videoModel ->
@@ -106,6 +115,11 @@ class MyPageFragment : Fragment() {
 
     private val onClickDelete:(VideoModel) -> Unit = { videoModel ->
         viewModel.deleteList(user.id,videoModel)
+    }
+
+    override fun onResume() {
+        super.onResume()
+        viewModel.getList(user.id)
     }
 
     override fun onDestroyView() {
